@@ -1,0 +1,45 @@
+{
+  "lockfile_version": "1",
+  "packages": {
+    "elixir@latest": {
+      "last_modified": "2024-02-24T23:06:34Z",
+      "resolved": "github:NixOS/nixpkgs/9a9dae8f6319600fa9aebde37f340975cab4b8c0#elixir",
+      "source": "devbox-search",
+      "version": "1.15.7",
+      "systems": {
+        "aarch64-darwin": {
+          "store_path": "/nix/store/fpjsxvfg9jyqivinpzfrn0h9i7pmsbrf-elixir-1.15.7"
+        },
+        "aarch64-linux": {
+          "store_path": "/nix/store/n8vvbncmrv2zpg9mkwqyzy8yr6xapjab-elixir-1.15.7"
+        },
+        "x86_64-darwin": {
+          "store_path": "/nix/store/vybr838agjmdbp9b1dzc46xcpvmrq1hp-elixir-1.15.7"
+        },
+        "x86_64-linux": {
+          "store_path": "/nix/store/4yy7bh6f9bq3pcz1yv9lnxcvnxsqs9cy-elixir-1.15.7"
+        }
+      }
+    },
+    "nodejs@latest": {
+      "last_modified": "2024-02-24T23:06:34Z",
+      "resolved": "github:NixOS/nixpkgs/9a9dae8f6319600fa9aebde37f340975cab4b8c0#nodejs_21",
+      "source": "devbox-search",
+      "version": "21.6.2",
+      "systems": {
+        "aarch64-darwin": {
+          "store_path": "/nix/store/n9xcy53g63rk8vwb2yx5fb7i72rprpd1-nodejs-21.6.2"
+        },
+        "aarch64-linux": {
+          "store_path": "/nix/store/mqvmpikgnk7bxvi977ysd0z81bjpflzj-nodejs-21.6.2"
+        },
+        "x86_64-darwin": {
+          "store_path": "/nix/store/mdwxb1kdajvahhbpq3dhnaf3b01h7yb8-nodejs-21.6.2"
+        },
+        "x86_64-linux": {
+          "store_path": "/nix/store/va3sggfgfb709lm31bzvpjfyapjdy435-nodejs-21.6.2"
+        }
+      }
+    }
+  }
+}
