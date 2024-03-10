@@ -21,6 +21,26 @@
         }
       }
     },
+    "erlang@latest": {
+      "last_modified": "2024-02-24T23:06:34Z",
+      "resolved": "github:NixOS/nixpkgs/9a9dae8f6319600fa9aebde37f340975cab4b8c0#erlang",
+      "source": "devbox-search",
+      "version": "25.3.2.9",
+      "systems": {
+        "aarch64-darwin": {
+          "store_path": "/nix/store/j1i05whg8r2m66lh8an0pwrfjf3c5wil-erlang-25.3.2.9"
+        },
+        "aarch64-linux": {
+          "store_path": "/nix/store/8xymishwic0gpcpb4sbr90sbnbm4fpaf-erlang-25.3.2.9"
+        },
+        "x86_64-darwin": {
+          "store_path": "/nix/store/ifyigc7c1x56i7xf5q89if3j44p12lk7-erlang-25.3.2.9"
+        },
+        "x86_64-linux": {
+          "store_path": "/nix/store/xang45qlfdvpcfmc4l84dz981blnk1dl-erlang-25.3.2.9"
+        }
+      }
+    },
     "nodejs@latest": {
       "last_modified": "2024-02-24T23:06:34Z",
       "resolved": "github:NixOS/nixpkgs/9a9dae8f6319600fa9aebde37f340975cab4b8c0#nodejs_21",

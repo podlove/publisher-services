@@ -51,8 +51,6 @@ defmodule Publisher.Backend.MixProject do
   defp aliases do
     [
       setup: ["deps.get", "assets.setup", "assets.build"],
-      "assets.setup": ["esbuild.install --if-missing"],
-      "assets.build": ["esbuild publisher_backend"],
       "assets.deploy": [
         "esbuild publisher_backend --minify",
         "phx.digest"
