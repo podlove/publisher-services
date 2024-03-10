@@ -1,7 +1,19 @@
-# Vue 3 + Vite
+# Publisher Next
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+A data privacy first prototype to break our chains to WordPress.
 
-## Recommended IDE Setup
+## Setup
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+1. [Install Devbox](https://www.jetpack.io/devbox/docs/quickstart/)
+2. Run `devbox install` to install all runtime dependencies
+3. Run `devbox run bootstrap` to install all dependencies
+
+
+## Development
+
+1. Start the server: `devbox run server`
+2. Start the client: `devbox run client`
+3. Happy development 😘
+
+> Tip: Use `devbox shell` to open a development shell
+
