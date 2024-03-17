@@ -3,7 +3,7 @@
   "shell": {
     "init_hook": [],
     "scripts": {
-      "bootstrap:client": ["cd client", "pnpm bootstrap"],
+      "bootstrap:client": ["cd client", "pnpm install"],
       "bootstrap:server": ["cd server", "mix deps.get"],
       "bootstrap": ["devbox run bootstrap:client", "devbox run bootstrap:server"],
       "server": ["cd server", "mix phx.server"],
