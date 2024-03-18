@@ -6,6 +6,7 @@
 <script lang="ts" setup>
 import { mapState } from 'redux-vuex';
 import { selectors } from '../store';
+import * as request from '../lib/request';
 
 const state = mapState({
   user: selectors.authentication.user,
