@@ -1,11 +1,11 @@
 import queryString from 'query-string';
 import { store, selectors } from '../store';
 
-const headers = () => {
+const headers = (): HeadersInit => {
   const state = store.getState();
-  const user = selectors.authentication.user(state);
-  const password = selectors.authentication.password(state);
-  const site = selectors.authentication.site(state);
+  const user = selectors.authentication.user(state) as string;
+  const password = selectors.authentication.password(state) as string;
+  const site = selectors.authentication.site(state) as string;
 
   return {
     'Content-Type': 'application/json',
@@ -15,7 +15,7 @@ const headers = () => {
   };
 };
 
-const parseResponse = <T>(response: Response): T => response.json();
+const parseResponse = <T>(response: Response): Promise<T> => response.json();
 
 const queryParams = (url: string, params: { [key: string]: string | number | boolean }) => {
   const { origin, pathname, search } = new URL(url);
@@ -29,24 +29,32 @@ export const get = <T>(
   url: string,
   { params }: { params: { [key: string]: string | number | boolean } } = { params: {} }
 ): Promise<T> => {
-  const { origin, pathname, search } = new URL(url);
+  const { origin, pathname } = new URL(url);
 
   const query = queryParams(url, params);
 
-  return fetch<T>(`${origin}${pathname}?${query}`, { method: 'GET', headers: headers() }).then(
+  return fetch(`${origin}${pathname}?${query}`, { method: 'GET', headers: headers() }).then(
     parseResponse
-  );
+  ) as Promise<T>;
 };
 
 export const post = <T>(
   url: string,
-  { params }: { params: { [key: string]: string | number | boolean }, data: { [key: string]: any } } = { params: {}, data: {} }
+  {
+    params,
+    data
+  }: { params: { [key: string]: string | number | boolean }; data: { [key: string]: any } } = {
+    params: {},
+    data: {}
+  }
 ): Promise<T> => {
-  const { origin, pathname, search } = new URL(url);
+  const { origin, pathname } = new URL(url);
 
   const query = queryParams(url, params);
 
-  return fetch<T>(`${origin}${pathname}?${query}`, { method: 'POST', headers: headers(), body: JSON.stringify(data) }).then(
-    parseResponse<T>
-  );
+  return fetch(`${origin}${pathname}?${query}`, {
+    method: 'POST',
+    headers: headers(),
+    body: JSON.stringify(data)
+  }).then(parseResponse<T>);
 };
