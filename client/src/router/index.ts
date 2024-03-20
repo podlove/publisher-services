@@ -22,7 +22,7 @@ router.beforeEach((to, _from, next) => {
   const user = selectors.authentication.user(state);
   const password = selectors.authentication.password(state);
   const site = selectors.authentication.site(state);
-  console.log(to.name);
+
   if ((!user || !password || !site) && to.name !== 'authenticate') {
     next({ name: 'authenticate' });
   } else {
