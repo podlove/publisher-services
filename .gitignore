@@ -60,3 +60,6 @@ publisher_backend-*.tar
 npm-debug.log
 /assets/node_modules/
 
+# nix
+.nix-mix
+.nix-hex
