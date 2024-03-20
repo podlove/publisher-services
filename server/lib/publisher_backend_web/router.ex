@@ -7,5 +7,7 @@ defmodule Publisher.BackendWeb.Router do
 
   scope "/api", Publisher.BackendWeb do
     pipe_through :api
+
+    get "demo", DemoController, :index
   end
 end
