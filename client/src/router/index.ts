@@ -1,5 +1,5 @@
-import { createWebHashHistory, createRouter } from 'vue-router';
-import { actions, selectors, store } from '../store';
+import { createWebHistory, createRouter } from 'vue-router';
+import { actions, store } from '../store';
 
 import Wizard from '../pages/Wizard.vue';
 import Authenticate from '../pages/Authenticate.vue';
@@ -10,24 +10,12 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes
 });
 
-router.beforeEach((to, _from, next) => {
+router.beforeEach((to) => {
   store.dispatch(actions.router.navigate(to));
-
-  const state = store.getState();
-
-  const user = selectors.authentication.user(state);
-  const password = selectors.authentication.password(state);
-  const site = selectors.authentication.site(state);
-
-  if ((!user || !password || !site) && to.name !== 'authenticate') {
-    next({ name: 'authenticate' });
-  } else {
-    next();
-  }
 });
 
 export default router;

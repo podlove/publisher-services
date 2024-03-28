@@ -9,16 +9,23 @@ const headers = (): HeadersInit => {
 
   return {
     'Content-Type': 'application/json',
-    'Wordpress-User': user,
-    'Wordpress-Password': password,
-    'Wordpress-Site': site
+    Accept: 'application/json',
+    ...(user ? {'Wordpress-User': user}: {}),
+    ...(password ? {'Wordpress-Password': password}: {}),
+    ...(site ? {'Wordpress-Site': site}: {})
   };
 };
 
 const parseResponse = <T>(response: Response): Promise<T> => response.json();
 
+export const origin = (path: string): string => {
+  const url = new URL(document.baseURI).origin;
+
+  return new URL(path, url).href;
+};
+
 const queryParams = (url: string, params: { [key: string]: string | number | boolean }) => {
-  const { origin, pathname, search } = new URL(url);
+  const { search } = new URL(url);
 
   const existing = queryString.parse(search);
 
@@ -33,9 +40,10 @@ export const get = <T>(
 
   const query = queryParams(url, params);
 
-  return fetch(`${origin}${pathname}?${query}`, { method: 'GET', headers: headers() }).then(
-    parseResponse
-  ) as Promise<T>;
+  return fetch(`${origin}${pathname}${query ? '?' : ''}${query}`, {
+    method: 'GET',
+    headers: headers()
+  }).then(parseResponse) as Promise<T>;
 };
 
 export const post = <T>(

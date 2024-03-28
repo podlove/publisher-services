@@ -9,5 +9,10 @@ function* persist() {
 }
 
 export default function* routerSaga() {
-  yield takeEvery(actions.authentication.setCredentials.toString(), persist);
+  yield takeEvery(
+    [
+      // actions.authentication.setApplicationPassword.toString()
+    ],
+    persist
+  );
 }

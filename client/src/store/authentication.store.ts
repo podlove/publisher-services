@@ -6,16 +6,24 @@ export interface State {
   site: string | null;
 }
 
-export type setCredentialsPayload = State;
+export type setApplicationPasswordPayload = {
+  user: string;
+  password: string;
+  site: string;
+};
 
 export const actions = {
-  setCredentials: createAction<setCredentialsPayload>('AUTHENTICATE/SET_CREDENTIALS')
+  setApplicationPassword: createAction<setApplicationPasswordPayload>(
+    'AUTHENTICATE/SET_APPLICATION_PASSWORD'
+  )
 };
 
 export const reducer = handleActions<State, any>(
   {
-    [actions.setCredentials.toString()]: (_state, { payload }: Action<setCredentialsPayload>) =>
-      payload
+    [actions.setApplicationPassword.toString()]: (
+      state,
+      { payload }: Action<setApplicationPasswordPayload>
+    ) => ({ ...state, ...payload })
   },
   { user: null, password: null, site: null }
 );
@@ -23,5 +31,5 @@ export const reducer = handleActions<State, any>(
 export const selectors = {
   user: (state: State) => state.user,
   password: (state: State) => state.password,
-  site: (state: State) => state.site,
+  site: (state: State) => state.site
 };
