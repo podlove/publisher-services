@@ -1,5 +1,5 @@
 <template>
-  <h1>Authenticate!</h1>
+  <h1>Importer!</h1>
 </template>
 
 <script setup lang="ts"></script>

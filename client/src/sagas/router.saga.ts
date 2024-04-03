@@ -17,13 +17,13 @@ function* authenticate(payload: navigatePayload) {
 
 function* demo() {
   const test = yield request.get(request.origin('/api/demo'));
-  console.log(test);
 }
 
 function* navigate({ payload }: Action<navigatePayload>) {
+  yield fork(authenticate, payload);
+
   switch (payload.name) {
     case 'wizard':
-      yield fork(authenticate, payload);
       yield delay(1000);
       yield fork(demo);
   }

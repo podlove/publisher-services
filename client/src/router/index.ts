@@ -1,12 +1,12 @@
 import { createWebHistory, createRouter } from 'vue-router';
 import { actions, store } from '../store';
 
-import Wizard from '../pages/Wizard.vue';
-import Authenticate from '../pages/Authenticate.vue';
+import Onboarding from '../pages/onboarding/Onboarding.vue';
+import Import from '../pages/import/Import.vue';
 
 const routes = [
-  { path: '/wizard', name: 'wizard', component: Wizard },
-  { path: '/authenticate', name: 'authenticate', component: Authenticate }
+  { path: '/onboarding', name: 'onboarding', component: Onboarding },
+  { path: '/import', name: 'import', component: Import }
 ];
 
 const router = createRouter({
