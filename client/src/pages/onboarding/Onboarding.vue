@@ -4,12 +4,31 @@
     <div class="py-4 px-2">
       <component :is="stepComponents[state.current]" />
     </div>
-    <div v-if="state.upcoming" class="flex justify-end mt-auto">
-      <div class="py-4 px-2">
-        <PodloveButton variant="primary" @click="nextStep()">{{
-          t('onboarding.navigation.next')
-        }}</PodloveButton>
+    <div class="grid grid-cols-3 justify-between">
+      <div v-if="state.previous" class="justify-self-start mt-auto">
+        <div class="py-4 px-2">
+          <PodloveButton variant="primary" @click="prevStep()">{{
+            t('onboarding.navigation.prev')
+          }}</PodloveButton>
+        </div>
       </div>
+      <div v-else></div>
+      <div class="justify-self-center mt-auto">
+        <div class="py-4 px-2">
+          <PodloveButton variant="primary">
+            <router-link to="/select" class="px-2">{{t('onboarding.navigation.home')}}
+            </router-link>
+          </PodloveButton>
+        </div>
+      </div>
+      <div v-if="state.upcoming" class="justify-self-end mt-auto">
+        <div class="py-4 px-2">
+          <PodloveButton variant="primary" @click="nextStep()">{{
+      t('onboarding.navigation.next')
+            }}</PodloveButton>
+        </div>
+      </div>
+      <div v-else></div>
     </div>
   </div>
 </template>
@@ -32,6 +51,7 @@ const store = injectStore();
 
 const state = mapState({
   steps: selectors.onboarding.steps,
+  previous: selectors.onboarding.previous,
   current: selectors.onboarding.current,
   upcoming: selectors.onboarding.upcoming
 });
@@ -50,4 +70,8 @@ const stepComponents = {
 const nextStep = () => {
   store.dispatch(actions.onboarding.next() as unknown as Action);
 };
+
+const prevStep = () => {
+  store.dispatch(actions.onboarding.previous() as unknown as Action);
+}
 </script>
