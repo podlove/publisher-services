@@ -55,6 +55,12 @@ export const reducer = handleActions<State, any>(
 );
 
 export const selectors = {
+  previous: (state: State): string | null => {
+    const currentIndex = state.steps.findIndex((step) => step === state.current);
+    if (currentIndex === 0)
+      return null;
+    return state.steps[currentIndex - 1];
+  },
   current: (state: State): string => state.current,
   upcoming: (state: State): string | null => {
     const currentIndex = state.steps.findIndex((step) => step === state.current);

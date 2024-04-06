@@ -1,6 +1,8 @@
 export default {
   onboarding: {
     navigation: {
+      prev: 'Prev',
+      home: 'Home',
       next: 'Next'
     },
     steps: {
@@ -23,6 +25,16 @@ export default {
       'next-steps': {
         title: 'Next steps'
       }
+    }
+  },
+  select: {
+    description:
+      'You can chose to either create a new podcast or import an existing podcast from another host. Choose the option that best suits your needs.',
+    podcast: {
+      title: 'Create new podcast'
+    },
+    import: {
+      title: 'Import existing podcast'
     }
   }
 };

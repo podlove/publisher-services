@@ -19,6 +19,7 @@ export default {
   },
   onboarding: {
     steps: createSelector(root.onboarding, onboarding.selectors.steps),
+    previous: createSelector(root.onboarding, onboarding.selectors.previous),
     current: createSelector(root.onboarding, onboarding.selectors.current),
     upcoming: createSelector(root.onboarding, onboarding.selectors.upcoming)
   }
