@@ -31,6 +31,7 @@ export default {
     }
   },
   select: {
+    description: 'Du kannst entweder einen neuen Podcast erstellen oder einen bestehenden Podcast von einem anderen Anbieter importieren. Wählen die Option, die deinen Bedürfnissen am besten entspricht.',
     podcast: {
       title: 'Erstellung neuer Podcast'
     },

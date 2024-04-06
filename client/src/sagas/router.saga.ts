@@ -15,18 +15,17 @@ function* authenticate(payload: navigatePayload) {
   }
 }
 
-function* demo() {
-  const test = yield request.get(request.origin('/api/demo'));
+function* runtime(payload: navigatePayload) {
+  const lang = get(payload, ['query', 'lang'], null);
+
+  if (lang) {
+    yield put(actions.runtime.language(lang));
+  }
 }
 
 function* navigate({ payload }: Action<navigatePayload>) {
   yield fork(authenticate, payload);
-
-  switch (payload.name) {
-    case 'wizard':
-      yield delay(1000);
-      yield fork(demo);
-  }
+  yield fork(runtime, payload);
 }
 
 export default function* routerSaga() {

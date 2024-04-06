@@ -4,6 +4,7 @@ import * as localStorage from '../lib/local-storage';
 
 import routerSaga from '../sagas/router.saga';
 import persistSaga from '../sagas/persist.saga';
+import runtimeSaga from '../sagas/runtime.saga';
 
 import selectors from './selectors';
 import actions from './actions';
@@ -29,6 +30,7 @@ const createStore = () => {
 
   sagaMiddleware.run(routerSaga);
   sagaMiddleware.run(persistSaga);
+  sagaMiddleware.run(runtimeSaga);
 
   return store as unknown as Store<State, any, any>;
 };
