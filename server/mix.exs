@@ -42,7 +42,7 @@ defmodule Publisher.Backend.MixProject do
       {:req, "~> 0.4.14"},
       # {:metalove, "~> 0.4.0"}
       # {:metalove, path: "/Users/ericteubert/code/metalove"}
-      {:metalove, git: "https://github.com/podlove/metalove", tag: "v0.4.0"}
+      {:metalove, git: "https://github.com/podlove/metalove", branch: "master"}
     ]
   end
 
