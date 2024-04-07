@@ -10,4 +10,10 @@ defmodule Publisher.BackendWeb.Router do
 
     get "/demo", DemoController, :index
   end
+
+  scope "/api/v1", Publisher.BackendWeb do
+    pipe_through :api
+
+    get "/fetch_feed", FeedParserController, :index
+  end
 end
