@@ -4,7 +4,7 @@ import de from './de';
 
 export const i18n = createI18n({
   legacy: false,
-  locale: navigator && navigator.language || 'en',
+  locale: 'en',
   fallbackLocale: 'en',
 
   messages: {
