@@ -25,5 +25,6 @@ defmodule Publisher.Backend.FeedParserTest do
            ]
 
     assert result.podcast.language == "de-DE"
+    assert result.podcast.copyright == "All rights reversed"
   end
 end

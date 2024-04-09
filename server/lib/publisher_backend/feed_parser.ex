@@ -13,7 +13,8 @@ defmodule Publisher.Backend.FeedParser do
          owner: feed.owner,
          categories: feed.categories,
          language: feed.language,
-         explicit: feed.explicit
+         explicit: feed.explicit,
+         copyright: feed.copyright
        },
        episodes: episodes
      }}
