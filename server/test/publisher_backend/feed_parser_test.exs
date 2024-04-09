@@ -16,5 +16,6 @@ defmodule Publisher.Backend.FeedParserTest do
     assert result.podcast.title == "Podlovers"
     assert result.podcast.description == "Der Podlove Entwickler:innen Podcast"
     assert result.podcast.image == "http://example.com/image.png"
+    assert result.podcast.owner == %{name: "Podlovers", email: "feed@podlovers.org"}
   end
 end

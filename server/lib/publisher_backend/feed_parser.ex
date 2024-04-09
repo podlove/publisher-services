@@ -9,7 +9,8 @@ defmodule Publisher.Backend.FeedParser do
        podcast: %{
          title: feed.title,
          description: feed.description,
-         image: feed.image_url
+         image: feed.image_url,
+         owner: feed.owner
        },
        episodes: episodes
      }}
