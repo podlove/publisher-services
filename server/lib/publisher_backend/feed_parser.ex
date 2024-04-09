@@ -10,7 +10,8 @@ defmodule Publisher.Backend.FeedParser do
          title: feed.title,
          description: feed.description,
          image: feed.image_url,
-         owner: feed.owner
+         owner: feed.owner,
+         categories: feed.categories
        },
        episodes: episodes
      }}

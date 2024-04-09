@@ -30,8 +30,11 @@
 	<itunes:author>Podlovers</itunes:author>
 	<itunes:type>episodic</itunes:type>
 	<itunes:summary><![CDATA[Podlove ist eine Initiative zur Verbesserung der Open Source Infrastruktur zum Podcasting. Podlove ist gleichzeitig auch ein Netzwerk an Entwickler:innen zur Diskussion von Features und Standardisierung.]]></itunes:summary>
-<itunes:category text="Technology" />
-
+  
+  <itunes:category text="Technology" />
+  <itunes:category text="Health">
+    <itunes:category text="Mental Health" />
+  </itunes:category>
 	
 	<itunes:owner>
 		<itunes:name>Podlovers</itunes:name>
