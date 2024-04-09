@@ -4,7 +4,6 @@ defmodule Publisher.Backend.FeedParserTest do
   alias Publisher.Backend.FeedParser
 
   test "parse_by_url/1" do
-
     Req.Test.stub(Metalove, fn conn ->
       conn
       |> Plug.Conn.put_resp_content_type("application/rss+xml")
@@ -15,6 +14,7 @@ defmodule Publisher.Backend.FeedParserTest do
     {:ok, result} = FeedParser.parse_by_url(url)
 
     assert result.podcast.title == "Podlovers"
-    assert result.podcast.description =~ "Der Podlove Entwickler:innen Podcast"
+    assert result.podcast.description == "Der Podlove Entwickler:innen Podcast"
+    assert result.podcast.image == "http://example.com/image.png"
   end
 end
