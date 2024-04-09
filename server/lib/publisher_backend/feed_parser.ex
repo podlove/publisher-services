@@ -11,7 +11,8 @@ defmodule Publisher.Backend.FeedParser do
          description: feed.description,
          image: feed.image_url,
          owner: feed.owner,
-         categories: feed.categories
+         categories: feed.categories,
+         language: feed.language
        },
        episodes: episodes
      }}

@@ -22,5 +22,7 @@ defmodule Publisher.Backend.FeedParserTest do
              ["Technology"],
              ["Health", "Mental Health"]
            ]
+
+    assert result.podcast.language == "de-DE"
   end
 end
