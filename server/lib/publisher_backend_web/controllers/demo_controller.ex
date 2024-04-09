@@ -7,7 +7,11 @@ defmodule Publisher.BackendWeb.DemoController do
     [password | _] = get_req_header(conn, "wordpress-password")
     [site | _] = get_req_header(conn, "wordpress-site")
 
-    Logger.log(:info, "user: #{user}, password: #{password}, endpoint: #{site}/wp-json/podlove/v2/contributors?filter=all")
+    Logger.log(
+      :info,
+      "user: #{user}, password: #{password}, endpoint: #{site}/wp-json/podlove/v2/contributors?filter=all"
+    )
+
     # - /podlove/v2/contributors?filter=all is one of the few reading routes that requires authentication
     # - the [verify: :verify_none] opt avoids SSL checks (which are not working for "Local" setups)
     response =
