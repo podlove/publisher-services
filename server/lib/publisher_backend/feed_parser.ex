@@ -2,7 +2,16 @@ defmodule Publisher.Backend.FeedParser do
   def parse_by_url(url) do
     podcast = Metalove.get_podcast(url)
     feed = Metalove.PodcastFeed.get_by_feed_url(podcast.main_feed_url)
-    episodes = Enum.map(feed.episodes, &Metalove.Episode.get_by_episode_id/1)
+
+    episodes =
+      feed.episodes
+      |> Enum.map(&Metalove.Episode.get_by_episode_id/1)
+      |> Enum.map(fn episode ->
+        %{
+          title: episode.title,
+          guid: episode.guid
+        }
+      end)
 
     {:ok,
      %{

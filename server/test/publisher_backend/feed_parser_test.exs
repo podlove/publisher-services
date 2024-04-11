@@ -26,5 +26,9 @@ defmodule Publisher.Backend.FeedParserTest do
 
     assert result.podcast.language == "de-DE"
     assert result.podcast.copyright == "All rights reversed"
+
+    assert [episode] = result.episodes
+    assert episode.guid == "podlove-2024-04-06t12:42:13+00:00-1cbdd937193946a"
+    assert episode.title == "PTF Sprint 2: Ein neuer Weg"
   end
 end
