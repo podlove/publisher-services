@@ -35,6 +35,10 @@ dist-ssr
 # Where 3rd-party dependencies like ExDoc output generated docs.
 /doc/
 
+/priv/static
+
+/release
+
 # Ignore .fetch files in case you like to edit your project deps locally.
 /.fetch
 
@@ -63,3 +67,4 @@ npm-debug.log
 # nix
 .nix-mix
 .nix-hex
+

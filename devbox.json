@@ -1,21 +1,22 @@
 {
-  "packages": ["nodejs@latest", "elixir@latest", "erlang@latest"],
+  "packages": ["nodejs@latest", "elixir@latest", "erlang@latest", "caddy@latest"],
   "env": {
-    "DEVBOX_COREPACK_ENABLED": "true"
+    "DEVBOX_COREPACK_ENABLED": "true",
+    "MIX_HOME": "./.nix-mix",
+    "HEX_HOME": "./.nix-hex",
+    "ERL_AFLAGS": "-kernel shell_history enabled'"
   },
   "shell": {
-    "init_hook": [
-      "mkdir -p .nix-mix",
-      "mkdir -p .nix-hex",
-      "export MIX_HOME=$PWD/.nix-mix",
-      "export HEX_HOME=$PWD/.nix-hex",
-      "export ERL_AFLAGS='-kernel shell_history enabled'",
-      "mix local.hex --force",
-      "mix local.rebar --force"
-    ],
     "scripts": {
       "bootstrap:client": ["cd client", "pnpm install"],
-      "bootstrap:server": ["cd server", "mix deps.get"],
+      "bootstrap:server": [
+        "cd server",
+        "mkdir -p .nix-mix",
+        "mkdir -p .nix-hex",
+        "mix local.hex --force",
+        "mix local.rebar --force",
+        "mix deps.get"
+      ],
       "bootstrap": ["devbox run bootstrap:client", "devbox run bootstrap:server"],
       "server": ["cd server", "mix phx.server"],
       "client": ["cd client", "pnpm run dev"],
