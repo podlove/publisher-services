@@ -1,4 +1,4 @@
-defmodule Publisher.Backend.FeedParser do
+defmodule Publisher.FeedParser do
   def parse_by_url(url) do
     podcast = Metalove.get_podcast(url)
     feed = Metalove.PodcastFeed.get_by_feed_url(podcast.main_feed_url)

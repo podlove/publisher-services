@@ -1,7 +1,7 @@
-defmodule Publisher.Backend.FeedParserTest do
-  use ExUnit.Case, async: true
+defmodule PublisherTest do
+  use ExUnit.Case
 
-  alias Publisher.Backend.FeedParser
+  alias Publisher.FeedParser
 
   test "parse_by_url/1" do
     Req.Test.stub(Metalove, fn conn ->

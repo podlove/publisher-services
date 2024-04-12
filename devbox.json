@@ -20,7 +20,7 @@
       "bootstrap": ["devbox run bootstrap:client", "devbox run bootstrap:server"],
       "test": ["devbox run test:server"],
       "test:server": ["cd server", "mix test"],
-      "server": ["cd server", "mix phx.server"],
+      "server": ["cd server", "mix run --no-halt"],
       "client": ["cd client", "pnpm run dev"],
       "build:client": ["cd client", "pnpm build"],
       "build": ["devbox run build:client"]

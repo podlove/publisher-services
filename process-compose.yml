@@ -2,11 +2,10 @@ version: "0.5"
 
 processes:
   server:
-   command: mix phx.server
+   command: mix run --no-halt
    working_dir: server
    environment:
     - "PORT=9000"
     - "MIX_ENV=prod"
-    - "SECRET_KEY_BASE=A_SECRET_THAT_IS_NOT_REALLY_NEEDED_BUT_REQUIRED_BY_PHOENIX_SO_WE_MIGHT_NOT_WANT_PHOENIX"
    availability:
     restart: "always"
