@@ -1,0 +1,40 @@
+name: Staging
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Prepare Remote
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: publisher.podlove.dev
+        username: root
+        key: ${{ secrets.STAGING_SSH_KEY }}
+        script:  |
+          which devbox || curl -fsSL https://get.jetify.com/devbox | bash
+          mkdir -p app
+          cd app
+          git ls-remote git@github.com:podlove/publisher-next.git -q || git clone -–depth=1 git@github.com:podlove/publisher-next.git .
+
+    - name: Deploy to staging environment
+      uses: appleboy/ssh-action@v1.0.3
+      env:
+        SHA: ${{ github.sha }}
+        VITE_BUILD: ${{ github.sha }}
+      with:
+        host: publisher.podlove.dev
+        username: root
+        key: ${{ secrets.STAGING_SSH_KEY }}
+        envs: SHA,VITE_BUILD
+        script:  |
+          cd app
+          git fetch
+          git reset --hard $SHA
+          devbox install
+          devbox services down
+          devbox run build
+          devbox services up --background

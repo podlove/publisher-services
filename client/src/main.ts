@@ -14,3 +14,7 @@ app.use(i18n);
 provideStore({ app, store });
 
 app.mount('#app');
+
+if (import.meta.env.PROD) {
+  console.log(`BUILD: ${import.meta.env.VITE_BUILD}`);
+}

@@ -1,0 +1,5 @@
+publisher.podlove.dev {
+	root * {$DEVBOX_PROJECT_ROOT}/dist/
+	reverse_proxy /api/* localhost:9000
+	file_server
+}
