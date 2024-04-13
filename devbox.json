@@ -2,8 +2,8 @@
   "packages": ["nodejs@latest", "elixir@latest", "erlang@latest", "caddy@latest"],
   "env": {
     "DEVBOX_COREPACK_ENABLED": "true",
-    "MIX_HOME": "./.nix-mix",
-    "HEX_HOME": "./.nix-hex",
+    "MIX_HOME": "$PWD/server/.nix-mix",
+    "HEX_HOME": "$PWD/server/.nix-hex",
     "ERL_AFLAGS": "-kernel shell_history enabled'"
   },
   "shell": {
