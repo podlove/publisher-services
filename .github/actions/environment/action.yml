@@ -10,8 +10,10 @@ runs:
     - name: Cache Server
       uses: actions/cache@v3
       with:
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/pnpm-lock.yaml') }}
-        path: ./client/node_modules
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/mix.lock') }}
+        path: |
+          ./server/deps
+          ./server/.nix-hex
+          ./server/.nix-mix
     - name: Install Devbox
       uses: jetpack-io/devbox-install-action@v0.8.0
-
