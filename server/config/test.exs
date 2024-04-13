@@ -12,3 +12,7 @@ config :logger, level: :warning
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
+
+config :metalove, :req_options, [
+  plug: {Req.Test, Metalove}
+]

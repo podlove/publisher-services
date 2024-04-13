@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:psc="http://podlove.org/simple-chapters" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:fh="http://purl.org/syndication/history/1.0" xmlns:podcast="https://podcastindex.org/namespace/1.0" >
+
+<channel>
+	<title>Podlovers</title>
+	<link>https://podlovers.org/</link>
+	<description><![CDATA[Der Podlove Entwickler:innen Podcast]]></description>
+	<lastBuildDate>Sat, 06 Apr 2024 12:50:43 +0000</lastBuildDate>
+	
+<image><url>http://example.com/image.png</url><title>Podlovers</title><link>https://podlovers.org/</link></image>
+<atom:link rel="self" type="application/rss+xml" title="Podlovers (MP3 Feed)" href="https://feeds.podlovers.org/mp3" />
+	<atom:link rel="first" href="https://feeds.podlovers.org/mp3" />
+	<language>de-DE</language>
+	<fyyd:verify xmlns:fyyd="https://fyyd.de/fyyd-ns/">pc5t8gep9v1vrvopkwjyhqghnp1k5l8ay73Kbw4</fyyd:verify>
+	
+<atom:contributor><atom:name>Eric Teubert</atom:name><atom:uri>https://ericteubert.de/</atom:uri></atom:contributor>
+
+<atom:contributor><atom:name>Alexander Heimbuch</atom:name><atom:uri>https://alexander.heimbu.ch</atom:uri></atom:contributor>
+
+<atom:contributor><atom:name>Michaela Lehr</atom:name><atom:uri>https://geildanke.com</atom:uri></atom:contributor>
+
+<podcast:person img="http://backend.podlovers.org/wp-content/uploads/2020/07/eric_teubert.jpg" role="host">Eric Teubert</podcast:person>
+
+<podcast:person img="https://backend.podlovers.org/wp-content/uploads/2020/07/aheimbuch.jpg" role="host">Alexander Heimbuch</podcast:person>
+
+<podcast:person img="https://backend.podlovers.org/wp-content/uploads/2020/07/michaela_lehr.jpeg" role="host">Michaela Lehr</podcast:person>
+<generator>Podlove Podcast Publisher v4.1.6</generator>
+	<copyright>All rights reversed</copyright>
+	<itunes:author>Podlovers</itunes:author>
+	<itunes:type>episodic</itunes:type>
+	<itunes:summary><![CDATA[Podlove ist eine Initiative zur Verbesserung der Open Source Infrastruktur zum Podcasting. Podlove ist gleichzeitig auch ein Netzwerk an Entwickler:innen zur Diskussion von Features und Standardisierung.]]></itunes:summary>
+  
+  <itunes:category text="Technology" />
+  <itunes:category text="Health">
+    <itunes:category text="Mental Health" />
+  </itunes:category>
+	
+	<itunes:owner>
+		<itunes:name>Podlovers</itunes:name>
+		<itunes:email>feed@podlovers.org</itunes:email>
+	</itunes:owner>
+	<itunes:image href="http://example.com/image.png"/>
+	<itunes:subtitle>Der Podlove Entwickler:innen Podcast</itunes:subtitle>
+	<itunes:block>no</itunes:block>
+	<itunes:explicit>no</itunes:explicit>
+	
+	<podcast:funding url="https://opencollective.com/podlove">Donate to Podlove</podcast:funding>
+
+	
+	<item>
+        <title>PTF Sprint 2: Ein neuer Weg</title>
+		<link>https://podlovers.org/episode/ptf-sprint-2-ein-neuer-weg/</link>
+		<pubDate>Sat, 06 Apr 2024 12:50:43 +0000</pubDate>
+		<guid isPermaLink="false">podlove-2024-04-06t12:42:13+00:00-1cbdd937193946a</guid>
+    	<description><![CDATA[Weiter geht's mit unserem Sprint-Review, dieses Mal wieder nach zwei Wochen Arbeit am Onboarding- und Import-Assistenten. In der letzten Folge haben wir ja schon eine Idee angedeutet, die wir jetzt im Detail besprechen – und zwar eine externe Lösung für unser Projekt, dass uns viele Probleme bei Wordpress erspart. Dazu gibt's auch einen Ausblick auf die nächsten Schritte und die herzliche Einladung an Euch, in unserem Roundtable das Ganze mal live zu sehen und zu kommentieren.]]></description>
+		<atom:link rel="http://podlove.org/deep-link" href="https://backend.podlovers.org/ptf-sprint-2-ein-neuer-weg/#" />
+		
+<enclosure url="https://backend.podlovers.org/podlove/file/39/s/feed/c/mp3/LOV28.mp3" length="37693326" type="audio/mpeg"/>
+
+		<itunes:duration>00:44:13</itunes:duration>
+		<itunes:author>Podlovers</itunes:author>
+		<itunes:subtitle>Im zweiten Sprint haben wir einen neuen Ansatz getestet</itunes:subtitle>
+		<itunes:title>PTF Sprint 2: Ein neuer Weg</itunes:title>
+    <itunes:image src="https://backend.podlovers.org/wp-content/uploads/2020/07/episode-cover.png"/>
+		<itunes:episode>28</itunes:episode>
+		<itunes:episodeType>full</itunes:episodeType>
+		<itunes:summary><![CDATA[Weiter geht's mit unserem Sprint-Review, dieses Mal wieder nach zwei Wochen Arbeit am Onboarding- und Import-Assistenten. In der letzten Folge haben wir ja schon eine Idee angedeutet, die wir jetzt im Detail besprechen – und zwar eine externe Lösung für unser Projekt, dass uns viele Probleme bei Wordpress erspart. Dazu gibt's auch einen Ausblick auf die nächsten Schritte und die herzliche Einladung an Euch, in unserem Roundtable das Ganze mal live zu sehen und zu kommentieren.]]></itunes:summary>
+		
+		<content:encoded><![CDATA[]]></content:encoded><psc:chapters xmlns:psc="http://podlove.org/simple-chapters" version="1.2">
+  <psc:chapter start="00:01:32.495" title="Der externe Service nimmt Gestalt an"/>
+  <psc:chapter start="00:10:16.825" title="Der aktuelle Look (siehe Kapitelbild)"/>
+  <psc:chapter start="00:11:58.676" title="Workflow-Fragen (siehe Kapitelbild)"/>
+  <psc:chapter start="00:35:17.859" title="Feed-Validierung"/>
+  <psc:chapter start="00:40:58.972" title="Was wollen wir in den n&#xE4;chsten zwei Wochen erreichen?"/>
+  <psc:chapter start="00:42:13.549" title="UX/UI-Coaching"/>
+</psc:chapters>
+		<podcast:transcript url="https://files.podlovers.org/LOV28.vtt" type="text/vtt" />
+<atom:contributor><atom:name>Alexander Heimbuch</atom:name><atom:uri>https://alexander.heimbu.ch</atom:uri></atom:contributor>
+
+<atom:contributor><atom:name>Dirk Schumann</atom:name></atom:contributor>
+
+<atom:contributor><atom:name>Eric Teubert</atom:name><atom:uri>https://ericteubert.de/</atom:uri></atom:contributor>
+
+<atom:contributor><atom:name>Martin Fischer</atom:name><atom:uri>martin</atom:uri></atom:contributor>
+
+<atom:contributor><atom:name>Einspieler</atom:name></atom:contributor>
+
+<podcast:person img="https://backend.podlovers.org/wp-content/uploads/2020/07/aheimbuch.jpg" role="host">Alexander Heimbuch</podcast:person>
+
+<podcast:person img="https://backend.podlovers.org/wp-content/uploads/2022/04/dirk.jpg" role="host">Dirk Schumann</podcast:person>
+
+<podcast:person img="http://backend.podlovers.org/wp-content/uploads/2020/07/eric_teubert.jpg" role="host">Eric Teubert</podcast:person>
+
+<podcast:person img="https://backend.podlovers.org/wp-content/uploads/2022/06/nitramred-2019.jpg" role="host">Martin Fischer</podcast:person>
+
+<podcast:person img="https://backend.podlovers.org/wp-content/uploads/2021/01/bandmaschine.jpg">Einspieler</podcast:person>
+	</item>
+	
+	</channel>
+</rss>
