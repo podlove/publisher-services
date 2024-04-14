@@ -88,7 +88,6 @@ export const PodcastCategories : Array<category> = [
     { id: "11-07", name: "Religion & Spirituality > Spirituality" },
 
     { id: "12-00", name: "Science" },
-    { id: "12-01", name: "Science > Medicine" },
     { id: "12-02", name: "Science > Natural Sciences" },
     { id: "12-03", name: "Science > Social Sciences" },
     { id: "12-04", name: "Science > Astronomy" },

@@ -42,7 +42,7 @@ import Steps from './components/Steps.vue';
 import PodloveButton from '../../components/button/Button.vue';
 
 import Podcast from './components/Podcast.vue';
-import Preview from './components/Preview.vue';
+import Preview from './components/PodcastPreview.vue';
 import NextSteps from './components/NextSteps.vue';
 import { Action } from 'redux';
 
