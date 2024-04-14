@@ -22,3 +22,14 @@ jobs:
         uses: ./.github/actions/environment
       - name: Build
         run: devbox run build
+
+  test:
+    runs-on: ubuntu-latest
+    needs: bootstrap
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Environment
+        uses: ./.github/actions/environment
+      - name: Test
+        run: devbox run test
