@@ -5,12 +5,14 @@ import * as router from './router.store';
 import * as authentication from './authentication.store';
 import * as onboarding from './onboarding.store';
 import * as runtime from './runtime.store';
+import * as podcast from './podcast.store'
 
 const root = {
   router: (state: State): router.State => get(state, 'router', {}),
   authentication: (state: State): authentication.State => get(state, 'authentication', {}),
   onboarding: (state: State): onboarding.State => get(state, 'onboarding', {}),
   runtime: (state: State): runtime.State => get(state, 'runtime', {}),
+  podcast: (state: State): podcast.State => get(state, 'podcast', {}),
 };
 
 export default {
@@ -27,5 +29,14 @@ export default {
   },
   runtime: {
     language: createSelector(root.runtime, runtime.selectors.language),
-  }
+  },
+  podcast: {
+    name: createSelector(root.podcast, podcast.selectors.name),
+    description: createSelector(root.podcast, podcast.selectors.description),
+    image_name: createSelector(root.podcast, podcast.selectors.image_name),
+    image_data: createSelector(root.podcast, podcast.selectors.image_data),
+    language: createSelector(root.podcast, podcast.selectors.language),
+    category: createSelector(root.podcast, podcast.selectors.category),
+    explicit: createSelector(root.podcast, podcast.selectors.explicit),
+  },
 };

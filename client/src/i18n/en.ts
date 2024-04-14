@@ -14,10 +14,16 @@ export default {
         'podcast-name-placeholder': 'my podcast name',
         'podcast-description': 'Podcast description',
         'podcast-description-hint': 'Write a few sentences about your podcast.',
+        'podcast-language': 'Language',
+        'podcast-language-hint': 'The language that is spoken in the podcast.',
+        'podcast-category': 'Content category',
+        'podcast-subcategory': 'Content subcategory',
+        'podcast-content': 'Content',
+        'podcast-content-hint': 'Is the content explicit?',
         'cover-photo': 'Cover photo',
         'upload-file': 'Upload a file',
         'drag-and-drop': 'or drag and drop',
-        'upload-image-description': 'Apple/iTunes recommends 3000x3000 pixel JPG or PNG',
+        'podcast-upload-hint': 'Apple recommends 1400x1400 pixel as minimum and 3000x3000 pixel as maximum, format JPG or PNG.',
       },
       preview: {
         title: 'Preview'
