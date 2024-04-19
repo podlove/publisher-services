@@ -33,6 +33,7 @@ export default {
   podcast: {
     name: createSelector(root.podcast, podcast.selectors.name),
     description: createSelector(root.podcast, podcast.selectors.description),
+    author: createSelector(root.podcast, podcast.selectors.author),
     image_name: createSelector(root.podcast, podcast.selectors.image_name),
     image_data: createSelector(root.podcast, podcast.selectors.image_data),
     language: createSelector(root.podcast, podcast.selectors.language),

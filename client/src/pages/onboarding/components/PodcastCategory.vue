@@ -29,21 +29,21 @@ const state = mapState({
 
 const updatePodcastCategory = (event: Event) => {
   const value: string = (event.target as HTMLInputElement).value
-  const idx: number = PodcastCategories.findIndex(item => item.name === value)
-
-  if (idx !== undefined && idx !== -1) {
-    store.dispatch(actions.podcast.setPodcastCategory(PodcastCategories[idx].id) as unknown as Action)
+  const category = PodcastCategories.find(item => item.name === value)
+  if (category) {
+    store.dispatch(actions.podcast.setPodcastCategory(category) as unknown as Action)
   }
 }
 
-const getPodcastCategoryName = () : string => {
-  if (state.category !== null) {
-    const idx: number = PodcastCategories.findIndex(item => item.id === state.category)
-    if (idx !== undefined && idx !== -1) {
-      return PodcastCategories[idx].name
-    }
+const getPodcastCategoryName = () : string | null => {
+  if (state.category === null) {
+    return null
   }
-  return ""
+  const category = PodcastCategories.find(item => item.id === state.category.id)
+  if (!category) {
+    return null
+  }
+  return category.name
 }
 
 </script>

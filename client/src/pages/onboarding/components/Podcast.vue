@@ -24,6 +24,10 @@
               </div>
 
               <div class="sm:col-span-4">
+                <PodcastAuthor></PodcastAuthor>
+              </div>
+
+              <div class="sm:col-span-4">
                 <PodcastLanguage></PodcastLanguage>
               </div>
 
@@ -57,6 +61,7 @@ import { useI18n } from 'vue-i18n';
 
 import PodcastTitle from './PodcastTitle.vue';
 import PodcastDescription from './PodcastDescription.vue';
+import PodcastAuthor from './PodcastAuthor.vue';
 import PodcastLanguage from './PodcastLanguage.vue';
 import PodcastCategory from './PodcastCategory.vue';
 import PodcastExplicit from './PodcastExplicit.vue'

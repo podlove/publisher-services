@@ -8,7 +8,7 @@
       {{ lang.name }}
     </option>
   </select>
-  <p class="mt-3 text-sm leading-6 text-gray-600">
+  <p class="mt-2 text-sm leading-6 text-gray-600">
     {{ t('onboarding.steps.podcast.podcast-language-hint') }}
   </p>
 </template>
@@ -31,21 +31,21 @@ const state = mapState({
 
 const updatePodcastLanguage = (event: Event) => {
   const value: string = (event.target as HTMLInputElement).value
-  const idx: number = LanguageLocales.findIndex(item => item.name === value)
-
-  if (idx !== undefined && idx !== -1) {
-    store.dispatch(actions.podcast.setPodcastLanguage(LanguageLocales[idx].tag) as unknown as Action)
+  const language = LanguageLocales.find(item => item.name === value)
+  if (language) {
+    store.dispatch(actions.podcast.setPodcastLanguage(language) as unknown as Action)
   }
 }
 
-const getPodcastLanguageName = () : string => {
-  if (state.language !== null) {
-    const idx: number = LanguageLocales.findIndex(item => item.tag === state.language)
-    if (idx !== undefined && idx !== -1) {
-      return LanguageLocales[idx].name
-    }
+const getPodcastLanguageName = () : string | null => {
+  if (state.language === null) {
+    return null
   }
-  return ""
+  const language = LanguageLocales.find(item => item.tag === state.language.tag)
+  if (!language) {
+    return null
+  }
+  return language.name
 }
 
 </script>
