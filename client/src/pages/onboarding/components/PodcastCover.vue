@@ -75,7 +75,7 @@ const removeCover = () => {
 const handleDrop = (event: DragEvent) => {
   event.preventDefault()
   if (event.dataTransfer !== undefined && event.dataTransfer?.files && event.dataTransfer.files.length > 0) {
-    handleFile(event.dataTransfer.files[0])
+    store.dispatch(actions.podcast.setPodcastCover(event.dataTransfer.files[0]) as unknown as Action)
   }
 }
 
@@ -83,21 +83,8 @@ const handleDrop = (event: DragEvent) => {
 const handleFileEvent = (event: Event) => {
   const target = event.target as HTMLInputElement;
   if (target.files && target.files.length > 0) {
-    handleFile(target.files[0])
+    store.dispatch(actions.podcast.setPodcastCover(target.files[0]) as unknown as Action)
   }
 };
-
-const handleFile = (file: File) => {
-  if (file.type.startsWith('image/')) {
-    convertImageToBase64(file, function(base64Image: string) {
-      store.dispatch(actions.podcast.setPodcastCoverData(base64Image) as unknown as Action)
-    })
-    store.dispatch(actions.podcast.setPodcastCoverName(file.name) as unknown as Action)
-    getImageResolution(file, function(width: number, height: number) {
-      if (width !== height || width < 1400 || width > 3000)
-        alert("Image doesn't fulfil the recommandations")
-    })
-  }
-}
 
 </script>
