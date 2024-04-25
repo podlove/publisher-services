@@ -29,7 +29,12 @@ export default {
         'podcast-upload-hint': 'Apple recommends 1400x1400 pixel as minimum and 3000x3000 pixel as maximum, format JPG or PNG.',
       },
       preview: {
-        title: 'Preview'
+        title: 'Preview',
+        follow: 'Follow',
+        name: '[name]',
+        author: '[author]',
+        playButton: 'Season 2, Ep 1',
+        description: '[Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.]'
       },
       'next-steps': {
         title: 'Next steps'
