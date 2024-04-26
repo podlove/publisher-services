@@ -10,6 +10,14 @@ defmodule PublisherWeb.Router do
     API.fetch_feed(conn, conn.params)
   end
 
+  post "/api/v1/save_podcast" do
+    API.save_podcast(conn, conn.params)
+  end
+
+  post "/api/v1/save_podcast_image" do
+    API.save_podcast(conn, conn.params)
+  end
+
   match _ do
     send_resp(conn, 404, "oops")
   end
