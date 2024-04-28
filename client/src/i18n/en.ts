@@ -6,6 +6,19 @@ export default {
       next: 'Next'
     },
     steps: {
+      select: {
+        title: 'Setup type',
+        headline: 'Choose a Path',
+        description: `Let's start your journey! Start from scratch or if you already have a Podcast, import it to Podlove.`,
+        fresh: {
+          title: 'Start from scratch',
+          description: 'You want to start a new Podcast? We will help you to create all required data to get started.',
+        },
+        import: {
+          title: 'Import Podcast',
+          description: 'You already have a Podcast? We will help you to import all of your existing data.',
+        }
+      },
       podcast: {
         title: 'Podcast informations',
         headline: 'Create new podcast',

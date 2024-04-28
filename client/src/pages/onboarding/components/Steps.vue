@@ -63,8 +63,8 @@
 <script lang="ts" setup>
 import { CheckIcon } from '@heroicons/vue/24/solid';
 import { computed } from 'vue';
-import { type Step } from '../../../types/step.types';
 import { useI18n } from 'vue-i18n';
+import { type Step } from '../../../types/step.types';
 const { t } = useI18n();
 
 const props = defineProps<{ steps: Step[] }>();

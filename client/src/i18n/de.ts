@@ -6,8 +6,18 @@ export default {
       prev: 'Zurück'
     },
     steps: {
-      base: {
-        title: 'Auswahl Einrichtungsart'
+      select: {
+        title: 'Einrichtungsart',
+        headline: 'Wähle einen Weg',
+        description: `Lass uns beginnen! Starte von grundauf oder wenn du bereits einen Podcast hast, importieren ihn in Podlove.`,
+        fresh: {
+          title: 'Frisches Setup',
+          description: 'Du willst einen neuen Podcast starten? Wir helfen dir, alle erforderlichen Daten zu erstellen, um loszulegen.',
+        },
+        import: {
+          title: 'Import des Podcasts',
+          description: 'Du hast bereits einen Podcast? Wir helfen dir, alle deine bestehenden Daten zu importieren.',
+        }
       },
       podcast: {
         title: 'Podcast Informationen',
