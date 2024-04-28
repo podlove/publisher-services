@@ -16,20 +16,23 @@ defmodule PublisherWeb.Controllers.API do
     send_resp(conn, 400, "Bad Request: url parameter missing")
   end
 
-  def save_podcast(conn, _) do
-    body = conn.params
-
-    case Wordpress.parse_validate(body) do
-      {:ok, valid_body} ->
-        result = Podcast.put_podcast_data(valid_body)
-        case result do
-          {:ok, _} ->
-            json(conn, "ok")
-          {:error, reason} ->
-            json(conn, reason[:reason])
-        end
+  def save_podcast(conn, body) do
+    with {:ok, valid_body} <- Wordpress.validate_podcast(body),
+         {:ok, _} <- Podcast.save_podcast_data(valid_body) do
+      json(conn, "ok")
+    else
       {:error, reason} ->
-        send_resp(conn, 400, "Error: #{reason}")
+        send_resp(conn, 400, "Error:  #{reason}")
+    end
+  end
+
+  def save_podcast_image(conn, body) do
+    with {:ok, valid_body} <- Wordpress.validate_podcast_image(body),
+         {:ok, info} <- Podcast.save_podcast_image(valid_body) do
+      json(conn, info)
+    else
+      {:error, reason} ->
+        send_resp(conn, 400, "Error:  #{reason}")
     end
   end
 end

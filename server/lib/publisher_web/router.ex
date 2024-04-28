@@ -15,7 +15,7 @@ defmodule PublisherWeb.Router do
   end
 
   post "/api/v1/save_podcast_image" do
-    API.save_podcast(conn, conn.params)
+    API.save_podcast_image(conn, conn.params)
   end
 
   match _ do
