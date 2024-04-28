@@ -1,5 +1,4 @@
 defmodule Publisher.Wordpress do
-
   def validate_podcast(body) do
     with {:ok, _} <- ensure_wordpress_data(body),
          {:ok, _} <- ensure_podcast_data(body) do
@@ -18,7 +17,9 @@ defmodule Publisher.Wordpress do
     end
   end
 
-  defp ensure_wordpress_data(%{"wordpress" => %{"user" => _, "password" => _, "site" => _}} = body) do
+  defp ensure_wordpress_data(
+         %{"wordpress" => %{"user" => _, "password" => _, "site" => _}} = body
+       ) do
     {:ok, body}
   end
 
@@ -40,7 +41,9 @@ defmodule Publisher.Wordpress do
     end
   end
 
-  defp ensure_podcast_image(%{"podcast_image" => %{"name" => _, "base64Data" => _, "type" => _}} = body) do
+  defp ensure_podcast_image(
+         %{"podcast_image" => %{"name" => _, "base64Data" => _, "type" => _}} = body
+       ) do
     {:ok, body}
   end
 
@@ -50,5 +53,4 @@ defmodule Publisher.Wordpress do
       _ -> {:error, "Missing data"}
     end
   end
-
 end

@@ -1,5 +1,4 @@
 defmodule Publisher.Wordpress.Podcast do
-
   def save_podcast_data(body) do
     user = body["wordpress"]["user"]
     password = body["wordpress"]["password"]
@@ -15,6 +14,7 @@ defmodule Publisher.Wordpress.Podcast do
         auth: {:basic, user <> ":" <> password},
         connect_options: [transport_opts: [verify: :verify_none]]
       )
+
     case response do
       {:ok, response} ->
         {:ok, response.body}
@@ -36,12 +36,14 @@ defmodule Publisher.Wordpress.Podcast do
     image_data = Base.decode64!(base64_image)
 
     case Req.post(site <> "/wp-json/wp/v2/media",
-        headers: [{"Content-Type", "image/" <> image_type},
-                  {"Content-Disposition", "attachment; filename=\""<>image_name<>"\""}],
-        auth: {:basic, user <> ":" <> password},
-        connect_options: [transport_opts: [verify: :verify_none]],
-        body: image_data
-    ) do
+           headers: [
+             {"Content-Type", "image/" <> image_type},
+             {"Content-Disposition", "attachment; filename=\"" <> image_name <> "\""}
+           ],
+           auth: {:basic, user <> ":" <> password},
+           connect_options: [transport_opts: [verify: :verify_none]],
+           body: image_data
+         ) do
       {:ok, response} ->
         with {:ok, _} <- extract_status(response),
              {:ok, source_url} <- extract_source_url(response) do
@@ -49,7 +51,9 @@ defmodule Publisher.Wordpress.Podcast do
         else
           error -> error
         end
-      _ -> {:error, "Image upload failed"}
+
+      _ ->
+        {:error, "Image upload failed"}
     end
   end
 
@@ -65,8 +69,9 @@ defmodule Publisher.Wordpress.Podcast do
       %Req.Response{body: body} ->
         source_url = Map.get(body, "source_url")
         {:ok, source_url}
-      _ -> {:error, "Image upload failed"}
+
+      _ ->
+        {:error, "Image upload failed"}
     end
   end
-
 end
