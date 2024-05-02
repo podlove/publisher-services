@@ -30,7 +30,18 @@ defmodule Publisher.Wordpress do
     end
   end
 
-  defp ensure_podcast_data(%{"podcast" => %{"name" => _}} = body) do
+  defp ensure_podcast_data(
+         %{
+           "podcast" => %{
+             "name" => _,
+             "description" => _,
+             "author" => _,
+             "language" => _,
+             "category" => _,
+             "explicit" => _
+           }
+         } = body
+       ) do
     {:ok, body}
   end
 

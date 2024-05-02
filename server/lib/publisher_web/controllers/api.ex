@@ -18,8 +18,8 @@ defmodule PublisherWeb.Controllers.API do
 
   def save_podcast(conn, body) do
     with {:ok, valid_body} <- Wordpress.validate_podcast(body),
-         {:ok, _} <- Podcast.save_podcast_data(valid_body) do
-      json(conn, "ok")
+         {:ok, data} <- Podcast.save_podcast_data(valid_body) do
+      json(conn, data)
     else
       {:error, reason} ->
         send_resp(conn, 400, "Error:  #{reason}")

@@ -3,24 +3,35 @@ defmodule Publisher.Wordpress.Podcast do
     user = body["wordpress"]["user"]
     password = body["wordpress"]["password"]
     site = body["wordpress"]["site"]
+
     name = body["podcast"]["name"]
+    description = body["podcast"]["description"]
+    author = body["podcast"]["author"]
+    language = body["podcast"]["language"]
+    category = body["podcast"]["category"]
+    explicit = body["podcast"]["explicit"]
 
-    podlove_body = %{title: name}
+    podlove_body = %{
+      title: name,
+      summary: description,
+      author_name: author,
+      language: language,
+      category: category,
+      explicit: explicit
+    }
 
-    response =
-      Req.post(site <> "/wp-json/podlove/v2/podcast",
-        json: podlove_body,
-        headers: [{"Content-Type", "application/json"}],
-        auth: {:basic, user <> ":" <> password},
-        connect_options: [transport_opts: [verify: :verify_none]]
-      )
-
-    case response do
+    case Req.post(site <> "/wp-json/podlove/v2/podcast",
+           json: podlove_body,
+           headers: [{"Content-Type", "application/json"}],
+           auth: {:basic, user <> ":" <> password},
+           connect_options: [transport_opts: [verify: :verify_none]]
+         ) do
       {:ok, response} ->
-        {:ok, response.body}
-
-      {:error, _} ->
-        {:error, "network error"}
+        with {:ok, _} <- extract_status(response) do
+          {:ok, response.body}
+        else
+          error -> error
+        end
     end
   end
 
@@ -46,8 +57,9 @@ defmodule Publisher.Wordpress.Podcast do
          ) do
       {:ok, response} ->
         with {:ok, _} <- extract_status(response),
-             {:ok, source_url} <- extract_source_url(response) do
-          {:ok, source_url}
+             {:ok, source_url} <- extract_source_url(response),
+             {:ok, info} <- save_podcast_image_url(user, password, site, source_url) do
+          {:ok, info}
         else
           error -> error
         end
@@ -57,10 +69,29 @@ defmodule Publisher.Wordpress.Podcast do
     end
   end
 
+  def save_podcast_image_url(user, password, site, url) do
+    podlove_body = %{cover_image: url}
+
+    case Req.post(site <> "/wp-json/podlove/v2/podcast",
+           json: podlove_body,
+           headers: [{"Content-Type", "application/json"}],
+           auth: {:basic, user <> ":" <> password},
+           connect_options: [transport_opts: [verify: :verify_none]]
+         ) do
+      {:ok, response} ->
+        with {:ok, _} <- extract_status(response) do
+          {:ok, response.body}
+        else
+          error -> error
+        end
+    end
+  end
+
   defp extract_status(response) do
     case response.status do
-      201 -> {:ok, "Image upload ok"}
-      _ -> {:error, "Image upload failed"}
+      200 -> {:ok, "ok"}
+      201 -> {:ok, "resource created"}
+      _ -> {:error, "request failed"}
     end
   end
 
