@@ -49,8 +49,8 @@ export const reducer = handleActions<State, any>(
     }
   },
   {
-    current: 'podcast',
-    steps: ['podcast', 'preview', 'next-steps']
+    current: 'select',
+    steps: ['select', 'podcast', 'preview', 'next-steps']
   }
 );
 
