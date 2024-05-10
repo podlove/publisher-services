@@ -24,6 +24,7 @@ export type setPodcastLanguagePayload = locales;
 export type setPodcastCategoryPayload = category;
 export type setPodcastExplicitPayload = boolean;
 export type tooglePodcastExplicitPayload = void;
+export type transferPodcastPayload = void;
 
 export const actions = {
   setPodcastName: createAction<setPodcastNamePayload>('PODCAST/SET_NAME'),
@@ -37,6 +38,7 @@ export const actions = {
   removePodcastCover: createAction<removePodcastCoverPayload>('PODCAST/REMOVE_COVER'),
   setPodcastExplicit: createAction<setPodcastExplicitPayload>('PODCAST/SET_EXPLICIT'),
   tooglePodcastExplicit: createAction<tooglePodcastExplicitPayload>('PODCAST/TOGGLE_EXPLICIT'),
+  transferPodcast: createAction<transferPodcastPayload>('PODCAST/TRANSFER_DATA'),
 };
 
 export const reducer = handleActions<State, any>(

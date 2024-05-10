@@ -1,4 +1,7 @@
 defmodule Publisher.Wordpress.Podcast do
+
+  require Logger
+
   def save_podcast_data(body) do
     user = body["wordpress"]["user"]
     password = body["wordpress"]["password"]
@@ -20,18 +23,19 @@ defmodule Publisher.Wordpress.Podcast do
       explicit: explicit
     }
 
-    case Req.post(site <> "/wp-json/podlove/v2/podcast",
+    Logger.log(:info, "user: #{user}, password: #{password}, endpoint: #{site}/wp-json/podlove/v2/podcast")
+    Logger.log(:info, "body { title: #{name}, summary: #{description}, author: #{author}, language: #{language}, category: #{category}, expicit: #{explicit} }")
+
+    with {:ok, response} <- Req.post(site <> "/wp-json/podlove/v2/podcast",
            json: podlove_body,
            headers: [{"Content-Type", "application/json"}],
            auth: {:basic, user <> ":" <> password},
            connect_options: [transport_opts: [verify: :verify_none]]
-         ) do
-      {:ok, response} ->
-        with {:ok, _} <- extract_status(response) do
-          {:ok, response.body}
-        else
-          error -> error
-        end
+         ),
+         {:ok, _} <- extract_status(response) do
+      {:ok, response.body}
+    else
+      error -> error
     end
   end
 
@@ -43,6 +47,8 @@ defmodule Publisher.Wordpress.Podcast do
     base64_image = body["podcast_image"]["base64Data"]
     image_name = body["podcast_image"]["name"]
     image_type = body["podcast_image"]["type"]
+
+    Logger.log(:info, "body { name: #{image_name}, type: #{image_type} }")
 
     image_data = Base.decode64!(base64_image)
 
@@ -72,22 +78,21 @@ defmodule Publisher.Wordpress.Podcast do
   def save_podcast_image_url(user, password, site, url) do
     podlove_body = %{cover_image: url}
 
-    case Req.post(site <> "/wp-json/podlove/v2/podcast",
+    with {:ok, response} <- Req.post(site <> "/wp-json/podlove/v2/podcast",
            json: podlove_body,
            headers: [{"Content-Type", "application/json"}],
            auth: {:basic, user <> ":" <> password},
            connect_options: [transport_opts: [verify: :verify_none]]
-         ) do
-      {:ok, response} ->
-        with {:ok, _} <- extract_status(response) do
-          {:ok, response.body}
-        else
-          error -> error
-        end
+         ),
+         {:ok, _} <- extract_status(response) do
+      {:ok, response.body}
+    else
+      error -> error
     end
   end
 
   defp extract_status(response) do
+    Logger.log(:info, "response  { status: #{response.status} }")
     case response.status do
       200 -> {:ok, "ok"}
       201 -> {:ok, "resource created"}
