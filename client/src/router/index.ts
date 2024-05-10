@@ -2,11 +2,9 @@ import { createWebHistory, createRouter } from 'vue-router';
 import { actions, store } from '../store';
 
 import Onboarding from '../pages/onboarding/Onboarding.vue';
-import Select from '../pages/select/Select.vue';
 
 const routes = [
-  { path: '/onboarding', name: 'onboarding', component: Onboarding },
-  { path: '/select', name: 'select', component: Select }
+  { path: '/onboarding', name: 'onboarding', component: Onboarding }
 ];
 
 const router = createRouter({
