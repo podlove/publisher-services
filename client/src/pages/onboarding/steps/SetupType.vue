@@ -15,7 +15,7 @@
       <select-tile @click="selectSetup('import')" class="mx-4 w-96 text-neutral-500 hover:text-neutral-900" :class="{ 'text-neutral-900': state.type === 'import' }" :selected="state.type === 'import'" :title="t('onboarding.steps.select.import.title')">
         <div class="flex items-center flex-col">
           <img :src="importIconUrl"  />
-          <p class="text-base text-center h-12">{{ t('onboarding.steps.select.fresh.description') }}</p>
+          <p class="text-base text-center h-12">{{ t('onboarding.steps.select.import.description') }}</p>
         </div>
       </select-tile>
     </div>
