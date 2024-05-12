@@ -4,7 +4,10 @@ import { type Step } from '../types/step.types';
 
 export interface State {
   current: string;
-  steps: string[];
+  steps: {
+    name: string;
+    visible: boolean;
+  }[];
 }
 
 export type nextActionPayload = void;
@@ -18,63 +21,70 @@ export const actions = {
 export const reducer = handleActions<State, any>(
   {
     [actions.next.toString()]: (state) => {
-      const selectedIndex = state.steps.findIndex((step) => step === state.current);
+      const selectedIndex = state.steps.findIndex((step) => step.name === state.current);
 
       if (selectedIndex + 1 === state.steps.length - 1) {
         return {
           ...state,
-          current: last(state.steps)
+          current: last(state.steps).name
         };
       }
 
       return {
         ...state,
-        current: state.steps[selectedIndex + 1]
+        current: state.steps[selectedIndex + 1].name
       };
     },
     [actions.previous.toString()]: (state) => {
-      const selectedIndex = state.steps.findIndex((step) => step === state.current);
+      const selectedIndex = state.steps.findIndex((step) => step.name === state.current);
 
       if (selectedIndex - 1 < 0) {
         return {
           ...state,
-          current: first(state.steps)
+          current: first(state.steps).name
         };
       }
 
       return {
         ...state,
-        current: state.steps[selectedIndex - 1]
+        current: state.steps[selectedIndex - 1].name
       };
     }
   },
   {
     current: 'select',
-    steps: ['select', 'podcast', 'preview', 'next-steps']
+    steps: [
+      { name: 'select', visible: false },
+      { name: 'podcast', visible: true },
+      { name: 'next-steps', visible: true }
+    ]
   }
 );
 
 export const selectors = {
-  previous: (state: State): string | null => {
-    const currentIndex = state.steps.findIndex((step) => step === state.current);
-    if (currentIndex === 0)
+  previous: (state: State): { name: string; visible: boolean; } | null => {
+    const currentIndex = state.steps.findIndex((step) => step.name === state.current);
+
+    if (currentIndex === 0) {
       return null;
+    }
+
     return state.steps[currentIndex - 1];
   },
-  current: (state: State): string => state.current,
-  upcoming: (state: State): string | null => {
-    const currentIndex = state.steps.findIndex((step) => step === state.current);
+  current: (state: State): { name: string; visible: boolean } | null => state.steps.find(({ name }) => name === state.current) || null,
+  upcoming: (state: State):  { name: string; visible: boolean; } | null => {
+    const currentIndex = state.steps.findIndex((step) => step.name === state.current);
 
     if (currentIndex + 1 > state.steps.length - 1) {
-      return null
-    };
+      return null;
+    }
 
     return state.steps[currentIndex + 1];
   },
   steps: (state: State): Step[] => {
-    const currentIndex = state.steps.findIndex((step) => step === state.current);
+    const currentIndex = state.steps.findIndex((step) => step.name === state.current);
 
-    const result = state.steps.map((name, index) => {
+    const result = state.steps.map(({ name, visible }, index) => {
       let status;
 
       switch (true) {
@@ -93,7 +103,8 @@ export const selectors = {
 
       return {
         name,
-        status
+        status,
+        visible
       };
     });
 

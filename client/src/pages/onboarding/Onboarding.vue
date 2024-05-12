@@ -1,8 +1,8 @@
 <template>
   <div class="h-full flex flex-col">
-    <Steps :steps="state.steps"></Steps>
+    <Steps :steps="state.steps" v-if="state.current && state.current.visible"></Steps>
     <div class="p-4 sm:px-6 xl:pl-6">
-      <component :is="stepComponents[state.current]" />
+      <component :is="stepComponents[state.current.name]" />
     </div>
     <div class="flex justify-between w-full px-4 sm:px-6 xl:pl-6">
       <PodloveButton v-if="state.previous" variant="primary" @click="prevStep()">{{
@@ -26,7 +26,6 @@ import Steps from './components/Steps.vue';
 import PodloveButton from '../../components/button/Button.vue';
 
 import Podcast from './steps/Podcast.vue';
-import Preview from './steps/Preview.vue';
 import NextSteps from './steps/NextSteps.vue';
 import SetupType from './steps/SetupType.vue';
 
@@ -44,7 +43,6 @@ const state = mapState({
 const stepComponents = {
   select: SetupType,
   podcast: Podcast,
-  preview: Preview,
   'next-steps': NextSteps
 };
 
