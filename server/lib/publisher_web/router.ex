@@ -11,11 +11,11 @@ defmodule PublisherWeb.Router do
   end
 
   post "/api/v1/save_podcast" do
-    API.save_podcast(conn, conn.params)
+    API.save_podcast(conn, conn.req_headers, conn.params)
   end
 
   post "/api/v1/save_podcast_image" do
-    API.save_podcast_image(conn, conn.params)
+    API.save_podcast_image(conn, conn.req_headers, conn.params)
   end
 
   match _ do

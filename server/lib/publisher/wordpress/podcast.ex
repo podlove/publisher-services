@@ -2,17 +2,20 @@ defmodule Publisher.Wordpress.Podcast do
 
   require Logger
 
-  def save_podcast_data(body) do
-    user = body["wordpress"]["user"]
-    password = body["wordpress"]["password"]
-    site = body["wordpress"]["site"]
+  def save_podcast_data(headers, body) do
 
-    name = body["podcast"]["name"]
-    description = body["podcast"]["description"]
-    author = body["podcast"]["author"]
-    language = body["podcast"]["language"]
-    category = body["podcast"]["category"]
-    explicit = body["podcast"]["explicit"]
+    Logger.log(:info, "Podcast.save_podcast_data")
+
+    name = body["name"]
+    description = body["description"]
+    author = body["author"]
+    language = body["language"]
+    category = body["category"]
+    explicit = body["explicit"]
+
+    user = get_header_value(headers, "wordpress-user")
+    password = get_header_value(headers,"wordpress-password")
+    site = get_header_value(headers,"wordpress-site")
 
     podlove_body = %{
       title: name,
@@ -23,7 +26,7 @@ defmodule Publisher.Wordpress.Podcast do
       explicit: explicit
     }
 
-    Logger.log(:info, "user: #{user}, password: #{password}, endpoint: #{site}/wp-json/podlove/v2/podcast")
+    Logger.log(:info, "user: #{user}, endpoint: #{site}/wp-json/podlove/v2/podcast")
     Logger.log(:info, "body { title: #{name}, summary: #{description}, author: #{author}, language: #{language}, category: #{category}, expicit: #{explicit} }")
 
     with {:ok, response} <- Req.post(site <> "/wp-json/podlove/v2/podcast",
@@ -39,15 +42,17 @@ defmodule Publisher.Wordpress.Podcast do
     end
   end
 
-  def save_podcast_image(body) do
-    user = body["wordpress"]["user"]
-    password = body["wordpress"]["password"]
-    site = body["wordpress"]["site"]
+  def save_podcast_image(headers, body) do
 
-    base64_image = body["podcast_image"]["base64Data"]
-    image_name = body["podcast_image"]["name"]
-    image_type = body["podcast_image"]["type"]
+    base64_image = body["base64Data"]
+    image_name = body["name"]
+    image_type = body["type"]
 
+    user = get_header_value(headers, "wordpress-user")
+    password = get_header_value(headers,"wordpress-password")
+    site = get_header_value(headers,"wordpress-site")
+
+    Logger.log(:info, "user: #{user}, endpoint: #{site}/wp-json/wp/v2/media")
     Logger.log(:info, "body { name: #{image_name}, type: #{image_type} }")
 
     image_data = Base.decode64!(base64_image)
@@ -77,6 +82,9 @@ defmodule Publisher.Wordpress.Podcast do
 
   def save_podcast_image_url(user, password, site, url) do
     podlove_body = %{cover_image: url}
+
+    Logger.log(:info, "user: #{user}, endpoint: #{site}/wp-json/podlove/v2/podcast")
+    Logger.log(:info, "body { cover_image: #{url} }")
 
     with {:ok, response} <- Req.post(site <> "/wp-json/podlove/v2/podcast",
            json: podlove_body,
@@ -108,6 +116,13 @@ defmodule Publisher.Wordpress.Podcast do
 
       _ ->
         {:error, "Image upload failed"}
+    end
+  end
+
+  defp get_header_value(headers, header_item) do
+    case Enum.find(headers, fn {name, _} -> name == header_item end) do
+      nil -> nil
+      {_, value} -> value
     end
   end
 end

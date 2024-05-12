@@ -1,6 +1,9 @@
 defmodule Publisher.Wordpress do
-  def validate_podcast(body) do
-    with {:ok, _} <- ensure_wordpress_data(body),
+
+  require Logger
+
+  def validate_podcast(headers, body) do
+    with {:ok, _} <- ensure_wordpress_data(headers),
          {:ok, _} <- ensure_podcast_data(body) do
       {:ok, body}
     else
@@ -8,8 +11,8 @@ defmodule Publisher.Wordpress do
     end
   end
 
-  def validate_podcast_image(body) do
-    with {:ok, _} <- ensure_wordpress_data(body),
+  def validate_podcast_image(headers, body) do
+    with {:ok, _} <- ensure_wordpress_data(headers),
          {:ok, _} <- ensure_podcast_image(body) do
       {:ok, body}
     else
@@ -17,51 +20,47 @@ defmodule Publisher.Wordpress do
     end
   end
 
-  defp ensure_wordpress_data(
-         %{"wordpress" => %{"user" => _, "password" => _, "site" => _}} = body
-       ) do
-    {:ok, body}
+  defp ensure_wordpress_data( headers ) do
+    with {:ok, _} <- get_header_value(headers, "wordpress-user"),
+         {:ok, _} <- get_header_value(headers, "wordpress-password"),
+         {:ok, _} <- get_header_value(headers, "wordpress-site") do
+      {:ok, headers}
+    else
+      error -> error
+    end
   end
 
-  defp ensure_wordpress_data(body) do
-    case Map.get(body, "wordpress") do
-      nil -> {:error, "Wordpress data are missing!"}
-      _ -> {:error, "Missing data"}
+  defp get_header_value(headers, header_item) do
+    case Enum.find(headers, fn {name, _} -> name == header_item end) do
+      nil -> {:error, "Header item #{header_item} missing"}
+      {_, value} -> {:ok, value}
     end
   end
 
   defp ensure_podcast_data(
          %{
-           "podcast" => %{
-             "name" => _,
-             "description" => _,
-             "author" => _,
-             "language" => _,
-             "category" => _,
-             "explicit" => _
-           }
+           "name" => _,
+           "description" => _,
+           "author" => _,
+           "language" => _,
+           "category" => _,
+           "explicit" => _
          } = body
        ) do
     {:ok, body}
   end
 
-  defp ensure_podcast_data(body) do
-    case Map.get(body, "podcast") do
-      nil -> {:error, "Podcast data are missing!"}
-      _ -> {:error, "Missing data"}
-    end
+  defp ensure_podcast_data(_) do
+    {:error, "Missing podcast data"}
   end
 
   defp ensure_podcast_image(
-         %{"podcast_image" => %{"name" => _, "base64Data" => _, "type" => _}} = body
+         %{"name" => _, "base64Data" => _, "type" => _} = body
        ) do
     {:ok, body}
   end
 
-  defp ensure_podcast_image(body) do
-    case Map.get(body, "podcast_image") do
-      nil -> {:error, "Podcast image data are missing!"}
-      _ -> {:error, "Missing data"}
-    end
+  defp ensure_podcast_image(_) do
+    {:error, "Missing podcast cover data"}
   end
 end

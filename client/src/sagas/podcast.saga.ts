@@ -15,13 +15,12 @@ function readImage(file: File): Promise<string> {
   });
 }
 
-function* getImageData({ payload }: any) {
-  if (payload) {
-    const imageData = yield call(readImage, payload);
-    if (imageData) {
-      yield put(podcast.actions.setPodcastCoverData(imageData));
-      yield put(podcast.actions.setPodcastCoverName((payload as File).name));
-    }
+function* getImageData({ payload }: { payload: podcast.setPodcastCoverPayload }) {
+  if (!payload) return;
+  const imageData = yield call(readImage, payload);
+  if (imageData) {
+    yield put(podcast.actions.setPodcastCoverData(imageData));
+    yield put(podcast.actions.setPodcastCoverName((payload as File).name));
   }
 }
 
@@ -49,36 +48,22 @@ function* transferPodcast() {
   const image_type: string | null = extractImageType(parts[0]);
 
   const podcast = {
-    wordpress: {
-      user: user,
-      password: password,
-      site: site
-    },
-    podcast: {
-      name: name,
-      description: description,
-      author: author,
-      language: language.tag,
-      category: category.api,
-      explicit: explicit ? 'true' : 'false'
-    }
+    name: name,
+    description: description,
+    author: author,
+    language: language.tag,
+    category: category.api,
+    explicit: explicit ? 'true' : 'false'
   };
 
   const image = {
-    wordpress: {
-      user: user,
-      password: password,
-      site: site
-    },
-    podcast_image: {
-      base64Data: parts[1],
-      name: image_name,
-      type: image_type
-    }
+    base64Data: parts[1],
+    name: image_name,
+    type: image_type
   };
 
-  request.post(request.origin('/api/v1/save_podcast'), { params: {}, data: podcast });
-  request.post(request.origin('/api/v1/save_podcast_image'), { params: {}, data: image });
+  yield request.post(request.origin('/api/v1/save_podcast'), { params: {}, data: podcast });
+  yield request.post(request.origin('/api/v1/save_podcast_image'), { params: {}, data: image });
 }
 
 export default function* podcastSaga() {
