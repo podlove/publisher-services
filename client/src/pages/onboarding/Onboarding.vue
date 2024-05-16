@@ -10,7 +10,7 @@
       }}</PodloveButton>
       <div class="w-full"></div>
       <PodloveButton v-if="state.upcoming" variant="primary" :disabled="!state.upcomingEnabled" @click="nextStep()">{{
-        t('onboarding.navigation.next')
+        t('onboarding.navigation.next.' + state.current.name)
       }}</PodloveButton>
     </div>
   </div>

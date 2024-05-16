@@ -14,7 +14,7 @@
       {{ t('onboarding.steps.podcast.podcast-content-desc') }}
     </span>
   </label>
-  <p class="text-sm leading-6 text-gray-600">
+  <p class="text-xs leading-5 text-gray-600">
     {{ t('onboarding.steps.podcast.podcast-content-hint') }}
   </p>
 </div>

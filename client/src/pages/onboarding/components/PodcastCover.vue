@@ -44,7 +44,7 @@
       </div>
     </div>
 
-    <p class="mt-2 text-sm leading-6 text-gray-600">
+    <p class="mt-2 text-xs leading-5 text-gray-600">
       {{ t('onboarding.steps.podcast.podcast-upload-hint') }}
     </p>
   </div>

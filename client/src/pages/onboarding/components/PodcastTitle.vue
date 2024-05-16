@@ -16,6 +16,9 @@
         :placeholder="t('onboarding.steps.podcast.podcast-name-placeholder')"
       />
     </div>
+    <p class="text-xs leading-5 text-gray-600">
+      {{ t('onboarding.steps.podcast.podcast-name-hint') }}
+    </p>
   </div>
 </template>
 

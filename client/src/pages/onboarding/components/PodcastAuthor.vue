@@ -16,6 +16,9 @@
         />
       </div>
     </div>
+    <p class="text-xs leading-5 text-gray-600">
+    {{ t('onboarding.steps.podcast.podcast-author-hint') }}
+    </p>
   </div>
 </template>
 
