@@ -5,7 +5,7 @@ export default {
       next: {
         select: 'Next',
         podcast: 'Save & Continue',
-        'next-steps': 'Next'
+        'next-steps': 'Exit Onboarding'
       }
     },
     steps: {
@@ -55,7 +55,19 @@ export default {
         description: '[Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.]'
       },
       'next-steps': {
-        title: 'Next steps'
+        title: 'Next steps',
+        headline: 'Congratulations! 🎉 Your podcast setup is complete!',
+        description: `We're thrilled to have you on board!`,
+        feed: `Your podcast's RSS feed is ready to go: `,
+        'feed-hint': 'This feed is what makes your podcast accessible to listeners on various platforms. You can directly subscribe to your podcast using this link in any podcatcher.',
+        more: 'Now that your podcast is up and running, here are some next steps to consider:',
+        'learn-head': 'Learn more about Podlove',
+        learn: 'Dive deeper into the features and possibilities of Podlove by exploring our documentation and community forums to get ready to publish your first episode and share it with the world!',
+        'promote-head': 'Promote your podcast',
+        promote: 'Spread the word about your new podcast by submitting it to popular podcast directories. Check out our guide on how to submit your podcast feed to directories for more information.',
+        'community-head': 'Join the Podlove community',
+        community: 'Connect with fellow podcasters and enthusiasts on the Podlove Sendegate, our community forum. Get tips, advice, and support from experienced podcasters, and share your own insights and experiences.',
+        sendegate: 'Click below to visit the Sendegate and access our welcome post, where you can introduce yourself and get started on your podcasting journey. Happy podcasting!'
       }
     }
   },

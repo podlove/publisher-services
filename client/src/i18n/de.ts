@@ -5,7 +5,7 @@ export default {
       next: {
         select: 'Weiter',
         podcast: 'Speichern & Weiter',
-        'next-steps': 'Weiter'
+        'next-steps': 'Starthilfe beenden'
       }
 
     },
@@ -56,7 +56,19 @@ export default {
         description: '[Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.]'
       },
       'next-steps': {
-        title: 'Nächste Schritte'
+        title: 'Nächste Schritte',
+        headline: 'Herzlichen Glückwunsch! 🎉 Die Einrichtung Deines Podcasts ist abgeschlossen!',
+        description: 'Wir freuen uns, dich an Bord zu haben!',
+        feed: `Der RSS-Feed Deines Podcasts ist bereit:`,
+        'feed-hint': 'Dieser Feed macht Deinen Podcast für Hörer auf verschiedenen Plattformen zugänglich. Du kannst Deinen Podcast direkt über diesen Link in jedem Podcatcher abonnieren.',
+        more: 'Jetzt, da Dein Podcast läuft, hier sind einige nächste Vorschläge, was Du als nächstes machen könntest:',
+        'learn-head': 'Erfahre mehr über Podlove',
+        learn: 'Tauche tiefer in die Funktionen und Möglichkeiten von Podlove ein, indem Du die Dokumentation oder Community-Foren erkundest, damit Du Deine erste Episode veröffentlichen kannst!',
+        'promote-head': 'Bewirb Deinen Podcast',
+        promote: 'Mach Deinen Podcast bekannt, indem Du ihn in die gängigen Podcast-Verzeichnisse einreichst. Schau Dir unseren Leitfaden an, wie Du Deinen Podcast-Feed in Verzeichnisse einreichen kannst.',
+        'community-head': 'Werde Teil der Podlove-Community',
+        community: 'Vernetze dich mit anderen Podcasterinnen im „Sendegate“, der deutschsprachigen Podcast-Community. Hol Dir Tipps, Ratschläge und Unterstützung von erfahrenen Podcasterinnen oder teile selbst Deine eigenen Erkenntnisse und Erfahrungen.',
+        sendegate: 'Klicke unten, um zum Sendegate zu gelangen und unseren Willkommensbeitrag zu lesen. Dort kannst Du Dich vorstellen und Dich vernetzen. Viel Spaß beim Podcasten!'
       }
     }
   },

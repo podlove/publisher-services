@@ -12,7 +12,7 @@
         @input="changePodcastName"
         :value="state.name"
         id="name"
-        class="w-full flex-1 border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+        class="w-full flex-1 border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
         :placeholder="t('onboarding.steps.podcast.podcast-name-placeholder')"
       />
     </div>

@@ -9,7 +9,7 @@
         t('onboarding.navigation.prev')
       }}</PodloveButton>
       <div class="w-full"></div>
-      <PodloveButton v-if="state.upcoming" variant="primary" :disabled="!state.upcomingEnabled" @click="nextStep()">{{
+      <PodloveButton variant="primary" :disabled="!state.upcomingEnabled" @click="nextStep()">{{
         t('onboarding.navigation.next.' + state.current.name)
       }}</PodloveButton>
     </div>

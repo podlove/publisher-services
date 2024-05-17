@@ -1,10 +1,10 @@
 <template>
   <div class="w-full">
-    <label for="cover-photo" class="mb-2 block text-sm font-medium leading-6 text-gray-900">{{
+    <label for="cover-photo" class="mb-1 block text-sm font-medium leading-6 text-gray-900">{{
       t('onboarding.steps.podcast.cover-photo')
     }}</label>
     <div
-      class="relative flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-20 bg-contain bg-no-repeat bg-left"
+      class="relative flex justify-center rounded-lg border border-dashed border-gray-900/25 px-3 py-10 bg-contain bg-no-repeat bg-left"
       :class="{ 'bg-gray-400': dragHighlight }"
       @dragover.prevent
       @drop="handleDrop"
