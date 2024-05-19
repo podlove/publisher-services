@@ -55,38 +55,43 @@ defmodule PublisherWeb.Controllers.API do
         connect_options: [transport_opts: [verify: :verify_none]]
       )
 
+    # TODO: build "find episode by guid" in publisher API
+    # TODO: ... and output guid in episode metadata
+    # TODO: ... and make the guid writable
+
     # CREATE EPISODE
     {:ok, create_episode_response} = Req.post(req, url: "podlove/v2/episodes")
 
     episode_id = create_episode_response.body["id"]
     IO.inspect("episode created. id: #{episode_id}")
 
-    # Fetch just created episode
+    # Fetch just created episode, so we get the post_id
     {:ok, fetched_episode_response} = Req.get(req, url: "podlove/v2/episodes/#{episode_id}")
 
     episode = fetched_episode_response.body
     post_id = episode["post_id"]
-
-    # Status: we have a post+episode and their ids. Both are kind of empty.
 
     # Now we write the episode meta.
     {:ok, updated_episode} =
       Req.post(req,
         url: "podlove/v2/episodes/#{episode_id}",
         json: %{
-          title: "LOV001 Lorem Ipsum",
-          subtitle: "Talking about endangered species.",
-          summary: "The most exciting episode on the planet. And the universe.",
-          number: "1",
-          explicit: "false",
-          slug: "lov001-lorem-ipsum",
-          duration: "00:00:42.123",
-          type: "full"
+          title: params["title"],
+          subtitle: params["subtitle"],
+          summary: params["summary"],
+          number: params["number"],
+          explicit: params["explicit"],
+          slug: params["slug"],
+          duration: params["duration"],
+          type: params["type"] || "full"
           # episode_poster
         }
       )
 
-    IO.inspect(updated_episode)
+    # Now what's really interesting is the enclosure. And actually taking the values from the params.
+    # And then maybe handling the guid so I don't keep flooding the dev database :)
+
+    enclosure = params["enclosure"]
 
     json(conn, %{status: "success"})
   end
