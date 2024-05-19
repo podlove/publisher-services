@@ -43,10 +43,6 @@ defmodule PublisherWeb.Controllers.API do
     password = get_header_value(headers, "wordpress-password")
     site = get_header_value(headers, "wordpress-site")
 
-    # post_payload = %{
-    #   title: "LOV001 Lorem Ipsum"
-    # }
-
     req =
       Req.new(
         base_url: site <> "/wp-json/",
@@ -59,13 +55,35 @@ defmodule PublisherWeb.Controllers.API do
     # TODO: ... and output guid in episode metadata
     # TODO: ... and make the guid writable
 
-    # CREATE EPISODE
-    {:ok, create_episode_response} = Req.post(req, url: "podlove/v2/episodes")
+    # try to find existing episode
 
-    episode_id = create_episode_response.body["id"]
-    IO.inspect("episode created. id: #{episode_id}")
+    guid = params["guid"]
 
-    # Fetch just created episode, so we get the post_id
+    {:ok, existing_episode_result} =
+      Req.get(req, url: "podlove/v2/episodes", params: %{guid: guid, status: "all"})
+
+    existing_episode_id =
+      case existing_episode_result.body["results"] do
+        [%{"id" => existing_id}] -> existing_id
+        _ -> nil
+      end
+
+    episode_id =
+      case existing_episode_id do
+        nil ->
+          # CREATE EPISODE
+          {:ok, create_episode_response} = Req.post(req, url: "podlove/v2/episodes")
+
+          episode_id = create_episode_response.body["id"]
+          IO.inspect("episode created. id: #{episode_id}")
+          episode_id
+
+        episode_id ->
+          IO.inspect("found existing episode. id: #{episode_id}")
+          episode_id
+      end
+
+    # Fetch episode, so we get the post_id
     {:ok, fetched_episode_response} = Req.get(req, url: "podlove/v2/episodes/#{episode_id}")
 
     episode = fetched_episode_response.body
@@ -76,6 +94,7 @@ defmodule PublisherWeb.Controllers.API do
       Req.post(req,
         url: "podlove/v2/episodes/#{episode_id}",
         json: %{
+          guid: params["guid"],
           title: params["title"],
           subtitle: params["subtitle"],
           summary: params["summary"],
@@ -88,10 +107,10 @@ defmodule PublisherWeb.Controllers.API do
         }
       )
 
-    # Now what's really interesting is the enclosure. And actually taking the values from the params.
-    # And then maybe handling the guid so I don't keep flooding the dev database :)
+    # # Now what's really interesting is the enclosure. And actually taking the values from the params.
+    # # And then maybe handling the guid so I don't keep flooding the dev database :)
 
-    enclosure = params["enclosure"]
+    # enclosure = params["enclosure"]
 
     json(conn, %{status: "success"})
   end
