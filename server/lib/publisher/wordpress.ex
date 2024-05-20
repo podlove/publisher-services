@@ -1,5 +1,4 @@
-defmodule Publisher.Wordpress do
-
+defmodule Publisher.WordPress do
   require Logger
 
   def validate_podcast(headers, body) do
@@ -20,7 +19,7 @@ defmodule Publisher.Wordpress do
     end
   end
 
-  defp ensure_wordpress_data( headers ) do
+  defp ensure_wordpress_data(headers) do
     with {:ok, _} <- get_header_value(headers, "wordpress-user"),
          {:ok, _} <- get_header_value(headers, "wordpress-password"),
          {:ok, _} <- get_header_value(headers, "wordpress-site") do
@@ -54,9 +53,7 @@ defmodule Publisher.Wordpress do
     {:error, "Missing podcast data"}
   end
 
-  defp ensure_podcast_image(
-         %{"name" => _, "base64Data" => _, "type" => _} = body
-       ) do
+  defp ensure_podcast_image(%{"name" => _, "base64Data" => _, "type" => _} = body) do
     {:ok, body}
   end
 

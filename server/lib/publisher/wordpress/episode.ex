@@ -1,4 +1,4 @@
-defmodule Publisher.Wordpress.Episode do
+defmodule Publisher.WordPress.Episode do
   def save(conn, params) do
     req = init_req(conn)
 

@@ -3,9 +3,9 @@ defmodule PublisherWeb.Controllers.API do
   import PublisherWeb.Controllers.Controller, only: [json: 2]
 
   alias Publisher.FeedParser
-  alias Publisher.Wordpress
-  alias Publisher.Wordpress.Episode
-  alias Publisher.Wordpress.Podcast
+  alias Publisher.WordPress
+  alias Publisher.WordPress.Episode
+  alias Publisher.WordPress.Podcast
 
   def fetch_feed(conn, %{"url" => url}) do
     {:ok, result} = FeedParser.parse_by_url(url)
@@ -18,7 +18,7 @@ defmodule PublisherWeb.Controllers.API do
   end
 
   def save_podcast(conn, headers, body) do
-    with {:ok, valid_body} <- Wordpress.validate_podcast(headers, body),
+    with {:ok, valid_body} <- WordPress.validate_podcast(headers, body),
          {:ok, data} <- Podcast.save_podcast_data(headers, valid_body) do
       json(conn, data)
     else
@@ -28,7 +28,7 @@ defmodule PublisherWeb.Controllers.API do
   end
 
   def save_podcast_image(conn, headers, body) do
-    with {:ok, valid_body} <- Wordpress.validate_podcast_image(headers, body),
+    with {:ok, valid_body} <- WordPress.validate_podcast_image(headers, body),
          {:ok, info} <- Podcast.save_podcast_image(headers, valid_body) do
       json(conn, info)
     else
