@@ -84,6 +84,7 @@ defmodule PublisherWeb.Controllers.API do
       end
 
     # Fetch episode, so we get the post_id
+    # TODO: can be skipped if we return the post_id in the CREATE response
     {:ok, fetched_episode_response} = Req.get(req, url: "podlove/v2/episodes/#{episode_id}")
 
     episode = fetched_episode_response.body
