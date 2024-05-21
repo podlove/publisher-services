@@ -13,7 +13,7 @@ defmodule Publisher.WordPress.Episode do
     post_id = episode["post_id"]
 
     # Now we write the episode meta.
-    {:ok, updated_episode} =
+    {:ok, _updated_episode} =
       Req.post(req,
         url: "podlove/v2/episodes/#{episode_id}",
         json: %{
@@ -30,9 +30,25 @@ defmodule Publisher.WordPress.Episode do
         }
       )
 
-    # Now what's really interesting is the enclosure. And actually taking the values from the params.
+    enclosure_url = params["enclosure"]
 
-    # enclosure = params["enclosure"]
+    filename = params["slug"] <> ".mp3"
+
+    {:ok, resp} = Req.get(enclosure_url)
+
+    # TODO: dynamic content type
+    {:ok, _upload} =
+      Req.post(req,
+        url: "wp/v2/media",
+        params: [post: post_id],
+        headers: [
+          {"Content-Type", "audio/mpeg"},
+          {"Content-Disposition", "attachment; filename=\"" <> filename <> "\""}
+        ],
+        body: resp.body
+      )
+
+    # NEXT: verify asset/media
   end
 
   # Finds episode by guid. Creates episode with that episode if none exists.
