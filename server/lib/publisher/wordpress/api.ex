@@ -1,16 +1,14 @@
-defmodule Publisher.Wordpress.API do
+defmodule Publisher.WordPress.API do
   @doc """
   Returns new request struct, setup to talk to WordPress.
 
   ## Example
 
-    req = API.new(conn)
+    req = API.new(headers)
     {:ok, response} = Req.get(req, url: "podlove/v2/episodes")
 
   """
-  def new(conn) do
-    headers = conn.req_headers
-
+  def new(headers) do
     user = get_header_value(headers, "wordpress-user")
     password = get_header_value(headers, "wordpress-password")
     site = get_header_value(headers, "wordpress-site")

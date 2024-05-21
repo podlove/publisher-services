@@ -1,8 +1,8 @@
 defmodule Publisher.WordPress.Episode do
-  alias Publisher.Wordpress.API
+  alias Publisher.WordPress.API
 
   def save(conn, params) do
-    req = API.new(conn)
+    req = API.new(conn.req_headers)
 
     episode_id = find_or_create_episode(req, params["guid"])
 
