@@ -32,23 +32,39 @@ defmodule Publisher.WordPress.Episode do
 
     enclosure_url = params["enclosure"]
 
-    filename = params["slug"] <> ".mp3"
+    ext = extension_from_url(enclosure_url)
+
+    filename = [params["slug"], ext] |> Enum.join(".")
 
     {:ok, resp} = Req.get(enclosure_url)
 
-    # TODO: dynamic content type
     {:ok, _upload} =
       Req.post(req,
         url: "wp/v2/media",
         params: [post: post_id],
         headers: [
-          {"Content-Type", "audio/mpeg"},
+          {"Content-Type", content_type(resp)},
           {"Content-Disposition", "attachment; filename=\"" <> filename <> "\""}
         ],
         body: resp.body
       )
 
     # NEXT: verify asset/media
+  end
+
+  def content_type(resp) do
+    case Req.Response.get_header(resp, "content-type") do
+      [content_type] -> content_type
+      _ -> "audio/mpeg"
+    end
+  end
+
+  def extension_from_url(url) do
+    %URI{path: path} = URI.parse(url)
+
+    path
+    |> Path.extname()
+    |> String.trim_leading(".")
   end
 
   # Finds episode by guid. Creates episode with that episode if none exists.
