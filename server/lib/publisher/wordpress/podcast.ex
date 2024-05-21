@@ -107,11 +107,4 @@ defmodule Publisher.WordPress.Podcast do
         {:error, "Image upload failed"}
     end
   end
-
-  defp get_header_value(headers, header_item) do
-    case Enum.find(headers, fn {name, _} -> name == header_item end) do
-      nil -> nil
-      {_, value} -> value
-    end
-  end
 end
