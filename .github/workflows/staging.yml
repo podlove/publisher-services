@@ -36,5 +36,6 @@ jobs:
           git reset --hard $SHA
           devbox install
           devbox services down
+          devbox run bootstrap
           devbox run build
           devbox services up --background

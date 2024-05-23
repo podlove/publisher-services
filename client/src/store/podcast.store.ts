@@ -26,6 +26,7 @@ export type setPodcastCategoryPayload = category;
 export type setPodcastExplicitPayload = boolean;
 export type tooglePodcastExplicitPayload = void;
 export type readFeedUrlPayload = void;
+export type transferPodcastPayload = void;
 
 export const actions = {
   setPodcastName: createAction<setPodcastNamePayload>('PODCAST/SET_NAME'),
@@ -40,6 +41,7 @@ export const actions = {
   setPodcastExplicit: createAction<setPodcastExplicitPayload>('PODCAST/SET_EXPLICIT'),
   tooglePodcastExplicit: createAction<tooglePodcastExplicitPayload>('PODCAST/TOGGLE_EXPLICIT'),
   readFeedUrl: createAction<readFeedUrlPayload>('PODCAST/READ_FEED_URL'),
+  transferPodcast: createAction<transferPodcastPayload>('PODCAST/TRANSFER_DATA'),
 };
 
 export const reducer = handleActions<State, any>(

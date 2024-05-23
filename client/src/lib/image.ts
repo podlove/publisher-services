@@ -8,10 +8,18 @@ export const convertImageToBase64 = (file: File, callback: (base64Image: string)
   reader.readAsDataURL(file);
 };
 
-export const getImageResolution = (file: File, callback: (width: number, height: number) => void) => {
-  const img = new Image()
-  img.onload = function() {
+export const extractImageType = (dataUrl: string): string | null => {
+  const match = dataUrl.match(/^data:image\/(.*?);base64/);
+  return match && typeof match[1] === 'string' ? match[1] : null;
+};
+
+export const getImageResolution = (
+  file: File,
+  callback: (width: number, height: number) => void
+) => {
+  const img = new Image();
+  img.onload = function () {
     callback(img.width, img.height);
   };
-  img.src = URL.createObjectURL(file)
-}
+  img.src = URL.createObjectURL(file);
+};
