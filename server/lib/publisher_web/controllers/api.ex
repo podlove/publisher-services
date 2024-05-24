@@ -38,8 +38,15 @@ defmodule PublisherWeb.Controllers.API do
   end
 
   def import_episode(conn, params) do
-    Episode.save(conn, params)
+    case Episode.save(conn, params) do
+      :ok ->
+        json(conn, %{status: "success"})
 
-    json(conn, %{status: "success"})
+      _ ->
+        # TODO: find accurate status code / error description
+        conn
+        |> put_status(418)
+        |> json(%{status: "error"})
+    end
   end
 end
