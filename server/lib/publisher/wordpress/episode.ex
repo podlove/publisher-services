@@ -59,10 +59,12 @@ defmodule Publisher.WordPress.Episode do
 
     verify_results =
       Enum.map(asset_ids, fn asset_id ->
-        {:ok, result} =
+        {:ok, _result} =
           Req.post(req, url: "podlove/v2/episodes/#{episode_id}/media/#{asset_id}/verify")
 
-        {result.status, result.body}
+        # TODO: What should we verify here? Just that result.status == 200? Because
+        # there might be more than just one asset, so we don't know which one MUST have
+        # a size. Unless we figure that out beforehand.
       end)
 
     :ok
