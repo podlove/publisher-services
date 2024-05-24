@@ -38,7 +38,7 @@ defmodule Publisher.WordPress.Episode do
 
     {:ok, resp} = Req.get(enclosure_url)
 
-    {:ok, _upload} =
+    {:ok, upload} =
       Req.post(req,
         url: "wp/v2/media",
         params: [post: post_id],
@@ -50,6 +50,10 @@ defmodule Publisher.WordPress.Episode do
       )
 
     # NEXT: verify asset/media
+    if upload.body["generated_slug"] != params["slug"] do
+      # TODO: use the generated_slug for the episode, in case there are
+      # duplicates. Otherwise the url will point to a wrong audio file.
+    end
   end
 
   def content_type(resp) do
