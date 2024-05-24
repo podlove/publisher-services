@@ -5,7 +5,7 @@
       <component :is="stepComponents[state.current.name]" />
     </div>
     <div class="flex justify-between w-full px-4 sm:px-6 xl:pl-6">
-      <PodloveButton v-if="state.previous" variant="primary" @click="prevStep()">{{
+      <PodloveButton v-if="state.previous" variant="secondary" @click="prevStep()">{{
         t('onboarding.navigation.prev')
       }}</PodloveButton>
       <div class="w-full"></div>
@@ -47,6 +47,9 @@ const stepComponents = {
 };
 
 const nextStep = () => {
+  if (state.current.name === 'podcast') {
+    store.dispatch(actions.podcast.transferPodcast() as unknown as Action);
+  }
   store.dispatch(actions.onboarding.next() as unknown as Action);
 };
 

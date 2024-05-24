@@ -21,7 +21,7 @@
     </div>
     <h3 class="text-lg font-bold text-indigo-600 mb-4">{{ t('onboarding.steps.next-steps.more') }}</h3>
     <div class="pb-5 mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-      <div class="ring-1 ring-gray-200 rounded-3xl p-8 xl:p-10">
+      <div class="ring-2 ring-gray-300 rounded-3xl p-8 xl:p-10">
         <div class="flex flex-col items-start justify-between">
           <div class="relative w-full">
             <img :src="learnIconUrl" alt="" class="aspect-[16/9] w-full rounded-2xl bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2]" />
@@ -32,7 +32,7 @@
           </div>
         </div>
       </div>
-      <div class="ring-1 ring-gray-200 rounded-3xl p-8 xl:p-10">
+      <div class="ring-2 ring-gray-300 rounded-3xl p-8 xl:p-10">
         <div class="flex flex-col items-start justify-between">
           <div class="relative w-full">
             <img :src="promoteIconUrl" alt="" class="aspect-[16/9] w-full rounded-2xl bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2]" />
@@ -43,7 +43,7 @@
           </div>
         </div>
       </div>
-      <div class="ring-1 ring-gray-200 rounded-3xl p-8 xl:p-10">
+      <div class="ring-2 ring-gray-300 rounded-3xl p-8 xl:p-10">
         <div class="flex flex-col items-start justify-between">
           <div class="relative w-full">
             <img :src="communityIconUrl" alt="" class="aspect-[16/9] w-full rounded-2xl bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2]" />
@@ -59,10 +59,11 @@
 </template>
 
 <script setup lang="ts">
+import { onBeforeMount } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { Action } from 'redux'
 import { injectStore, mapState } from 'redux-vuex';
-import { selectors } from '../../../store';
-
+import { selectors, actions } from '../../../store';
 
 import learnIconUrl from '../../../assets/next-learn.svg';
 import promoteIconUrl from '../../../assets/next-promote.svg';
@@ -75,11 +76,14 @@ const state = mapState({
   feedUrl: selectors.podcast.feed
 });
 
+onBeforeMount(() => {
+  store.dispatch(actions.podcast.readFeedUrl() as unknown as Action);
+})
+
 const selectText = (event: MouseEvent) => {
   const inputFeedUrl =  event.target as HTMLInputElement | null;
   if (inputFeedUrl) {
     inputFeedUrl.select();
   }
 }
-
 </script>

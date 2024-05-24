@@ -25,8 +25,9 @@ export type setPodcastLanguagePayload = locales;
 export type setPodcastCategoryPayload = category;
 export type setPodcastExplicitPayload = boolean;
 export type tooglePodcastExplicitPayload = void;
-export type readFeedUrlPayload = void;
 export type transferPodcastPayload = void;
+export type readFeedUrlPayload = void;
+export type setFeedUrlPayload = string;
 
 export const actions = {
   setPodcastName: createAction<setPodcastNamePayload>('PODCAST/SET_NAME'),
@@ -40,8 +41,9 @@ export const actions = {
   removePodcastCover: createAction<removePodcastCoverPayload>('PODCAST/REMOVE_COVER'),
   setPodcastExplicit: createAction<setPodcastExplicitPayload>('PODCAST/SET_EXPLICIT'),
   tooglePodcastExplicit: createAction<tooglePodcastExplicitPayload>('PODCAST/TOGGLE_EXPLICIT'),
-  readFeedUrl: createAction<readFeedUrlPayload>('PODCAST/READ_FEED_URL'),
   transferPodcast: createAction<transferPodcastPayload>('PODCAST/TRANSFER_DATA'),
+  readFeedUrl: createAction<readFeedUrlPayload>('PODCAST/READ_FEED_URL'),
+  setFeedUrl:createAction<setFeedUrlPayload>('PODCAST/SET_FEED_URL'),
 };
 
 export const reducer = handleActions<State, any>(
@@ -81,7 +83,11 @@ export const reducer = handleActions<State, any>(
      [actions.tooglePodcastExplicit.toString()]: (
       state,
       { payload }: Action<tooglePodcastExplicitPayload>
-     ) => ({ ...state, explicit: !state.explicit})
+     ) => ({ ...state, explicit: !state.explicit}),
+     [actions.setFeedUrl.toString()]: (
+      state,
+      { payload }: Action<setFeedUrlPayload>
+     ) => ({ ...state, feed: payload})
 
   },
   { 
