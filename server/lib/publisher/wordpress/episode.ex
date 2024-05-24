@@ -49,11 +49,23 @@ defmodule Publisher.WordPress.Episode do
         body: resp.body
       )
 
-    # NEXT: verify asset/media
     if upload.body["generated_slug"] != params["slug"] do
       # TODO: use the generated_slug for the episode, in case there are
       # duplicates. Otherwise the url will point to a wrong audio file.
     end
+
+    {:ok, assets} = Req.get(req, url: "podlove/v2/episodes/#{episode_id}/media")
+    asset_ids = Enum.map(assets.body["results"], & &1["asset_id"])
+
+    verify_results =
+      Enum.map(asset_ids, fn asset_id ->
+        {:ok, result} =
+          Req.post(req, url: "podlove/v2/episodes/#{episode_id}/media/#{asset_id}/verify")
+
+        {result.status, result.body}
+      end)
+
+    :ok
   end
 
   def content_type(resp) do
