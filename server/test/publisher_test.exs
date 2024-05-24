@@ -18,6 +18,7 @@ defmodule PublisherTest do
     assert result.podcast.image == "http://example.com/image.png"
     assert result.podcast.owner == %{name: "Podlovers", email: "feed@podlovers.org"}
     assert result.podcast.explicit == false
+    assert result.podcast.guid == "88e824bf-54bb-498f-8b6f-e0327ade3e87"
 
     assert result.podcast.categories == [
              ["Technology"],
