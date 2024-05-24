@@ -3,6 +3,7 @@
 	xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:psc="http://podlove.org/simple-chapters" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:fh="http://purl.org/syndication/history/1.0" xmlns:podcast="https://podcastindex.org/namespace/1.0" >
 
 <channel>
+	<podcast:guid>88e824bf-54bb-498f-8b6f-e0327ade3e87</podcast:guid>
 	<title>Podlovers</title>
 	<link>https://podlovers.org/</link>
 	<description><![CDATA[Der Podlove Entwickler:innen Podcast]]></description>

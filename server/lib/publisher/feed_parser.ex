@@ -16,6 +16,7 @@ defmodule Publisher.FeedParser do
     {:ok,
      %{
        podcast: %{
+         guid: feed.guid,
          title: feed.title,
          description: feed.description,
          image: feed.image_url,
