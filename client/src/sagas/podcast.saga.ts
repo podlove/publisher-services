@@ -30,10 +30,6 @@ function* removeImage() {
 }
 
 function* transferPodcast() {
-  const user: string = yield select(selectors.authentication.user);
-  const password: string = yield select(selectors.authentication.password);
-  const site: string = yield select(selectors.authentication.site);
-
   const name: string = yield select(selectors.podcast.name);
   const description: string = yield select(selectors.podcast.description);
   const author: string = yield select(selectors.podcast.author);
@@ -66,8 +62,16 @@ function* transferPodcast() {
   yield request.post(request.origin('/api/v1/save_podcast_image'), { params: {}, data: image });
 }
 
+function* readFeedUrl() {
+  const feed : string = yield request.get(request.origin('api/v1/podcast_feed_url'), { params:{} } );
+  if (feed) {
+    yield put(podcast.actions.setFeedUrl(feed))
+  }
+}
+
 export default function* podcastSaga() {
   yield takeEvery(podcast.actions.removePodcastCover.toString(), removeImage);
   yield takeEvery(podcast.actions.setPodcastCover.toString(), getImageData);
   yield takeEvery(podcast.actions.transferPodcast.toString(), transferPodcast);
+  yield takeEvery(podcast.actions.readFeedUrl.toString(), readFeedUrl)
 }
