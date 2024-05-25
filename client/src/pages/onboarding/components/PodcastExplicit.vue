@@ -1,7 +1,7 @@
 <template>
   <div class="w-full">
   <label for="explicit" class="mb-2 block text-sm font-medium leading-6 text-gray-900">
-    {{ t('onboarding.steps.podcast.podcast-content') }}
+    {{ t('onboarding.podcast.podcast-content') }}
   </label>
   <label class="inline-flex items-center cursor-pointer mb-1">
     <input type="checkbox" @input="swapPodcastExpicit" v-model="state.explicit" class="sr-only peer">
@@ -11,11 +11,11 @@
       peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-indigo-600">
     </div>
     <span class="ms-3 text-sm text-gray-900">
-      {{ t('onboarding.steps.podcast.podcast-content-desc') }}
+      {{ t('onboarding.podcast.podcast-content-desc') }}
     </span>
   </label>
   <p class="text-xs leading-5 text-gray-600">
-    {{ t('onboarding.steps.podcast.podcast-content-hint') }}
+    {{ t('onboarding.podcast.podcast-content-hint') }}
   </p>
 </div>
 </template>

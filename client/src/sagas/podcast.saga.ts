@@ -1,11 +1,13 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects';
 import { convertImageToBase64, extractImageType } from '../lib/image';
 
-import * as podcast from '../store/podcast.store';
+import { actions, selectors } from '../store';
 import * as request from '../lib/request';
-import { selectors } from '../store';
 import { locales } from '../types/locales.types';
 import { category } from '../types/categories.types';
+import { setPodcastCoverPayload } from '../store/podcast.store';
+import { Action } from 'redux-actions';
+
 
 function readImage(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -15,21 +17,27 @@ function readImage(file: File): Promise<string> {
   });
 }
 
-function* getImageData({ payload }: { payload: podcast.setPodcastCoverPayload }) {
+function* getImageData({ payload }: Action<setPodcastCoverPayload>) {
   if (!payload) return;
   const imageData = yield call(readImage, payload);
   if (imageData) {
-    yield put(podcast.actions.setPodcastCoverData(imageData));
-    yield put(podcast.actions.setPodcastCoverName((payload as File).name));
+    yield put(actions.podcast.setPodcastCoverData(imageData));
+    yield put(actions.podcast.setPodcastCoverName((payload as File).name));
   }
 }
 
 function* removeImage() {
-  yield put(podcast.actions.setPodcastCoverData(null));
-  yield put(podcast.actions.setPodcastCoverName(null));
+  yield put(actions.podcast.setPodcastCoverData(null));
+  yield put(actions.podcast.setPodcastCoverName(null));
 }
 
 function* transferPodcast() {
+  const currentStep = yield select(selectors.onboarding.current);
+
+  if (currentStep !== 'start-new-next-steps') {
+    return;
+  }
+
   const name: string = yield select(selectors.podcast.name);
   const description: string = yield select(selectors.podcast.description);
   const author: string = yield select(selectors.podcast.author);
@@ -65,13 +73,13 @@ function* transferPodcast() {
 function* readFeedUrl() {
   const feed : string = yield request.get(request.origin('api/v1/podcast_feed_url'), { params:{} } );
   if (feed) {
-    yield put(podcast.actions.setFeedUrl(feed))
+    yield put(actions.podcast.setFeedUrl(feed))
   }
 }
 
 export default function* podcastSaga() {
-  yield takeEvery(podcast.actions.removePodcastCover.toString(), removeImage);
-  yield takeEvery(podcast.actions.setPodcastCover.toString(), getImageData);
-  yield takeEvery(podcast.actions.transferPodcast.toString(), transferPodcast);
-  yield takeEvery(podcast.actions.readFeedUrl.toString(), readFeedUrl)
+  yield takeEvery(actions.podcast.removePodcastCover.toString(), removeImage);
+  yield takeEvery(actions.podcast.setPodcastCover.toString(), getImageData);
+  yield takeEvery(actions.podcast.readFeedUrl.toString(), readFeedUrl);
+  yield takeEvery(actions.onboarding.next.toString(), transferPodcast);
 }

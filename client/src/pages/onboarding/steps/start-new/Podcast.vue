@@ -1,10 +1,10 @@
 <template>
   <form>
     <h2 class="text-base font-semibold leading-7 text-gray-900">
-      {{ t('onboarding.steps.podcast.headline') }}
+      {{ t('onboarding.steps.start-new-podcast.headline') }}
     </h2>
     <p class="my-2 text-sm leading-6 text-gray-600">
-      {{ t('onboarding.steps.podcast.description') }}
+      {{ t('onboarding.steps.start-new-podcast.description') }}
     </p>
     <div class="flex min-h-full flex-col md:flex-row">
       <!-- Left column area -->
@@ -29,14 +29,14 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
 
-import PodcastTitle from '../components/PodcastTitle.vue';
-import PodcastDescription from '../components/PodcastDescription.vue';
-import PodcastAuthor from '../components/PodcastAuthor.vue';
-import PodcastLanguage from '../components/PodcastLanguage.vue';
-import PodcastCategory from '../components/PodcastCategory.vue';
-import PodcastExplicit from '../components/PodcastExplicit.vue';
-import PodcastCover from '../components/PodcastCover.vue';
-import PodcastPreview from '../components/PodcastPreview.vue';
+import PodcastTitle from '../../components/PodcastTitle.vue';
+import PodcastDescription from '../../components/PodcastDescription.vue';
+import PodcastAuthor from '../../components/PodcastAuthor.vue';
+import PodcastLanguage from '../../components/PodcastLanguage.vue';
+import PodcastCategory from '../../components/PodcastCategory.vue';
+import PodcastExplicit from '../../components/PodcastExplicit.vue';
+import PodcastCover from '../../components/PodcastCover.vue';
+import PodcastPreview from '../../components/PodcastPreview.vue';
 
 const { t } = useI18n();
 </script>

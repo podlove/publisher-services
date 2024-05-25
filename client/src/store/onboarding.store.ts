@@ -2,11 +2,11 @@ import { Action, createAction, handleActions } from 'redux-actions';
 import { last, first } from 'lodash-es';
 import { type Step } from '../types/step.types';
 
-type Route = 'start-new' | 'import' | null
+type SetupType = 'start-new' | 'import' | null
 
 export interface State {
   current: string;
-  route: Route;
+  setupType: SetupType;
   steps: {
     name: string;
     visible: boolean;
@@ -14,13 +14,13 @@ export interface State {
 }
 
 export type nextActionPayload = void;
-export type setRouteActionPayload = Route;
+export type setSetupTypeActionPayload = SetupType;
 export type previousActionPayload = void;
 
 export const actions = {
   next: createAction<nextActionPayload>('ONBOARDING/NEXT'),
   previous: createAction<previousActionPayload>('ONBOARDING/PREVIOUS'),
-  setRoute: createAction<setRouteActionPayload>('ONBOARDING/SET_ROUTE'),
+  setSetupType: createAction<setSetupTypeActionPayload>('ONBOARDING/SET_SETUP_TYPE'),
 };
 
 const startNewSteps = [
@@ -38,7 +38,7 @@ const importSteps = [
 
 export const reducer = handleActions<State, any>(
   {
-    [actions.setRoute.toString()]: (state, { payload }: Action<setRouteActionPayload>) => {
+    [actions.setSetupType.toString()]: (state, { payload }: Action<SetupType>) => {
       let steps: State['steps'] = [];
 
       switch (payload) {
@@ -55,7 +55,8 @@ export const reducer = handleActions<State, any>(
 
       return {
         ...state,
-        steps
+        steps,
+        setupType: payload
       }
     },
     [actions.next.toString()]: (state) => {
@@ -90,7 +91,7 @@ export const reducer = handleActions<State, any>(
     }
   },
   {
-    route: null,
+    setupType: null,
     current: 'select',
     steps: [{ name: 'select', visible: false }]
   }
@@ -106,6 +107,7 @@ export const selectors = {
 
     return state.steps[currentIndex - 1];
   },
+  setupType: (state: State) => state.setupType,
   current: (state: State): { name: string; visible: boolean } | null =>
     state.steps.find(({ name }) => name === state.current) || null,
   upcoming: (state: State): { name: string; visible: boolean } | null => {

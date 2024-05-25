@@ -12,7 +12,7 @@
             <span class="flex items-center content-center bg-slate-700 rounded-full px-2 h-5 mr-2">
               <PlusIcon class="h-3 w-3 text-white mr-1" aria-hidden="true" /><span
                 class="text-white text-xs -mt-[1px]"
-                >{{ t('onboarding.steps.preview.follow') }}</span
+                >{{ t('onboarding.preview.follow') }}</span
               >
             </span>
             <span class="flex items-center content-center bg-slate-700 rounded-full p-1 h-5">
@@ -27,7 +27,7 @@
           class="flex bg-gray-900 text-white p-2 rounded-lg w-[70%] items-center justify-center mb-2"
         >
           <PlayIcon class="w-5 h-5 mr-1" /><span class="text-sm">{{
-            t('onboarding.steps.preview.playButton')
+            t('onboarding.preview.playButton')
           }}</span>
         </button>
         <div class="w-[85%] text-gray-600 text-sm text-justify font-light leading-none mb-1 line-clamp-6">
@@ -71,10 +71,10 @@ const state = mapState({
 });
 
 const podcastCover = computed(() => (state.imageData ? state.imageData : podcastCoverPlaceholder));
-const podcastName = computed(() => state.name || t('onboarding.steps.preview.name'));
-const podcastAuthor = computed(() => state.author || t('onboarding.steps.preview.author'));
+const podcastName = computed(() => state.name || t('onboarding.preview.name'));
+const podcastAuthor = computed(() => state.author || t('onboarding.preview.author'));
 const podcastDescription = computed(() => {
-  const description = state.description || t('onboarding.steps.preview.description');
+  const description = state.description || t('onboarding.preview.description');
   if (description.length > 270) {
     return description.slice(0, 270) + '...';
   }

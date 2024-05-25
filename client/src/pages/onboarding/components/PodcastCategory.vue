@@ -1,7 +1,7 @@
 <template>
   <div class="w-full">
     <label for="category" class="block text-sm font-medium leading-6 text-gray-900 mb-2">
-      {{ t('onboarding.steps.podcast.podcast-category') }}
+      {{ t('onboarding.podcast.podcast-category') }}
     </label>
     <select
       :value="getPodcastCategoryName()"
@@ -17,7 +17,7 @@
       </option>
     </select>
     <p class="text-xs leading-5 text-gray-600">
-      {{ t('onboarding.steps.podcast.podcast-category-hint') }}
+      {{ t('onboarding.podcast.podcast-category-hint') }}
     </p>
   </div>
 </template>

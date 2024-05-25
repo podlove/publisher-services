@@ -25,8 +25,8 @@ import { selectors, actions } from '../../store';
 import Steps from './components/Steps.vue';
 import PodloveButton from '../../components/button/Button.vue';
 
-import Podcast from './steps/Podcast.vue';
-import NextSteps from './steps/NextSteps.vue';
+import Podcast from './steps/start-new/Podcast.vue';
+import NextSteps from './steps/start-new/NextSteps.vue';
 import SetupType from './steps/SetupType.vue';
 
 const { t } = useI18n();
@@ -42,14 +42,11 @@ const state = mapState({
 
 const stepComponents = {
   select: SetupType,
-  podcast: Podcast,
-  'next-steps': NextSteps
+  'start-new-podcast': Podcast,
+  'start-new-next-steps': NextSteps
 };
 
 const nextStep = () => {
-  if (state.current.name === 'podcast') {
-    store.dispatch(actions.podcast.transferPodcast() as unknown as Action);
-  }
   store.dispatch(actions.onboarding.next() as unknown as Action);
 };
 

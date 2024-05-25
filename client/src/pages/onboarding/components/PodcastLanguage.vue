@@ -1,7 +1,7 @@
 <template>
   <div class="w-full">
     <label for="language" class="block text-sm font-medium leading-6 text-gray-900 mb-2">
-      {{ t('onboarding.steps.podcast.podcast-language') }}
+      {{ t('onboarding.podcast.podcast-language') }}
     </label>
     <select
       :value="getPodcastLanguageName()"
@@ -17,7 +17,7 @@
       </option>
     </select>
     <p class="text-xs leading-5 text-gray-600">
-      {{ t('onboarding.steps.podcast.podcast-language-hint') }}
+      {{ t('onboarding.podcast.podcast-language-hint') }}
     </p>
   </div>
 </template>

@@ -1,7 +1,7 @@
 <template>
   <div class="w-full">
     <label for="cover-photo" class="mb-1 block text-sm font-medium leading-6 text-gray-900">{{
-      t('onboarding.steps.podcast.cover-photo')
+      t('onboarding.podcast.cover-photo')
     }}</label>
     <div class="flex">
       <div
@@ -24,7 +24,7 @@
         >
           <div class="flex mb-3 justify-center text-sm leading-6 text-gray-600">
             <Button @click="simulateUploadClick" variant="secondary" class="mt-3 w-32">
-              {{ t('onboarding.steps.podcast.upload-file') }}
+              {{ t('onboarding.podcast.upload-file') }}
             </Button>
             <input
               id="file-upload"
@@ -39,16 +39,16 @@
             class="mb-3 w-32 text-center"
             :disabled="state.imageData === null"
             @click="removeCover"
-            ><span class="w-full text-center">{{ t('onboarding.steps.podcast.cover-reset') }}</span>
+            ><span class="w-full text-center">{{ t('onboarding.podcast.cover-reset') }}</span>
           </Button>
           <div class="text-center">
-            <p class="pl-1">{{ t('onboarding.steps.podcast.drag-and-drop') }}</p>
+            <p class="pl-1">{{ t('onboarding.podcast.drag-and-drop') }}</p>
           </div>
         </div>
       </div>
 
       <p class="text-sm leading-6 text-gray-600 max-w-60">
-        {{ t('onboarding.steps.podcast.podcast-upload-hint') }}
+        {{ t('onboarding.podcast.podcast-upload-hint') }}
       </p>
     </div>
   </div>
