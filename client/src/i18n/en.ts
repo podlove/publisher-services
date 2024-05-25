@@ -5,7 +5,11 @@ export default {
       next: {
         select: 'Next',
         'start-new-podcast': 'Save & Continue',
-        'start-new-next-steps': 'Exit Onboarding'
+        'start-new-next-steps': 'Exit Onboarding',
+        'import-feed': 'Next',
+        'import-podcast': 'Next',
+        'import-episodes': 'Import',
+        'import-next-steps': 'Exit Onboarding',
       }
     },
     steps: {
@@ -49,6 +53,18 @@ export default {
           'Connect with fellow podcasters and enthusiasts on the Podlove Sendegate, our community forum. Get tips, advice, and support from experienced podcasters, and share your own insights and experiences.',
         sendegate:
           'Click below to visit the Sendegate and access our welcome post, where you can introduce yourself and get started on your podcasting journey. Happy podcasting!'
+      },
+      'import-feed': {
+        title: 'Select Feed',
+      },
+      'import-podcast': {
+        title: 'Podcast Metadata',
+      },
+      'import-episodes': {
+        title: 'Import Episodes',
+      },
+      'import-next-steps': {
+        title: 'Next Steps',
       }
     },
 

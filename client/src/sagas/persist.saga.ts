@@ -14,6 +14,8 @@ export default function* routerSaga() {
       actions.authentication.setApplicationPassword.toString(),
 
       actions.onboarding.setSetupType.toString(),
+      actions.onboarding.next.toString(),
+      actions.onboarding.previous.toString(),
 
       actions.podcast.setPodcastName.toString(),
       actions.podcast.setPodcastDescription.toString(),

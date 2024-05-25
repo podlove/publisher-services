@@ -9,7 +9,7 @@
         t('onboarding.navigation.prev')
       }}</PodloveButton>
       <div class="w-full"></div>
-      <PodloveButton variant="primary" :disabled="!state.upcomingEnabled" @click="nextStep()">{{
+      <PodloveButton variant="primary" v-if="state.upcoming" :disabled="!state.upcomingEnabled" @click="nextStep()">{{
         t('onboarding.navigation.next.' + state.current.name)
       }}</PodloveButton>
     </div>
@@ -25,9 +25,15 @@ import { selectors, actions } from '../../store';
 import Steps from './components/Steps.vue';
 import PodloveButton from '../../components/button/Button.vue';
 
-import Podcast from './steps/start-new/Podcast.vue';
-import NextSteps from './steps/start-new/NextSteps.vue';
 import SetupType from './steps/SetupType.vue';
+
+import StartNewPodcast from './steps/start-new/Podcast.vue';
+import StartNewNextSteps from './steps/start-new/NextSteps.vue';
+
+import ImportFeed from './steps/import/Feed.vue';
+import ImportPodcast from './steps/import/Podcast.vue';
+import ImportEpisodes from './steps/import/Episodes.vue';
+import ImportNextSteps from './steps/import/NextSteps.vue';
 
 const { t } = useI18n();
 const store = injectStore();
@@ -42,8 +48,13 @@ const state = mapState({
 
 const stepComponents = {
   select: SetupType,
-  'start-new-podcast': Podcast,
-  'start-new-next-steps': NextSteps
+  'start-new-podcast': StartNewPodcast,
+  'start-new-next-steps': StartNewNextSteps,
+
+  'import-feed': ImportFeed,
+  'import-podcast': ImportPodcast,
+  'import-episodes': ImportEpisodes,
+  'import-next-steps': ImportNextSteps
 };
 
 const nextStep = () => {

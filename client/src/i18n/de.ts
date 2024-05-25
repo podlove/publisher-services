@@ -4,8 +4,10 @@ export default {
       prev: 'Zurück',
       next: {
         select: 'Weiter',
-        podcast: 'Speichern & Weiter',
-        'next-steps': 'Starthilfe beenden'
+        'start-new-podcast': 'Speichern & Weiter',
+        'import-feed': 'Weiter',
+        'import-podcast': 'Weiter',
+        'import-episodes': 'Importieren',
       }
     },
     steps: {
@@ -48,6 +50,18 @@ export default {
           'Vernetze dich mit anderen Podcasterinnen im „Sendegate“, der deutschsprachigen Podcast-Community. Hol Dir Tipps, Ratschläge und Unterstützung von erfahrenen Podcasterinnen oder teile selbst Deine eigenen Erkenntnisse und Erfahrungen.',
         sendegate:
           'Klicke unten, um zum Sendegate zu gelangen und unseren Willkommensbeitrag zu lesen. Dort kannst Du Dich vorstellen und Dich vernetzen. Viel Spaß beim Podcasten!'
+      },
+      'import-feed': {
+        title: 'Feed Auswahl',
+      },
+      'import-podcast': {
+        title: 'Podcast Metadata',
+      },
+      'import-episodes': {
+        title: 'Episoden Importieren',
+      },
+      'import-next-steps': {
+        title: 'Nächste Schritte',
       }
     },
     podcast: {

@@ -33,7 +33,8 @@ const importSteps = [
   { name: 'select', visible: false },
   { name: 'import-feed', visible: true },
   { name: 'import-podcast', visible: true },
-  { name: 'import-episodes', visible: true }
+  { name: 'import-episodes', visible: true },
+  { name: 'import-next-steps', visible: true },
 ];
 
 export const reducer = handleActions<State, any>(
