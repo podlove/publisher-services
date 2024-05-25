@@ -52,10 +52,10 @@ export default {
           'Klicke unten, um zum Sendegate zu gelangen und unseren Willkommensbeitrag zu lesen. Dort kannst Du Dich vorstellen und Dich vernetzen. Viel Spaß beim Podcasten!'
       },
       'import-feed': {
-        title: 'Feed Auswahl',
+        title: 'RSS-Feed Eingabe',
       },
       'import-podcast': {
-        title: 'Podcast Metadata',
+        title: 'Podcast Daten überprüfen',
       },
       'import-episodes': {
         title: 'Episoden Importieren',

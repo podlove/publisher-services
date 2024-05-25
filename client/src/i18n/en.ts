@@ -5,11 +5,9 @@ export default {
       next: {
         select: 'Next',
         'start-new-podcast': 'Save & Continue',
-        'start-new-next-steps': 'Exit Onboarding',
         'import-feed': 'Next',
         'import-podcast': 'Next',
         'import-episodes': 'Import',
-        'import-next-steps': 'Exit Onboarding',
       }
     },
     steps: {
@@ -55,10 +53,10 @@ export default {
           'Click below to visit the Sendegate and access our welcome post, where you can introduce yourself and get started on your podcasting journey. Happy podcasting!'
       },
       'import-feed': {
-        title: 'Select Feed',
+        title: 'Enter RSS-Feed',
       },
       'import-podcast': {
-        title: 'Podcast Metadata',
+        title: 'Check Podcast Data',
       },
       'import-episodes': {
         title: 'Import Episodes',
