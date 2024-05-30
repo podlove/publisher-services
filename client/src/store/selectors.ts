@@ -46,5 +46,6 @@ export default {
     language: createSelector(root.podcast, podcast.selectors.language),
     category: createSelector(root.podcast, podcast.selectors.category),
     explicit: createSelector(root.podcast, podcast.selectors.explicit),
+    feed: createSelector(root.podcast, podcast.selectors.feed),
   },
 };

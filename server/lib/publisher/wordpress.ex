@@ -1,6 +1,13 @@
 defmodule Publisher.WordPress do
   require Logger
 
+  def validate_podcast(headers) do
+    case get_header_value(headers, "wordpress-site") do
+      {:ok, value} -> {:ok, value}
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
   def validate_podcast(headers, body) do
     with {:ok, _} <- ensure_wordpress_data(headers),
          {:ok, _} <- ensure_podcast_data(body) do

@@ -16,6 +16,9 @@
         {{ category.name }}
       </option>
     </select>
+    <p class="text-xs leading-5 text-gray-600">
+      {{ t('onboarding.steps.podcast.podcast-category-hint') }}
+    </p>
   </div>
 </template>
 

@@ -3,6 +3,25 @@ defmodule Publisher.WordPress.Podcast do
 
   alias Publisher.WordPress.API
 
+  def feed_url(headers) do
+    site = get_header_value(headers,"wordpress-site")
+
+    case Req.get(site <> "/wp-json/podlove/v2/podcast",
+           connect_options: [transport_opts: [verify: :verify_none]]
+         ) do
+      {:ok, response} ->
+        with {:ok, _} <- extract_status(response),
+             {:ok, feed_url} <- extract_feed_url(response) do
+          {:ok, feed_url}
+        else
+          error -> error
+        end
+
+      _ ->
+        {:error, "Feed url is missing"}
+    end
+  end
+
   def save_podcast_data(headers, body) do
     Logger.log(:info, "Podcast.save_podcast_data")
 
@@ -105,6 +124,37 @@ defmodule Publisher.WordPress.Podcast do
 
       _ ->
         {:error, "Image upload failed"}
+    end
+  end
+
+  defp extract_feed_url(response) do
+    with %Req.Response{body: body} <- response,
+          feed_urls when is_list(feed_urls) <- Map.get(body, "feeds"),
+          feed_url <- process_list(feed_urls) do
+      {:ok, feed_url}
+    else
+      _ -> {:error, "Feed url is missing or invalid"}
+    end
+  end
+
+  def process_list([element]) do
+    element |> Map.values() |> hd()
+  end
+
+  def process_list(list) when is_list(list) do
+    search_key = "mp3"
+
+    Enum.find(list, fn map -> Map.has_key?(map, search_key) end)
+    |> case do
+      nil -> list |> hd() |> Map.values() |> hd()
+      result -> result |> Map.values() |> hd()
+    end
+  end
+
+  defp get_header_value(headers, header_item) do
+    case Enum.find(headers, fn {name, _} -> name == header_item end) do
+      nil -> nil
+      {_, value} -> value
     end
   end
 end

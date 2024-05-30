@@ -30,7 +30,7 @@
             t('onboarding.steps.preview.playButton')
           }}</span>
         </button>
-        <div class="w-[85%] text-gray-600 text-sm text-justify font-light leading-none mb-1">
+        <div class="w-[85%] text-gray-600 text-sm text-justify font-light leading-none mb-1 line-clamp-6">
           {{ podcastDescription }}
         </div>
         <div class="w-[85%] text-xs font-medium">

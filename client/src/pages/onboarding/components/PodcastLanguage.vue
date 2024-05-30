@@ -16,7 +16,7 @@
         {{ lang.name }}
       </option>
     </select>
-    <p class="text-sm leading-6 text-gray-600">
+    <p class="text-xs leading-5 text-gray-600">
       {{ t('onboarding.steps.podcast.podcast-language-hint') }}
     </p>
   </div>
