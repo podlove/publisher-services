@@ -5,7 +5,7 @@ import { actions } from '../store';
 
 function* persist() {
   const state = yield select(identity);
-  localStorage.save('REDUX_STATE', pick(state, ['authentication', 'podcast', 'setupType']));
+  localStorage.save('REDUX_STATE', pick(state, ['authentication', 'podcast', 'onboarding']));
 }
 
 export default function* routerSaga() {
@@ -13,7 +13,9 @@ export default function* routerSaga() {
     [
       actions.authentication.setApplicationPassword.toString(),
 
-      actions.setupType.select.toString(),
+      actions.onboarding.setSetupType.toString(),
+      actions.onboarding.next.toString(),
+      actions.onboarding.previous.toString(),
 
       actions.podcast.setPodcastName.toString(),
       actions.podcast.setPodcastDescription.toString(),

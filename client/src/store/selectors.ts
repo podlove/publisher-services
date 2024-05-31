@@ -6,7 +6,6 @@ import * as authentication from './authentication.store';
 import * as onboarding from './onboarding.store';
 import * as runtime from './runtime.store';
 import * as podcast from './podcast.store'
-import * as setupType from './setup-type.store'
 import { onboardingUpcomingEnabled } from './lib/validations';
 
 const root = {
@@ -15,7 +14,6 @@ const root = {
   onboarding: (state: State): onboarding.State => get(state, 'onboarding', {}),
   runtime: (state: State): runtime.State => get(state, 'runtime', {}),
   podcast: (state: State): podcast.State => get(state, 'podcast', {}),
-  setupType: (state: State): setupType.State => get(state, 'setupType', {}),
 };
 
 export default {
@@ -29,10 +27,8 @@ export default {
     previous: createSelector(root.onboarding, onboarding.selectors.previous),
     current: createSelector(root.onboarding, onboarding.selectors.current),
     upcoming: createSelector(root.onboarding, onboarding.selectors.upcoming),
-    upcomingEnabled: onboardingUpcomingEnabled
-  },
-  setupType: {
-    type: createSelector(root.setupType, setupType.selectors.type)
+    upcomingEnabled: onboardingUpcomingEnabled,
+    setupType: createSelector(root.onboarding, onboarding.selectors.setupType),
   },
   runtime: {
     language: createSelector(root.runtime, runtime.selectors.language),

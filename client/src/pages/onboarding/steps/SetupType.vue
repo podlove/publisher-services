@@ -7,7 +7,7 @@
       {{ t('onboarding.steps.select.description') }}
     </p>
     <div class="flex justify-center items-center flex-col sm:flex-row p-4 cursor-pointer">
-      <select-tile @click="selectSetup('fresh')" class="mx-4 w-96 text-neutral-500 hover:text-neutral-900" :selected="state.type === 'fresh'" :class="{ 'text-neutral-900': state.type === 'fresh' }" :title="t('onboarding.steps.select.fresh.title')">
+      <select-tile @click="selectSetup('start-new')" class="mx-4 w-96 text-neutral-500 hover:text-neutral-900" :selected="state.type === 'start-new'" :class="{ 'text-neutral-900': state.type === 'fresh' }" :title="t('onboarding.steps.select.fresh.title')">
         <img :src="freshIconUrl" />
         <p class="text-base text-center h-12">{{ t('onboarding.steps.select.fresh.description') }}</p>
 
@@ -37,10 +37,10 @@ const store = injectStore();
 const { t } = useI18n();
 
 const state = mapState({
-  type: selectors.setupType.type
+  type: selectors.onboarding.setupType
 });
 
-const selectSetup = (type: 'fresh' | 'import') => {
-  store.dispatch(actions.setupType.select(type) as unknown as Action);
+const selectSetup = (type: 'start-new' | 'import') => {
+  store.dispatch(actions.onboarding.setSetupType(type) as unknown as Action);
 }
 </script>

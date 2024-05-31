@@ -5,7 +5,7 @@ import { locales } from '../types/locales.types';
 export interface State {
   name: string | null;
   description: string | null;
-  author: string | null,
+  author: string | null;
   image_name: string | null;
   image_data: string | null;
   language: locales | null;
@@ -25,7 +25,6 @@ export type setPodcastLanguagePayload = locales;
 export type setPodcastCategoryPayload = category;
 export type setPodcastExplicitPayload = boolean;
 export type tooglePodcastExplicitPayload = void;
-export type transferPodcastPayload = void;
 export type readFeedUrlPayload = void;
 export type setFeedUrlPayload = string;
 
@@ -41,56 +40,54 @@ export const actions = {
   removePodcastCover: createAction<removePodcastCoverPayload>('PODCAST/REMOVE_COVER'),
   setPodcastExplicit: createAction<setPodcastExplicitPayload>('PODCAST/SET_EXPLICIT'),
   tooglePodcastExplicit: createAction<tooglePodcastExplicitPayload>('PODCAST/TOGGLE_EXPLICIT'),
-  transferPodcast: createAction<transferPodcastPayload>('PODCAST/TRANSFER_DATA'),
   readFeedUrl: createAction<readFeedUrlPayload>('PODCAST/READ_FEED_URL'),
-  setFeedUrl:createAction<setFeedUrlPayload>('PODCAST/SET_FEED_URL'),
+  setFeedUrl: createAction<setFeedUrlPayload>('PODCAST/SET_FEED_URL')
 };
 
 export const reducer = handleActions<State, any>(
   {
-    [actions.setPodcastName.toString()]: (
-      state, 
-      { payload }: Action<setPodcastNamePayload>
-     ) => ({ ...state, name: payload }),
-     [actions.setPodcastDescription.toString()]: (
+    [actions.setPodcastName.toString()]: (state, { payload }: Action<setPodcastNamePayload>) => ({
+      ...state,
+      name: payload
+    }),
+    [actions.setPodcastDescription.toString()]: (
       state,
       { payload }: Action<setPodcastDescriptionPayload>
-     ) => ({ ...state, description: payload}),
-     [actions.setPodcastAuthor.toString()]: (
+    ) => ({ ...state, description: payload }),
+    [actions.setPodcastAuthor.toString()]: (
       state,
       { payload }: Action<setPodcastAuthorPayload>
-     ) => ({ ...state, author: payload}),
-     [actions.setPodcastLanguage.toString()]: (
+    ) => ({ ...state, author: payload }),
+    [actions.setPodcastLanguage.toString()]: (
       state,
       { payload }: Action<setPodcastLanguagePayload>
-     ) => ({ ...state, language: payload}),
-     [actions.setPodcastCategory.toString()]: (
+    ) => ({ ...state, language: payload }),
+    [actions.setPodcastCategory.toString()]: (
       state,
       { payload }: Action<setPodcastCategoryPayload>
-     ) => ({ ...state, category: payload}),
-     [actions.setPodcastCoverName.toString()]: (
+    ) => ({ ...state, category: payload }),
+    [actions.setPodcastCoverName.toString()]: (
       state,
       { payload }: Action<setPodcastCoverNamePayload>
-     ) => ({ ...state, image_name: payload}),
-     [actions.setPodcastCoverData.toString()]: (
+    ) => ({ ...state, image_name: payload }),
+    [actions.setPodcastCoverData.toString()]: (
       state,
       { payload }: Action<setPodcastCoverDataPayload>
-     ) => ({ ...state, image_data: payload}),
-     [actions.setPodcastExplicit.toString()]: (
+    ) => ({ ...state, image_data: payload }),
+    [actions.setPodcastExplicit.toString()]: (
       state,
       { payload }: Action<setPodcastExplicitPayload>
-     ) => ({ ...state, explicit: payload}),
-     [actions.tooglePodcastExplicit.toString()]: (
-      state,
-      { payload }: Action<tooglePodcastExplicitPayload>
-     ) => ({ ...state, explicit: !state.explicit}),
-     [actions.setFeedUrl.toString()]: (
-      state,
-      { payload }: Action<setFeedUrlPayload>
-     ) => ({ ...state, feed: payload})
-
+    ) => ({ ...state, explicit: payload }),
+    [actions.tooglePodcastExplicit.toString()]: (state) => ({
+      ...state,
+      explicit: !state.explicit
+    }),
+    [actions.setFeedUrl.toString()]: (state, { payload }: Action<setFeedUrlPayload>) => ({
+      ...state,
+      feed: payload
+    })
   },
-  { 
+  {
     name: null,
     description: null,
     author: null,
@@ -112,5 +109,5 @@ export const selectors = {
   language: (state: State) => state.language,
   category: (state: State) => state.category,
   explicit: (state: State) => state.explicit,
-  feed: (state: State) => state.feed,
-}
+  feed: (state: State) => state.feed
+};

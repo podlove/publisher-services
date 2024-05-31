@@ -1,7 +1,7 @@
 <template>
   <div class="w-full">
     <label for="author" class="block text-sm font-medium leading-6 text-gray-900">{{
-      t('onboarding.steps.podcast.podcast-author')
+      t('onboarding.podcast.podcast-author')
     }}</label>
     <div class="mt-2">
       <div
@@ -17,7 +17,7 @@
       </div>
     </div>
     <p class="text-xs leading-5 text-gray-600">
-    {{ t('onboarding.steps.podcast.podcast-author-hint') }}
+    {{ t('onboarding.podcast.podcast-author-hint') }}
     </p>
   </div>
 </template>
