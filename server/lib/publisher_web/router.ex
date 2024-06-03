@@ -10,6 +10,10 @@ defmodule PublisherWeb.Router do
     API.fetch_feed(conn, conn.params)
   end
 
+  get "/api/v1/fetch_episode" do
+    API.fetch_episode(conn, conn.params)
+  end
+
   get "/api/v1/podcast_feed_url" do
     API.podcast_feed_url(conn, conn.req_headers)
   end
