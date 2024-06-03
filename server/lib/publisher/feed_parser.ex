@@ -29,4 +29,38 @@ defmodule Publisher.FeedParser do
        episodes: episodes
      }}
   end
+
+  def get_episode(feed_url, episode_guid) do
+    podcast = Metalove.get_podcast(feed_url)
+    id = {:episode, podcast.main_feed_url, episode_guid}
+    episode = Metalove.Episode.get_by_episode_id(id)
+
+    {:ok,
+     %{
+       episode: %{
+         guid: episode.guid,
+         title: episode.title,
+         subtitle: episode.subtitle,
+         summary: episode.summary,
+         content: episode.content_encoded,
+         media_file: %{
+           url: episode.enclosure.url,
+           content_length: episode.enclosure.size,
+           type: episode.enclosure.type
+         },
+         chapters: episode.chapters,
+         transcript: transcript(episode),
+         contributors: episode.contributors
+       }
+     }}
+  end
+
+  defp transcript(%{transcript_urls: []}), do: nil
+
+  defp transcript(%{transcript_urls: urls}) do
+    case Enum.find(urls, &(&1.type == "text/vtt")) do
+      nil -> hd(urls)
+      url -> url
+    end
+  end
 end

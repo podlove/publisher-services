@@ -17,6 +17,15 @@ defmodule PublisherWeb.Controllers.API do
     send_resp(conn, 400, "Bad Request: url parameter missing")
   end
 
+  def fetch_episode(conn, %{"feed_url" => feed_url, "episode_guid" => episode_guid}) do
+    # TODO: should we rewrite metalove to use the podcast guid instead of the
+    # podcast feed url? but then we need to guarantee / fallback to a generated
+    # guid.
+    {:ok, episode} = FeedParser.get_episode(feed_url, episode_guid)
+
+    json(conn, episode)
+  end
+
   def podcast_feed_url(conn, headers) do
     with {:ok, _} <- WordPress.validate_podcast(headers),
          {:ok, data} <- Podcast.feed_url(headers) do
