@@ -6,24 +6,20 @@ defmodule PublisherWeb.Controllers.API do
   alias Publisher.WordPress
   alias Publisher.WordPress.Episode
   alias Publisher.WordPress.Podcast
+  alias PublisherWeb.Controllers.Validator
 
-  def fetch_feed(conn, %{"url" => url}) do
-    {:ok, result} = FeedParser.parse_by_url(url)
-
-    json(conn, result)
+  def fetch_feed(conn, params) do
+    with_validation(conn, params, Validator.FetchFeed, fn conn, data ->
+      {:ok, result} = FeedParser.parse_by_url(data.url)
+      json(conn, result)
+    end)
   end
 
-  def fetch_feed(conn, _) do
-    send_resp(conn, 400, "Bad Request: url parameter missing")
-  end
-
-  def fetch_episode(conn, %{"feed_url" => feed_url, "episode_guid" => episode_guid}) do
-    # TODO: should we rewrite metalove to use the podcast guid instead of the
-    # podcast feed url? but then we need to guarantee / fallback to a generated
-    # guid.
-    {:ok, episode} = FeedParser.get_episode(feed_url, episode_guid)
-
-    json(conn, episode)
+  def fetch_episode(conn, params) do
+    with_validation(conn, params, Validator.FetchEpisode, fn conn, data ->
+      {:ok, episode} = FeedParser.get_episode(data.feed_url, data.episode_guid)
+      json(conn, episode)
+    end)
   end
 
   def podcast_feed_url(conn, headers) do
@@ -66,6 +62,18 @@ defmodule PublisherWeb.Controllers.API do
         conn
         |> put_status(418)
         |> json(%{status: "error"})
+    end
+  end
+
+  defp with_validation(conn, params, validator_mod, success_fn) do
+    case validator_mod.validate_params(params) do
+      {:ok, data} ->
+        success_fn.(conn, data)
+
+      {:error, changeset} ->
+        conn
+        |> put_status(:bad_request)
+        |> json(%{errors: validator_mod.changeset_to_errors(changeset)})
     end
   end
 end
