@@ -3,13 +3,13 @@ defmodule PublisherWeb.Controllers.Validator.FetchFeed do
   import Ecto.Changeset
 
   embedded_schema do
-    field(:url, :string)
+    field(:feed_url, :string)
   end
 
   def changeset(attrs) do
     %__MODULE__{}
-    |> cast(attrs, [:url])
-    |> validate_required([:url])
+    |> cast(attrs, [:feed_url])
+    |> validate_required([:feed_url])
   end
 
   def validate_params(params) do
