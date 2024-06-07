@@ -6,6 +6,7 @@ import routerSaga from '../sagas/router.saga';
 import persistSaga from '../sagas/persist.saga';
 import runtimeSaga from '../sagas/runtime.saga';
 import podcastSaga from '../sagas/podcast.saga';
+import importFeedSaga from '../sagas/import.saga';
 
 import selectors from './selectors';
 import actions from './actions';
@@ -33,6 +34,7 @@ const createStore = () => {
   sagaMiddleware.run(persistSaga);
   sagaMiddleware.run(runtimeSaga);
   sagaMiddleware.run(podcastSaga);
+  sagaMiddleware.run(importFeedSaga);
 
   return store as unknown as Store<State, any, any>;
 };

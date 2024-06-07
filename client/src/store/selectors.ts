@@ -6,6 +6,7 @@ import * as authentication from './authentication.store';
 import * as onboarding from './onboarding.store';
 import * as runtime from './runtime.store';
 import * as podcast from './podcast.store'
+import * as importFeed from './import.store'
 import { onboardingUpcomingEnabled } from './lib/validations';
 
 const root = {
@@ -14,6 +15,7 @@ const root = {
   onboarding: (state: State): onboarding.State => get(state, 'onboarding', {}),
   runtime: (state: State): runtime.State => get(state, 'runtime', {}),
   podcast: (state: State): podcast.State => get(state, 'podcast', {}),
+  importFeed: (state: State): importFeed.State => get(state, 'importFeed', {})
 };
 
 export default {
@@ -44,4 +46,8 @@ export default {
     explicit: createSelector(root.podcast, podcast.selectors.explicit),
     feed: createSelector(root.podcast, podcast.selectors.feed),
   },
+  importFeed: {
+    feedStatus: createSelector(root.importFeed, importFeed.selectors.feedStatus),
+    feedUrl: createSelector(root.importFeed, importFeed.selectors.feedUrl),
+  }
 };

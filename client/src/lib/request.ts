@@ -16,7 +16,12 @@ const headers = (): HeadersInit => {
   };
 };
 
-const parseResponse = <T>(response: Response): Promise<T> => response.json();
+const parseResponse = <T>(response: Response): Promise<T> => {
+  if (response.status < 400)
+    return response.json();
+  else
+    throw new Error('API call failed');
+}
 
 export const origin = (path: string): string => {
   const url = new URL(document.baseURI).origin;

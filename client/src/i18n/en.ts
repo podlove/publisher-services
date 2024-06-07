@@ -54,6 +54,18 @@ export default {
       },
       'import-feed': {
         title: 'Enter RSS-Feed',
+        headline: 'Move your Podcast to Podlove',
+        description: 
+          'Let\'s get started on bringing your existing podcast over to Podlove. Simply enter the RSS feed URL of your current podcast below.',
+        help: 'You can usually find the RSS feed URL in the settings or dashboard of your current hosting platform.',
+        'feed-url': 'Podcast feed url',
+        'feed-url-placeholder': 'Enter the feed url',
+        'success-head': 'Success!',
+        'success-info': 
+          'Your podcast has been detected at the provided URL. You can now proceed to the next step, where you\'ll be able to review and adjust the podcast details.',
+        'warning-head': 'Oops!',
+        'warning-info':
+          'We couldn\'t find a podcast at the provided URL. Don\'t worry, it happens sometimes! Here are a few things you can try:'
       },
       'import-podcast': {
         title: 'Check Podcast Data',
