@@ -3,9 +3,7 @@ defmodule Publisher.WordPress.Podcast do
 
   alias Publisher.WordPress.API
 
-  def feed_url(headers) do
-    site = get_header_value(headers,"wordpress-site")
-
+  def feed_url(site) do
     case Req.get(site <> "/wp-json/podlove/v2/podcast",
            connect_options: [transport_opts: [verify: :verify_none]]
          ) do
@@ -129,8 +127,8 @@ defmodule Publisher.WordPress.Podcast do
 
   defp extract_feed_url(response) do
     with %Req.Response{body: body} <- response,
-          feed_urls when is_list(feed_urls) <- Map.get(body, "feeds"),
-          feed_url <- process_list(feed_urls) do
+         feed_urls when is_list(feed_urls) <- Map.get(body, "feeds"),
+         feed_url <- process_list(feed_urls) do
       {:ok, feed_url}
     else
       _ -> {:error, "Feed url is missing or invalid"}
@@ -148,13 +146,6 @@ defmodule Publisher.WordPress.Podcast do
     |> case do
       nil -> list |> hd() |> Map.values() |> hd()
       result -> result |> Map.values() |> hd()
-    end
-  end
-
-  defp get_header_value(headers, header_item) do
-    case Enum.find(headers, fn {name, _} -> name == header_item end) do
-      nil -> nil
-      {_, value} -> value
     end
   end
 end
