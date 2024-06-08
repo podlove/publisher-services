@@ -68,7 +68,10 @@ export default {
           'We couldn\'t find a podcast at the provided URL. Don\'t worry, it happens sometimes! Here are a few things you can try:'
       },
       'import-podcast': {
-        title: 'Check Podcast Data',
+        title: 'Check Podcast information',
+        headline: 'Check your podcast data',
+        description:
+          'We\'ve detected the metadata for your podcast in your feed. Take a moment to review the details below. If everything looks good, you\'re one step closer to sharing your podcast with the world. If you need to make any adjustments, feel free to do so before proceeding to the next step.'
       },
       'import-episodes': {
         title: 'Import Episodes',

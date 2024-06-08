@@ -20,7 +20,7 @@ const parseResponse = <T>(response: Response): Promise<T> => {
   if (response.status < 400)
     return response.json();
   else
-    throw new Error('API call failed');
+    throw new Error('fetch returns an error');
 }
 
 export const origin = (path: string): string => {

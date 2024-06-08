@@ -8,6 +8,37 @@ export const convertImageToBase64 = (file: File, callback: (base64Image: string)
   reader.readAsDataURL(file);
 };
 
+export const convertBlobToBase64 = (blob: Blob, callback: (base64Image: string) => void) => {
+  const reader = new FileReader();
+  reader.onload = function (event: ProgressEvent<FileReader>) {
+    if (event.target && typeof event.target.result === 'string') {
+      callback(event.target.result);
+    }
+  };
+  reader.readAsDataURL(blob);
+};
+
+export function fetchImageToBlob(url: string, callback: (blob: Blob | null) => void): void {
+  fetch(url)
+    .then((response) => {
+      if (!response.ok) {
+        callback(null);
+        return;
+      }
+      return response.blob();
+    })
+    .then((blob) => {
+      if (blob) {
+        callback(blob);
+      } else {
+        callback(null);
+      }
+    })
+    .catch(() => {
+      callback(null);
+    });
+}
+
 export const extractImageType = (dataUrl: string): string | null => {
   const match = dataUrl.match(/^data:image\/(.*?);base64/);
   return match && typeof match[1] === 'string' ? match[1] : null;

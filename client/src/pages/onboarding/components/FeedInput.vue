@@ -31,7 +31,7 @@ const { t } = useI18n();
 const store = injectStore();
 
 const state = mapState({
-  feedStatus: selectors.importFeed.feedUrl,
+  feedStatus: selectors.importFeed.feedStatus,
   feedUrl: selectors.importFeed.feedUrl
 });
 
