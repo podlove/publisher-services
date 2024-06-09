@@ -24,7 +24,7 @@
         <h3 class="font-semibold leading-7 text-gray-900">
           {{ t('onboarding.steps.import-feed.warning-head') }}
         </h3>
-        <p v-if="state.feedStatus === 'invalid'" class="my-2 text-base leading-6 text-gray-600"> 
+        <p class="my-2 text-base leading-6 text-gray-600"> 
           {{ t('onboarding.steps.import-feed.warning-info') }}
         </p>
       </div>
