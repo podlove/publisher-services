@@ -23,32 +23,18 @@ defmodule Publisher.WordPress.Podcast do
   def save_podcast_data(headers, body) do
     Logger.log(:info, "Podcast.save_podcast_data")
 
-    name = body["name"]
-    description = body["description"]
-    author = body["author"]
-    language = body["language"]
-    category = body["category"]
-    explicit = body["explicit"]
-
-    podlove_body = %{
-      title: name,
-      summary: description,
-      author_name: author,
-      language: language,
-      category: category,
-      explicit: explicit
+    payload = %{
+      title: body.name,
+      summary: body.description,
+      author_name: body.author,
+      language: body.language,
+      category: body.category,
+      explicit: body.explicit
     }
-
-    # Logger.log(:info, "user: #{user}, endpoint: #{site}/wp-json/podlove/v2/podcast")
-
-    Logger.log(
-      :info,
-      "body { title: #{name}, summary: #{description}, author: #{author}, language: #{language}, category: #{category}, expicit: #{explicit} }"
-    )
 
     req = API.new(headers)
 
-    with {:ok, response} <- Req.post(req, url: "podlove/v2/podcast", json: podlove_body),
+    with {:ok, response} <- Req.post(req, url: "podlove/v2/podcast", json: payload),
          {:ok, _} <- extract_status(response) do
       {:ok, response.body}
     else

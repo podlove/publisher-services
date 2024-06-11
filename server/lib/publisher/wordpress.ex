@@ -9,23 +9,6 @@ defmodule Publisher.WordPress do
     end
   end
 
-  def ensure_podcast_data(
-        %{
-          "name" => _,
-          "description" => _,
-          "author" => _,
-          "language" => _,
-          "category" => _,
-          "explicit" => _
-        } = body
-      ) do
-    {:ok, body}
-  end
-
-  def ensure_podcast_data(_) do
-    {:error, "Missing podcast data"}
-  end
-
   defp ensure_podcast_image(%{"name" => _, "base64Data" => _, "type" => _} = body) do
     {:ok, body}
   end
