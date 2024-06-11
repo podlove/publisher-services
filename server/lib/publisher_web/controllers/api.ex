@@ -3,7 +3,6 @@ defmodule PublisherWeb.Controllers.API do
   import PublisherWeb.Controllers.Controller, only: [json: 2]
 
   alias Publisher.FeedParser
-  alias Publisher.WordPress
   alias Publisher.WordPress.Episode
   alias Publisher.WordPress.Podcast
   alias PublisherWeb.Controllers.Validator
@@ -47,14 +46,13 @@ defmodule PublisherWeb.Controllers.API do
 
   def save_podcast_image(conn, headers, body) do
     with_validation(conn, headers_to_map(headers), Validator.WordPressAuthHeaders, fn conn,
-                                                                                      _data ->
-      with {:ok, valid_body} <- WordPress.validate_podcast_image(body),
-           {:ok, info} <- Podcast.save_podcast_image(headers, valid_body) do
-        json(conn, info)
-      else
-        {:error, reason} ->
-          send_resp(conn, 400, "Error:  #{reason}")
-      end
+                                                                                      _headers_data ->
+      with_validation(conn, body, Validator.SavePodcastImage, fn conn, body_data ->
+        case Podcast.save_podcast_image(headers, body_data) do
+          {:ok, info} -> json(conn, info)
+          {:error, reason} -> send_resp(conn, 400, "Error:  #{reason}")
+        end
+      end)
     end)
   end
 

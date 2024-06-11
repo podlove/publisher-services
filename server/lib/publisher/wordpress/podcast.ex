@@ -43,9 +43,9 @@ defmodule Publisher.WordPress.Podcast do
   end
 
   def save_podcast_image(headers, body) do
-    base64_image = body["base64Data"]
-    image_name = body["name"]
-    image_type = body["type"]
+    base64_image = body.base64Data
+    image_name = body.name
+    image_type = body.type
 
     # Logger.log(:info, "user: #{user}, endpoint: #{site}/wp-json/wp/v2/media")
     Logger.log(:info, "body { name: #{image_name}, type: #{image_type} }")
