@@ -23,11 +23,9 @@ defmodule PublisherWeb.Controllers.API do
 
   def podcast_feed_url(conn, headers) do
     with_validation(conn, headers_to_map(headers), Validator.WordPressSiteHeader, fn conn, data ->
-      with {:ok, data} <- Podcast.feed_url(data[:"wordpress-site"]) do
-        json(conn, data)
-      else
-        {:error, reason} ->
-          send_resp(conn, 400, "Error:  #{reason}")
+      case Podcast.feed_url(data[:"wordpress-site"]) do
+        {:ok, data} -> json(conn, data)
+        {:error, reason} -> send_resp(conn, 400, "Error: #{reason}")
       end
     end)
   end
@@ -38,7 +36,7 @@ defmodule PublisherWeb.Controllers.API do
       with_validation(conn, body, Validator.SavePodcast, fn conn, body_data ->
         case Podcast.save_podcast_data(headers, body_data) do
           {:ok, data} -> json(conn, data)
-          {:error, reason} -> send_resp(conn, 400, "Error:  #{reason}")
+          {:error, reason} -> send_resp(conn, 400, "Error: #{reason}")
         end
       end)
     end)
@@ -50,7 +48,7 @@ defmodule PublisherWeb.Controllers.API do
       with_validation(conn, body, Validator.SavePodcastImage, fn conn, body_data ->
         case Podcast.save_podcast_image(headers, body_data) do
           {:ok, info} -> json(conn, info)
-          {:error, reason} -> send_resp(conn, 400, "Error:  #{reason}")
+          {:error, reason} -> send_resp(conn, 400, "Error: #{reason}")
         end
       end)
     end)
@@ -62,14 +60,8 @@ defmodule PublisherWeb.Controllers.API do
     with_validation(conn, headers_to_map(headers), Validator.WordPressAuthHeaders, fn conn,
                                                                                       _data ->
       case Episode.save(conn, params) do
-        :ok ->
-          json(conn, %{status: "success"})
-
-        _ ->
-          # TODO: find accurate status code / error description
-          conn
-          |> put_status(418)
-          |> json(%{status: "error"})
+        :ok -> json(conn, %{status: "success"})
+        _ -> send_resp(conn, 400, "Error: unable to save episode")
       end
     end)
   end
