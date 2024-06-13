@@ -23,6 +23,7 @@ defmodule Publisher.MixProject do
   defp deps do
     [
       {:bandit, "~> 1.0"},
+      {:ecto, "~> 3.11"},
       {:jason, "~> 1.2"},
       {:req, "~> 0.4.14"},
       {:metalove, git: "https://github.com/podlove/metalove", branch: "master"}
