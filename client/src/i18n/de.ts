@@ -56,7 +56,7 @@ export default {
         headline: 'Ziehe Deinen Podcast zu Podlove um',
         description: 
           'In den folgenden Schritten kannst Deinen bestehenden Podcast zu Podlove umziehen. Gib einfach die RSS-Feed-URL deines aktuellen Podcasts unten ein. Die RSS-Feed-URL ist ein spezieller Link, der den Inhalt deines Podcasts zusammenfasst und es Plattformen ermöglicht, diesen Inhalt zu lesen und anzuzeigen.',
-        help: 'Die RSS-Feed-URL findest Du normalerweise in den Einstellungen oder im Dashboard Deiner aktuellen Hosting-Plattform. Hinweise, wie Du die RSS-Feed-URL bei einzelnen Hosting-Plattformen finden kannst, haben wir und die Community in diesem Post im Sendegate zusammengefasst.',
+        help: 'Die RSS-Feed-URL findest Du normalerweise in den Einstellungen oder im Dashboard Deiner aktuellen Hosting-Plattform. Hinweise, wie Du die RSS-Feed-URL bei einzelnen Hosting-Plattformen finden kannst, haben wir und die Community in diesem <a class="support-link" href="https://sendegate.de/t/podcast-feed-bei-hosting-plattformen-finden-wiki/17116">Post</a> im Sendegate zusammengefasst.',
         'feed-url': 'Podcast feed url',
         'feed-url-placeholder': 'Podcast-Feed-URL eingeben',
         'success-head': 'Super!',
@@ -64,7 +64,12 @@ export default {
           'Dein Podcast wurde unter der angegebenen URL gefunden. Du kannst jetzt zum nächsten Schritt gehen. Dort kannst Du die Podcast-Details überprüfen und anpassen.',
         'warning-head': 'Oops!',
         'warning-info':
-          'Wir konnten Deinen Podcast unter der angegebenen URL nicht finden. Keine Sorge, das passiert manchmal! Hier sind ein paar Dinge, die Du überprüfen kannst'
+          'Wir konnten Deinen Podcast unter der angegebenen URL nicht finden. Keine Sorge, das passiert manchmal! Hier sind ein paar Dinge, die Du überprüfen kannst',
+        'warning-hints' : [
+          'Stelle sicher, dass die eingegebene URL korrekt ist.',
+          'Wenn Du nicht sicher bist, wo Du die RSS-Feed-URL finden kannst, schau in die Dokumentation oder im Support-Ressourcen Deines Hosting-Anbieters nach.',
+          'Du kannst auch Deinen Hosting-Anbieter direkt kontaktieren, um die korrekte RSS-Feed-URL zu erfragen.'
+        ]
       },
       'import-podcast': {
         title: 'Podcast Daten überprüfen',

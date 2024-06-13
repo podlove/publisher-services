@@ -13,7 +13,7 @@
           :value="state.feedUrl"
           id="feed-url"
           class="block flex-1 border-0 p-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
-          :class="{'bg-red-300' : isFeedInvalid}"
+          :class="backgroundColor"
         />
       </div>
     </div>
@@ -37,7 +37,15 @@ const state = mapState({
   feedUrl: selectors.importFeed.feedUrl
 });
 
-const isFeedInvalid = computed(() => state.feedStatus === 'invalid');
+const backgroundColor = computed(() => {
+  if (state.feedStatus === 'invalid') {
+    return 'bg-red-50';
+  }
+  if (state.feedStatus === 'valid') {
+    return 'bg-green-50';
+  }
+  return 'bg-white'
+});
 
 const changeFeedUrl = (event: Event) => {
   store.dispatch(
