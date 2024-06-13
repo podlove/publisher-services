@@ -15,7 +15,7 @@
       >
         <div
           class="absolute mb-4 z-10 left-0 top-0 w-full h-full flex justify-center items-center bg-opacity-40 hover:opacity-0 text-gray-500 opacity-100"
-          v-if="!state.imageData"
+          v-if="!state.imageData && !state.imageUrl"
         >
           <PhotoIcon class="mx-auto h-10 w-10 text-gray-300" aria-hidden="true" />
         </div>
@@ -74,16 +74,18 @@ const store = injectStore();
 
 const state = mapState({
   imageName: selectors.podcast.image_name,
-  imageData: selectors.podcast.image_data
+  imageData: selectors.podcast.image_data,
+  imageUrl: selectors.podcast.image_url
 });
 
 const backgroundStyle = computed(() => {
-  if (!state.imageData) {
+  if (!state.imageData && !state.imageUrl) {
     return {};
   }
 
+  const url = state.imageData || state.imageUrl;
   return {
-    'background-image': `url(${state.imageData})`,
+    'background-image': `url(${url})`,
     'background-size': 'cover',
     'background-position': 'center'
   };
