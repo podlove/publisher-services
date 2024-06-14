@@ -15,13 +15,14 @@ const headers = (): HeadersInit => {
     ...(site ? {'Wordpress-Site': site}: {})
   };
 };
-
-const parseResponse = <T>(response: Response): Promise<T> => {
-  if (response.status < 400)
-    return response.json();
-  else
-    throw new Error('fetch returns an error');
+const checkResponse = (response: Response): Response => {
+  if (!response.ok) {
+    throw new Error('API call failed!')
+  }
+  return response;
 }
+
+const parseResponse = <T>(response: Response): Promise<T> => { return response.json(); }
 
 export const origin = (path: string): string => {
   const url = new URL(document.baseURI).origin;
@@ -48,7 +49,9 @@ export const get = <T>(
   return fetch(`${origin}${pathname}${query ? '?' : ''}${query}`, {
     method: 'GET',
     headers: headers()
-  }).then(parseResponse) as Promise<T>;
+  })
+  .then(checkResponse)
+  .then(parseResponse) as Promise<T>;
 };
 
 export const post = <T>(
