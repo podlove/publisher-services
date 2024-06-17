@@ -5,7 +5,7 @@ import { get } from 'lodash-es'
 import { actions, selectors } from "../store";
 import { validateFeedUrlPayload } from "../store/import.store";
 import * as request from '../lib/request';
-import { findCategories } from '../types/categories.types'
+import { findCategories } from '../helper/categories'
 import { LanguageLocales } from '../types/locales.types';
 
 function* validateFeedUrl({payload}: Action<validateFeedUrlPayload>) {
