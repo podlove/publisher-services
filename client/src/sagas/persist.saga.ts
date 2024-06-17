@@ -5,7 +5,7 @@ import { actions } from '../store';
 
 function* persist() {
   const state = yield select(identity);
-  localStorage.save('REDUX_STATE', pick(state, ['authentication', 'podcast', 'onboarding']));
+  localStorage.save('REDUX_STATE', pick(state, ['authentication', 'podcast', 'onboarding', 'importFeed']));
 }
 
 export default function* routerSaga() {
@@ -24,6 +24,9 @@ export default function* routerSaga() {
       actions.podcast.setPodcastCoverName.toString(),
       actions.podcast.setPodcastCoverData.toString(),
       actions.podcast.setPodcastExplicit.toString(),
+
+      actions.importFeed.setFeedStatus.toString(),
+      actions.importFeed.setFeedUrl.toString(),
     ],
     persist
   );

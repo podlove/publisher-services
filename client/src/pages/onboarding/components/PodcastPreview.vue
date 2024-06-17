@@ -65,12 +65,22 @@ const state = mapState({
   author: selectors.podcast.author,
   imageName: selectors.podcast.image_name,
   imageData: selectors.podcast.image_data,
+  imageUrl: selectors.podcast.image_url,
   explicit: selectors.podcast.explicit,
   language: selectors.podcast.language,
   category: selectors.podcast.category
 });
 
-const podcastCover = computed(() => (state.imageData ? state.imageData : podcastCoverPlaceholder));
+const podcastCover = computed((): string => {
+  if (state.imageData) {
+    return state.imageData;
+  }
+  if (state.imageUrl) {
+    return state.imageUrl;
+  }
+  return podcastCoverPlaceholder;
+});
+
 const podcastName = computed(() => state.name || t('onboarding.preview.name'));
 const podcastAuthor = computed(() => state.author || t('onboarding.preview.author'));
 const podcastDescription = computed(() => {

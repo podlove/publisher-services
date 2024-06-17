@@ -8,6 +8,7 @@ export interface State {
   author: string | null;
   image_name: string | null;
   image_data: string | null;
+  image_url: string | null;
   language: locales | null;
   category: category | null;
   explicit: boolean | null;
@@ -20,6 +21,7 @@ export type setPodcastAuthorPayload = string;
 export type setPodcastCoverPayload = File;
 export type setPodcastCoverNamePayload = string | null;
 export type setPodcastCoverDataPayload = string | null;
+export type setPodcastCoverUrlPayload = string | null;
 export type removePodcastCoverPayload = void;
 export type setPodcastLanguagePayload = locales;
 export type setPodcastCategoryPayload = category;
@@ -37,6 +39,7 @@ export const actions = {
   setPodcastCover: createAction<setPodcastCoverPayload>('PODCAST/SET_COVER'),
   setPodcastCoverName: createAction<setPodcastCoverNamePayload>('PODCAST/SET_COVER_NAME'),
   setPodcastCoverData: createAction<setPodcastCoverDataPayload>('PODCAST/SET_COVER_DATA'),
+  setPodcastCoverUrl: createAction<setPodcastCoverUrlPayload>('PODCAST/SET_COVER_URL'),
   removePodcastCover: createAction<removePodcastCoverPayload>('PODCAST/REMOVE_COVER'),
   setPodcastExplicit: createAction<setPodcastExplicitPayload>('PODCAST/SET_EXPLICIT'),
   tooglePodcastExplicit: createAction<tooglePodcastExplicitPayload>('PODCAST/TOGGLE_EXPLICIT'),
@@ -73,7 +76,17 @@ export const reducer = handleActions<State, any>(
     [actions.setPodcastCoverData.toString()]: (
       state,
       { payload }: Action<setPodcastCoverDataPayload>
-    ) => ({ ...state, image_data: payload }),
+    ) => ({ ...state, 
+      image_data: payload,
+      image_url: null
+    }),
+    [actions.setPodcastCoverUrl.toString()]: (
+      state,
+      { payload }: Action<setPodcastCoverUrlPayload>
+    ) => ({ ...state, 
+      image_url: payload,
+      image_data: null
+    }),
     [actions.setPodcastExplicit.toString()]: (
       state,
       { payload }: Action<setPodcastExplicitPayload>
@@ -93,6 +106,7 @@ export const reducer = handleActions<State, any>(
     author: null,
     image_name: null,
     image_data: null,
+    image_url: null,
     language: null,
     category: null,
     explicit: null,
@@ -106,6 +120,7 @@ export const selectors = {
   author: (state: State) => state.author,
   image_name: (state: State) => state.image_name,
   image_data: (state: State) => state.image_data,
+  image_url: (state: State) => state.image_url,
   language: (state: State) => state.language,
   category: (state: State) => state.category,
   explicit: (state: State) => state.explicit,

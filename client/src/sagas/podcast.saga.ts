@@ -34,7 +34,7 @@ function* removeImage() {
 function* transferPodcast() {
   const currentStep = yield select(selectors.onboarding.current);
 
-  if (currentStep !== 'start-new-next-steps') {
+  if (currentStep.name !== 'start-new-next-steps') {
     return;
   }
 
