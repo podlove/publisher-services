@@ -29,6 +29,29 @@ function* getImageData({ payload }: Action<setPodcastCoverPayload>) {
 function* removeImage() {
   yield put(actions.podcast.setPodcastCoverData(null));
   yield put(actions.podcast.setPodcastCoverName(null));
+  yield put(actions.podcast.setPodcastCoverUrl(null));
+}
+
+function transferPodcastCoverFromData(imageData: string, imageName: string) {
+  const parts: string[] = imageData.split(',');
+  const imageType: string | null = extractImageType(parts[0]);
+
+  const image = {
+    base64Data: parts[1],
+    name: imageName,
+    type: imageType
+  };
+
+  request.post(request.origin('/api/v1/save_podcast_image'), { params: {}, data: image });
+}
+
+function transferPodcastCoverFromURL(imageUrl: string, podcastName: string) {
+  const name = podcastName.replace(/ /g, '-');
+  const image = {
+    name: name + '-cover',
+    url: imageUrl
+  }
+  request.post(request.origin('api/v1/move_podcast_image'), { params: {}, data: image });
 }
 
 function* transferPodcast() {
@@ -55,28 +78,15 @@ function* transferPodcast() {
   };
   yield request.post(request.origin('/api/v1/save_podcast'), { params: {}, data: podcast });
 
-  const image_data: string = yield select(selectors.podcast.image_data);
-  const image_name: string = yield select(selectors.podcast.image_name);
-  const image_url: string = yield select(selectors.podcast.image_url);
+  const imageData: string = yield select(selectors.podcast.image_data);
+  const imageName: string = yield select(selectors.podcast.image_name);
+  const imageUrl: string = yield select(selectors.podcast.image_url);
 
-  if (image_data) {
-    const parts: string[] = image_data.split(',');
-    const image_type: string | null = extractImageType(parts[0]);
-
-    const image = {
-      base64Data: parts[1],
-      name: image_name,
-      type: image_type
-    };
-
-    yield request.post(request.origin('/api/v1/save_podcast_image'), { params: {}, data: image });
+  if (imageData) {
+    yield transferPodcastCoverFromData(imageData, imageName)
   }
-  else if (image_url) {
-    const image = {
-      name: name + '-cover',
-      url: image_url
-    }
-    yield request.post(request.origin('api/v1/move_podcast_image'), { params: {}, data: image });
+  else if (imageUrl) {
+    yield transferPodcastCoverFromURL(imageUrl, name);
   }
 }
 
