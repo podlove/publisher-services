@@ -3,9 +3,7 @@ defmodule Publisher.WordPress.Podcast do
 
   alias Publisher.WordPress.API
 
-  def feed_url(headers) do
-    site = get_header_value(headers,"wordpress-site")
-
+  def feed_url(site) do
     case Req.get(site <> "/wp-json/podlove/v2/podcast",
            connect_options: [transport_opts: [verify: :verify_none]]
          ) do
@@ -25,32 +23,18 @@ defmodule Publisher.WordPress.Podcast do
   def save_podcast_data(headers, body) do
     Logger.log(:info, "Podcast.save_podcast_data")
 
-    name = body["name"]
-    description = body["description"]
-    author = body["author"]
-    language = body["language"]
-    category = body["category"]
-    explicit = body["explicit"]
-
-    podlove_body = %{
-      title: name,
-      summary: description,
-      author_name: author,
-      language: language,
-      category: category,
-      explicit: explicit
+    payload = %{
+      title: body.name,
+      summary: body.description,
+      author_name: body.author,
+      language: body.language,
+      category: body.category,
+      explicit: body.explicit
     }
-
-    # Logger.log(:info, "user: #{user}, endpoint: #{site}/wp-json/podlove/v2/podcast")
-
-    Logger.log(
-      :info,
-      "body { title: #{name}, summary: #{description}, author: #{author}, language: #{language}, category: #{category}, expicit: #{explicit} }"
-    )
 
     req = API.new(headers)
 
-    with {:ok, response} <- Req.post(req, url: "podlove/v2/podcast", json: podlove_body),
+    with {:ok, response} <- Req.post(req, url: "podlove/v2/podcast", json: payload),
          {:ok, _} <- extract_status(response) do
       {:ok, response.body}
     else
@@ -59,9 +43,9 @@ defmodule Publisher.WordPress.Podcast do
   end
 
   def save_podcast_image(headers, body) do
-    base64_image = body["base64Data"]
-    image_name = body["name"]
-    image_type = body["type"]
+    base64_image = body.base64Data
+    image_name = body.name
+    image_type = body.type
 
     # Logger.log(:info, "user: #{user}, endpoint: #{site}/wp-json/wp/v2/media")
     Logger.log(:info, "body { name: #{image_name}, type: #{image_type} }")
@@ -129,8 +113,8 @@ defmodule Publisher.WordPress.Podcast do
 
   defp extract_feed_url(response) do
     with %Req.Response{body: body} <- response,
-          feed_urls when is_list(feed_urls) <- Map.get(body, "feeds"),
-          feed_url <- process_list(feed_urls) do
+         feed_urls when is_list(feed_urls) <- Map.get(body, "feeds"),
+         feed_url <- process_list(feed_urls) do
       {:ok, feed_url}
     else
       _ -> {:error, "Feed url is missing or invalid"}
@@ -148,13 +132,6 @@ defmodule Publisher.WordPress.Podcast do
     |> case do
       nil -> list |> hd() |> Map.values() |> hd()
       result -> result |> Map.values() |> hd()
-    end
-  end
-
-  defp get_header_value(headers, header_item) do
-    case Enum.find(headers, fn {name, _} -> name == header_item end) do
-      nil -> nil
-      {_, value} -> value
     end
   end
 end
