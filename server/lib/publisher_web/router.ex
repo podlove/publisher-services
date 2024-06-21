@@ -26,6 +26,10 @@ defmodule PublisherWeb.Router do
     API.save_podcast_image(conn, conn.req_headers, conn.params)
   end
 
+  post "/api/v1/move_podcast_image" do
+    API.move_podcast_image(conn, conn.req_headers, conn.params)
+  end
+
   post "/api/v1/import_episode" do
     API.import_episode(conn, conn.params)
   end

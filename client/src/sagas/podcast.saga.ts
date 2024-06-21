@@ -34,7 +34,7 @@ function* removeImage() {
 function* transferPodcast() {
   const currentStep = yield select(selectors.onboarding.current);
 
-  if (currentStep.name !== 'start-new-next-steps') {
+  if (currentStep.name !== 'start-new-next-steps' && currentStep.name !== 'import-episodes') {
     return;
   }
 
@@ -45,12 +45,6 @@ function* transferPodcast() {
   const category: category = yield select(selectors.podcast.category);
   const explicit: boolean = yield select(selectors.podcast.explicit);
 
-  const image_data: string = yield select(selectors.podcast.image_data);
-  const image_name: string = yield select(selectors.podcast.image_name);
-
-  const parts: string[] = image_data.split(',');
-  const image_type: string | null = extractImageType(parts[0]);
-
   const podcast = {
     name: name,
     description: description,
@@ -59,15 +53,31 @@ function* transferPodcast() {
     category: category.api,
     explicit: explicit ? 'true' : 'false'
   };
-
-  const image = {
-    base64Data: parts[1],
-    name: image_name,
-    type: image_type
-  };
-
   yield request.post(request.origin('/api/v1/save_podcast'), { params: {}, data: podcast });
-  yield request.post(request.origin('/api/v1/save_podcast_image'), { params: {}, data: image });
+
+  const image_data: string = yield select(selectors.podcast.image_data);
+  const image_name: string = yield select(selectors.podcast.image_name);
+  const image_url: string = yield select(selectors.podcast.image_url);
+
+  if (image_data) {
+    const parts: string[] = image_data.split(',');
+    const image_type: string | null = extractImageType(parts[0]);
+
+    const image = {
+      base64Data: parts[1],
+      name: image_name,
+      type: image_type
+    };
+
+    yield request.post(request.origin('/api/v1/save_podcast_image'), { params: {}, data: image });
+  }
+  else if (image_url) {
+    const image = {
+      name: name + '-cover',
+      url: image_url
+    }
+    yield request.post(request.origin('api/v1/move_podcast_image'), { params: {}, data: image });
+  }
 }
 
 function* readFeedUrl() {
