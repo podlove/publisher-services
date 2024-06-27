@@ -52,10 +52,10 @@ defmodule PublisherWeb.Controllers.API do
     end)
   end
 
-  def move_podcast_image(conn, headers, body) do
+  def copy_podcast_image(conn, headers, body) do
     with_validation(conn, headers_to_map(headers), Validator.WordPressAuthHeaders, fn conn, _ ->
       with_validation(conn, body, Validator.MovePodcastImage, fn conn, body_data ->
-        case Podcast.move_podcast_image(headers, body_data) do
+        case Podcast.copy_podcast_image(headers, body_data) do
           {:ok, info} -> json(conn, info)
           {:error, reason} -> send_resp(conn, 400, "Error: #{reason}")
         end

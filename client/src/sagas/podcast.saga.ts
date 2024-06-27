@@ -51,7 +51,7 @@ function transferPodcastCoverFromURL(imageUrl: string, podcastName: string) {
     name: name + '-cover',
     url: imageUrl
   }
-  request.post(request.origin('api/v1/move_podcast_image'), { params: {}, data: image });
+  request.post(request.origin('api/v1/copy_podcast_image'), { params: {}, data: image });
 }
 
 function* transferPodcast() {

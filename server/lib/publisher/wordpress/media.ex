@@ -7,49 +7,26 @@ defmodule Publisher.WordPress.Media do
 
     {:ok, resp} = Req.get(url)
 
-    case Req.post(req,
-           url: "wp/v2/media",
-           headers: [
-             {"Content-Type", content_type(resp)},
-             {"Content-Disposition", "attachment; filename=\"" <> filename <> "\""}
-           ],
-           body: resp.body
-         ) do
-      {:ok, response} ->
-        with {:ok, _} <- extract_status(response),
-             {:ok, source_url} <- extract_source_url(response) do
-          {:ok, source_url}
-        else
-          error -> error
-        end
-
-      _ ->
-        {:error, "Media upload failed"}
+    with {:ok, response} <- upload_media(req, filename, content_type(resp), resp.body),
+         {:ok, _} <- extract_status(response),
+         {:ok, source_url} <- extract_source_url(response) do
+      {:ok, source_url}
+    else
+      error -> error
     end
   end
 
   def upload_image(req, image, image_name, image_type) do
     image_data = Base.decode64!(image)
 
-    case Req.post(req,
-           url: "wp/v2/media",
-           headers: [
-             {"Content-Type", "image/" <> image_type},
-             {"Content-Disposition", "attachment; filename=\"" <> image_name <> "\""}
-           ],
-           body: image_data
-         ) do
-      {:ok, response} ->
-        with {:ok, _} <- extract_status(response),
-             {:ok, source_url} <- extract_source_url(response) do
-          {:ok, source_url}
-        else
-          error -> error
-        end
-
-      _ ->
-        {:error, "Image upload failed"}
+    with {:ok, response} <- upload_media(req, image_name, image_type, image_data),
+         {:ok, _} <- extract_status(response),
+         {:ok, source_url} <- extract_source_url(response) do
+      {:ok, source_url}
+    else
+      error -> error
     end
+
   end
 
   defp content_type(resp) do
@@ -86,5 +63,16 @@ defmodule Publisher.WordPress.Media do
       _ ->
         {:error, "Image upload failed"}
     end
+  end
+
+  defp upload_media(req, content_name, content_type, content) do
+    Req.post(req,
+      url: "wp/v2/media",
+      headers: [
+        {"Content-Type", content_type},
+        {"Content-Disposition", "attachment; filename=\"" <> content_name <> "\""}
+      ],
+      body: content
+    )
   end
 end

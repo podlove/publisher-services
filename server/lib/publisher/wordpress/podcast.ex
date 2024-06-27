@@ -61,7 +61,7 @@ defmodule Publisher.WordPress.Podcast do
     end
   end
 
-  def move_podcast_image(headers, body) do
+  def copy_podcast_image(headers, body) do
     image_name = body.name
     image_url = body.url
 
