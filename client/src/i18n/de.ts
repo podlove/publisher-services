@@ -6,7 +6,7 @@ export default {
         select: 'Weiter',
         'start-new-podcast': 'Speichern & Weiter',
         'import-feed': 'Weiter',
-        'import-podcast': 'Weiter',
+        'import-podcast': 'Speichern & Weiter',
         'import-episodes': 'Importieren',
       }
     },
@@ -109,7 +109,8 @@ export default {
       'cover-photo': 'Podcast-Cover',
       'upload-file': 'Lade ein Bild hoch',
       'drag-and-drop': 'oder drag and drop',
-      'upload-image-description':
+      'cover-reset': 'Entfernen',
+      'podcast-upload-hint':
         'Lade ein Bild hoch, das Deinen Podcast visuell repräsentiert. Dieses Bild wird neben Deinem Podcast in Verzeichnissen und Plattformen angezeigt und hilft dabei, ihn hervorzuheben und Hörer:innen auf ihn aufmerksam zu machen.'
     },
     preview: {

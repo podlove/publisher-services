@@ -29,12 +29,35 @@ function* getImageData({ payload }: Action<setPodcastCoverPayload>) {
 function* removeImage() {
   yield put(actions.podcast.setPodcastCoverData(null));
   yield put(actions.podcast.setPodcastCoverName(null));
+  yield put(actions.podcast.setPodcastCoverUrl(null));
+}
+
+function transferPodcastCoverFromData(imageData: string, imageName: string) {
+  const parts: string[] = imageData.split(',');
+  const imageType: string | null = extractImageType(parts[0]);
+
+  const image = {
+    base64Data: parts[1],
+    name: imageName,
+    type: imageType
+  };
+
+  request.post(request.origin('/api/v1/save_podcast_image'), { params: {}, data: image });
+}
+
+function transferPodcastCoverFromURL(imageUrl: string, podcastName: string) {
+  const name = podcastName.replace(/ /g, '-');
+  const image = {
+    name: name + '-cover',
+    url: imageUrl
+  }
+  request.post(request.origin('api/v1/copy_podcast_image'), { params: {}, data: image });
 }
 
 function* transferPodcast() {
   const currentStep = yield select(selectors.onboarding.current);
 
-  if (currentStep.name !== 'start-new-next-steps') {
+  if (currentStep.name !== 'start-new-next-steps' && currentStep.name !== 'import-episodes') {
     return;
   }
 
@@ -45,12 +68,6 @@ function* transferPodcast() {
   const category: category = yield select(selectors.podcast.category);
   const explicit: boolean = yield select(selectors.podcast.explicit);
 
-  const image_data: string = yield select(selectors.podcast.image_data);
-  const image_name: string = yield select(selectors.podcast.image_name);
-
-  const parts: string[] = image_data.split(',');
-  const image_type: string | null = extractImageType(parts[0]);
-
   const podcast = {
     name: name,
     description: description,
@@ -59,15 +76,18 @@ function* transferPodcast() {
     category: category.api,
     explicit: explicit ? 'true' : 'false'
   };
-
-  const image = {
-    base64Data: parts[1],
-    name: image_name,
-    type: image_type
-  };
-
   yield request.post(request.origin('/api/v1/save_podcast'), { params: {}, data: podcast });
-  yield request.post(request.origin('/api/v1/save_podcast_image'), { params: {}, data: image });
+
+  const imageData: string = yield select(selectors.podcast.image_data);
+  const imageName: string = yield select(selectors.podcast.image_name);
+  const imageUrl: string = yield select(selectors.podcast.image_url);
+
+  if (imageData) {
+    yield transferPodcastCoverFromData(imageData, imageName)
+  }
+  else if (imageUrl) {
+    yield transferPodcastCoverFromURL(imageUrl, name);
+  }
 }
 
 function* readFeedUrl() {

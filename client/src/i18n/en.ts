@@ -6,7 +6,7 @@ export default {
         select: 'Next',
         'start-new-podcast': 'Save & Continue',
         'import-feed': 'Next',
-        'import-podcast': 'Next',
+        'import-podcast': 'Save & Continue',
         'import-episodes': 'Import',
       }
     },

@@ -37,7 +37,7 @@
           <Button
             variant="secondary"
             class="mb-3 w-32 text-center"
-            :disabled="state.imageData === null"
+            :disabled="state.imageData === null && state.imageUrl === null"
             @click="removeCover"
             ><span class="w-full text-center">{{ t('onboarding.podcast.cover-reset') }}</span>
           </Button>
