@@ -5,13 +5,13 @@ RUN corepack enable
 
 RUN mkdir -p /tmp/build
 
-COPY client /tmp/build
+COPY . /tmp/build
 
-WORKDIR /tmp/build
+WORKDIR /tmp/build/client
 
 RUN pnpm install && pnpm build
 
-RUN cp -r ./dist /app
+RUN cp -r /tmp/build/dist /app
 RUN rm -rf /tmp/build
 
 FROM caddy:latest
