@@ -1,0 +1,4 @@
+FROM ghcr.io/podlove/podlove-publisher:beta
+COPY ./integration/setup.sh /usr/local/bin/setup.sh
+
+ENTRYPOINT ["entry.sh"]

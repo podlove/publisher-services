@@ -1,0 +1,56 @@
+services:
+  caddy:
+    build:
+      dockerfile: ./integration/Dockerfile.caddy
+    restart: unless-stopped
+    ports:
+      - 8000:80
+    networks:
+      - app-network
+
+  backend:
+    container_name: backend
+    build:
+      dockerfile: ./integration/Dockerfile.backend
+    ports:
+      - 4000:4000
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  db:
+    image: mysql:8.3
+    restart: unless-stopped
+    container_name: db
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_ROOT_PASSWORD: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+    expose:
+      - 3306
+    networks:
+      - wordpress-network
+
+  wordpress:
+    build:
+      dockerfile: ./integration/Dockerfile.wordpress
+    ports:
+      - 8080:80
+    restart: always
+    depends_on:
+      - db
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_USER: admin
+      WORDPRESS_PASSWORD: admin
+    networks:
+      - wordpress-network
+
+networks:
+  app-network:
+  wordpress-network:
+
