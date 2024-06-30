@@ -17,4 +17,4 @@ RUN rm -rf /tmp/build
 FROM caddy:latest
 
 COPY --from=build /app /app
-COPY ./integration/Caddyfile /etc/caddy/Caddyfile
+COPY ./e2e/environment/Caddyfile /etc/caddy/Caddyfile

@@ -1,7 +1,8 @@
 services:
   caddy:
     build:
-      dockerfile: ./integration/Dockerfile.caddy
+      dockerfile: ./e2e/environment/Dockerfile.caddy
+      context: ../
     restart: unless-stopped
     ports:
       - 8000:80
@@ -11,7 +12,8 @@ services:
   backend:
     container_name: backend
     build:
-      dockerfile: ./integration/Dockerfile.backend
+      dockerfile: ./e2e/environment/Dockerfile.backend
+      context: ../
     ports:
       - 4000:4000
     restart: unless-stopped
@@ -34,7 +36,8 @@ services:
 
   wordpress:
     build:
-      dockerfile: ./integration/Dockerfile.wordpress
+      dockerfile: ./e2e/environment/Dockerfile.wordpress
+      context: ../
     ports:
       - 8080:80
     restart: always

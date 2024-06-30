@@ -1,0 +1,18 @@
+{
+  "name": "e2e",
+  "private": true,
+  "version": "1.0.0",
+  "description": "e2e tests for publisher-next",
+  "scripts": {
+    "test": "",
+    "dev": "cypress open"
+  },
+  "dependencies": {
+    "cypress": "13.12.0",
+    "typescript": "5.5.2",
+    "cypress-iframe": "1.0.1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
