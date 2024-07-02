@@ -9,7 +9,8 @@ defmodule PublisherWeb.Controllers.API do
 
   def fetch_feed(conn, params) do
     with_validation(conn, params, Validator.FetchFeed, fn conn, data ->
-      {:ok, result} = FeedParser.parse_by_url(data.feed_url)
+      {:ok, result} = FeedParser.parse_by_url(data.feed_url, force_refresh: data.force_refresh)
+
       json(conn, result)
     end)
   end

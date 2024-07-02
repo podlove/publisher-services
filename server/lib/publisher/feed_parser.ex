@@ -1,6 +1,6 @@
 defmodule Publisher.FeedParser do
-  def parse_by_url(url) do
-    podcast = Metalove.get_podcast(url)
+  def parse_by_url(url, force_refresh: force_refresh) do
+    podcast = Metalove.get_podcast(url, skip_cache: force_refresh)
     feed = Metalove.PodcastFeed.get_by_feed_url(podcast.main_feed_url)
 
     episodes =
