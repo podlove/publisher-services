@@ -27,7 +27,7 @@ function* fetchPodcastMetaData() {
   }
 
   const importFeedUrl = yield select(selectors.importFeed.feedUrl)
-  const response : any = yield request.get(request.origin('api/v1/fetch_feed'), {params: {feed_url: importFeedUrl}});
+  const response : any = yield request.get(request.origin('api/v1/fetch_feed'), {params: {feed_url: importFeedUrl, force_refresh: true}});
   const podcast = get(response, ['podcast'], null);
 
   if (!podcast) {
