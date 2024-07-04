@@ -7,7 +7,7 @@ export default {
         'start-new-podcast': 'Speichern & Weiter',
         'import-feed': 'Weiter',
         'import-podcast': 'Speichern & Weiter',
-        'import-episodes': 'Importieren',
+        'import-episodes': 'Import starten',
       }
     },
     steps: {
@@ -79,6 +79,9 @@ export default {
       },
       'import-episodes': {
         title: 'Episoden Importieren',
+        headline: 'Episoden importieren',
+        description:
+          'Wir haben die folgenden { count } Episoden in Deinem bestehenden Podcast gefunden. Bitte nimm Dir einen Moment Zeit, um die Liste zu überprüfen. Wenn alles passt, klicke auf \'Import starten\'. Bitte schließe Dein Broswerfenster nicht, bis der Import abgeschlossen ist.'
       },
       'import-next-steps': {
         title: 'Nächste Schritte',

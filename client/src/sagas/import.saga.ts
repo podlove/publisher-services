@@ -1,4 +1,4 @@
-import { takeEvery, put, select, call, throttle } from "redux-saga/effects";
+import { takeEvery, put, select, all, throttle } from "redux-saga/effects";
 import { Action } from 'redux-actions';
 import { get } from 'lodash-es'
 
@@ -57,7 +57,42 @@ function* fetchPodcastMetaData() {
 
 }
 
+function* fetchEpisodes() {
+  const currentStep = yield select(selectors.onboarding.current);
+
+  if (currentStep.name !== 'import-episodes') {
+    return;
+  }
+
+  const importFeedUrl = yield select(selectors.importFeed.feedUrl);
+  const response: any = yield request.get(request.origin('api/v1/fetch_feed'), {
+    params: { feed_url: importFeedUrl }
+  });
+  const episodes = get(response, ['episodes'], null);
+
+  if (!episodes) {
+    return;
+  }
+
+  yield all(
+    episodes.map((element: any) =>
+      put(
+        actions.episodes.addEpisode({
+          title: element.title,
+          uuid: element.uuid,
+          pub_date: element.pub_date,
+          enclosure: {
+            url: element.enclosure.url,
+            type: element.enclosure.type
+          }
+        })
+      )
+    )
+  );
+}
+
 export default function* importFeedSaga() {
   yield throttle(500, actions.importFeed.validateFeedUrl.toString(), validateFeedUrl);
   yield takeEvery(actions.onboarding.next.toString(), fetchPodcastMetaData);
+  yield takeEvery(actions.onboarding.next.toString(), fetchEpisodes);
 }

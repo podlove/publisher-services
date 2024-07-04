@@ -7,6 +7,7 @@ import * as onboarding from './onboarding.store';
 import * as runtime from './runtime.store';
 import * as podcast from './podcast.store'
 import * as importFeed from './import.store'
+import * as episodes from './episode.store'
 import { onboardingUpcomingEnabled } from './lib/validations';
 
 const root = {
@@ -15,7 +16,8 @@ const root = {
   onboarding: (state: State): onboarding.State => get(state, 'onboarding', {}),
   runtime: (state: State): runtime.State => get(state, 'runtime', {}),
   podcast: (state: State): podcast.State => get(state, 'podcast', {}),
-  importFeed: (state: State): importFeed.State => get(state, 'importFeed', {})
+  importFeed: (state: State): importFeed.State => get(state, 'importFeed', {}),
+  episodes: (state: State): episodes.State => get(state, 'episodes', {}),
 };
 
 export default {
@@ -50,5 +52,8 @@ export default {
   importFeed: {
     feedStatus: createSelector(root.importFeed, importFeed.selectors.feedStatus),
     feedUrl: createSelector(root.importFeed, importFeed.selectors.feedUrl),
+  },
+  episodes: {
+    list: createSelector(root.episodes, episodes.selectors.episodes),
   }
 };

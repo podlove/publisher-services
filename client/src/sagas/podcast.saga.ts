@@ -76,17 +76,17 @@ function* transferPodcast() {
     category: category.api,
     explicit: explicit ? 'true' : 'false'
   };
-  yield request.post(request.origin('/api/v1/save_podcast'), { params: {}, data: podcast });
+  // yield request.post(request.origin('/api/v1/save_podcast'), { params: {}, data: podcast });
 
   const imageData: string = yield select(selectors.podcast.image_data);
   const imageName: string = yield select(selectors.podcast.image_name);
   const imageUrl: string = yield select(selectors.podcast.image_url);
 
   if (imageData) {
-    yield transferPodcastCoverFromData(imageData, imageName)
+    // yield transferPodcastCoverFromData(imageData, imageName)
   }
   else if (imageUrl) {
-    yield transferPodcastCoverFromURL(imageUrl, name);
+    // yield transferPodcastCoverFromURL(imageUrl, name);
   }
 }
 

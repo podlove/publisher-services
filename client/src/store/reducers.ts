@@ -5,6 +5,7 @@ import { reducer as onboarding } from './onboarding.store';
 import { reducer as runtime } from './runtime.store';
 import { reducer as podcast } from './podcast.store';
 import { reducer as importFeed } from './import.store';
+import { reducer as episodes } from './episode.store';
 
 export default combineReducers({
   router,
@@ -13,4 +14,5 @@ export default combineReducers({
   runtime,
   podcast,
   importFeed,
+  episodes,
 });

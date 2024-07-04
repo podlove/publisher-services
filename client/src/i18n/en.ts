@@ -7,7 +7,7 @@ export default {
         'start-new-podcast': 'Save & Continue',
         'import-feed': 'Next',
         'import-podcast': 'Save & Continue',
-        'import-episodes': 'Import',
+        'import-episodes': 'Start Import',
       }
     },
     steps: {
@@ -81,6 +81,9 @@ export default {
       },
       'import-episodes': {
         title: 'Import Episodes',
+        headline: 'Import Your Episodes',
+        description:
+          'We\'ve found { count } episodes from your existing podcast. Please take a moment to review them here. When you\'re ready, click \'Start Import\' to begin the process.Your Browser has to stay open during the process.'
       },
       'import-next-steps': {
         title: 'Next Steps',
