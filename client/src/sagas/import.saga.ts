@@ -79,7 +79,7 @@ function* fetchEpisodes() {
       put(
         actions.episodes.addEpisode({
           title: element.title,
-          uuid: element.uuid,
+          uuid: element.guid,
           pub_date: element.pub_date,
           enclosure: {
             url: element.enclosure.url,

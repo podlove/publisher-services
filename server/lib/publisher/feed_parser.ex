@@ -10,7 +10,7 @@ defmodule Publisher.FeedParser do
         %{
           title: episode.title,
           guid: episode.guid,
-          pub_data: episode.pub_date,
+          pub_date: episode.pub_date,
           enclosure: episode.enclosure
         }
       end)
