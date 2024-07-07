@@ -1,0 +1,20 @@
+FROM node:20 as build
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+
+RUN mkdir -p /tmp/build
+
+COPY . /tmp/build
+
+WORKDIR /tmp/build/client
+
+RUN pnpm install && pnpm build
+
+RUN cp -r /tmp/build/dist /app
+RUN rm -rf /tmp/build
+
+FROM caddy:latest
+
+COPY --from=build /app /app
+COPY ./e2e/environment/Caddyfile /etc/caddy/Caddyfile

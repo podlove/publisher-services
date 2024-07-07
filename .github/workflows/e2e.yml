@@ -1,0 +1,40 @@
+name: E2E Tests
+on:
+  pull_request
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-e2e
+  cancel-in-progress: true
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: 8
+          run_install: false
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+          cache-dependency-path: './e2e/pnpm-lock.yaml'
+
+      - uses: hoverkraft-tech/compose-action@v2.0.1
+        with:
+          compose-file: './e2e/docker-compose.yml'
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          wait-on: 'http://localhost:8080'
+          working-directory: './e2e'
+          record: true
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

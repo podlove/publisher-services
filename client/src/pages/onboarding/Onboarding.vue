@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full flex flex-col">
+  <div class="h-full flex flex-col" :data-test="`step-${state.current.name}`">
     <Steps :steps="state.steps" v-if="state.current && state.current.visible"></Steps>
     <div class="p-4 sm:px-6 xl:pl-6">
       <component :is="stepComponents[state.current.name]" />
