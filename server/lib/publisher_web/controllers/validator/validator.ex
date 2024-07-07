@@ -16,8 +16,8 @@ defmodule PublisherWeb.Controllers.Validator.Validator do
           %Ecto.Changeset{valid?: false} = changeset ->
             {:error, changeset}
 
-          %Ecto.Changeset{valid?: true, changes: changes} ->
-            {:ok, changes}
+          %Ecto.Changeset{valid?: true} = changeset ->
+            {:ok, Ecto.Changeset.apply_changes(changeset)}
         end
       end
 

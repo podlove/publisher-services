@@ -11,7 +11,7 @@ defmodule PublisherTest do
     end)
 
     url = "https://feeds.podlovers.org/mp3"
-    {:ok, result} = FeedParser.parse_by_url(url)
+    {:ok, result} = FeedParser.parse_by_url(url, force_refresh: true)
 
     assert result.podcast.title == "Podlovers"
     assert result.podcast.description == "Der Podlove Entwickler:innen Podcast"
@@ -42,7 +42,7 @@ defmodule PublisherTest do
 
     url = "https://feeds.podlovers.org/mp3"
     guid = "podlove-2024-04-06t12:42:13+00:00-1cbdd937193946a"
-    {:ok, _result} = FeedParser.parse_by_url(url)
+    {:ok, _result} = FeedParser.parse_by_url(url, force_refresh: true)
     {:ok, %{episode: episode}} = FeedParser.get_episode(url, guid)
 
     assert episode.guid == guid

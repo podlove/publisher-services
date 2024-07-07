@@ -1,4 +1,4 @@
-defmodule PublisherWeb.Controllers.Validator.MovePodcastImage do
+defmodule PublisherWeb.Controllers.Validator.CopyPodcastImage do
   use PublisherWeb.Controllers.Validator.Validator
 
   embedded_schema do

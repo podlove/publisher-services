@@ -39,6 +39,11 @@ dependencies:
     specifier: 4.3.0
     version: 4.3.0(vue@3.4.19)
 
+optionalDependencies:
+  '@rollup/rollup-linux-arm64-gnu':
+    specifier: 4.18.0
+    version: 4.18.0
+
 devDependencies:
   '@types/node':
     specifier: 20.12.7
@@ -487,6 +492,14 @@ packages:
     os: [linux]
     requiresBuild: true
     dev: true
+    optional: true
+
+  /@rollup/rollup-linux-arm64-gnu@4.18.0:
+    resolution: {integrity: sha512-rJ5D47d8WD7J+7STKdCUAgmQk49xuFrRi9pZkWoRD1UeSMakbcepWXPF8ycChBoAqs1pb2wzvbY6Q33WmN2ftw==}
+    cpu: [arm64]
+    os: [linux]
+    requiresBuild: true
+    dev: false
     optional: true
 
   /@rollup/rollup-linux-arm64-musl@4.12.1:
