@@ -7,7 +7,7 @@ export default {
         'start-new-podcast': 'Speichern & Weiter',
         'import-feed': 'Weiter',
         'import-podcast': 'Speichern & Weiter',
-        'import-episodes': 'Importieren',
+        'import-episodes': 'Import starten',
       }
     },
     steps: {
@@ -54,13 +54,13 @@ export default {
       'import-feed': {
         title: 'RSS-Feed Eingabe',
         headline: 'Ziehe Deinen Podcast zu Podlove um',
-        description: 
+        description:
           'In den folgenden Schritten kannst Deinen bestehenden Podcast zu Podlove umziehen. Gib einfach die RSS-Feed-URL deines aktuellen Podcasts unten ein. Die RSS-Feed-URL ist ein spezieller Link, der den Inhalt deines Podcasts zusammenfasst und es Plattformen ermöglicht, diesen Inhalt zu lesen und anzuzeigen.',
         help: 'Die RSS-Feed-URL findest Du normalerweise in den Einstellungen oder im Dashboard Deiner aktuellen Hosting-Plattform. Hinweise, wie Du die RSS-Feed-URL bei einzelnen Hosting-Plattformen finden kannst, haben wir und die Community in diesem <a class="support-link" href="https://sendegate.de/t/podcast-feed-bei-hosting-plattformen-finden-wiki/17116">Post</a> im Sendegate zusammengefasst.',
         'feed-url': 'Podcast feed url',
         'feed-url-placeholder': 'Podcast-Feed-URL eingeben',
         'success-head': 'Super!',
-        'success-info': 
+        'success-info':
           'Dein Podcast wurde unter der angegebenen URL gefunden. Du kannst jetzt zum nächsten Schritt gehen. Dort kannst Du die Podcast-Details überprüfen und anpassen.',
         'warning-head': 'Oops!',
         'warning-info':
@@ -79,6 +79,10 @@ export default {
       },
       'import-episodes': {
         title: 'Episoden Importieren',
+        headline: 'Episoden importieren',
+        description:
+          'Wir haben die folgenden { count } Episoden in Deinem bestehenden Podcast gefunden. Bitte nimm Dir einen Moment Zeit, um die Liste zu überprüfen. Wenn alles passt, klicke auf \'Import starten\'. Bitte schließe Dein Broswerfenster nicht, bis der Import abgeschlossen ist.',
+        missingReleaseDate: "Kein Erscheinungsdatum gefunden"
       },
       'import-next-steps': {
         title: 'Nächste Schritte',

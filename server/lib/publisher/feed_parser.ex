@@ -9,7 +9,9 @@ defmodule Publisher.FeedParser do
       |> Enum.map(fn episode ->
         %{
           title: episode.title,
-          guid: episode.guid
+          guid: episode.guid,
+          pub_date: episode.pub_date,
+          enclosure: episode.enclosure
         }
       end)
 

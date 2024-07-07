@@ -7,7 +7,7 @@ export default {
         'start-new-podcast': 'Save & Continue',
         'import-feed': 'Next',
         'import-podcast': 'Save & Continue',
-        'import-episodes': 'Import',
+        'import-episodes': 'Start Import',
       }
     },
     steps: {
@@ -55,14 +55,14 @@ export default {
       'import-feed': {
         title: 'Enter RSS-Feed',
         headline: 'Move your Podcast to Podlove',
-        description: 
+        description:
           'Let\'s get started on bringing your existing podcast over to Podlove. Simply enter the RSS feed URL of your current podcast below.',
-        help: 
+        help:
           'You can usually find the RSS feed URL in the settings or dashboard of your current hosting platform. For more detailed instructions on finding your RSS feed URL with popular hosting platforms, check out this <a class="support-link" href="https://sendegate.de/t/podcast-feed-bei-hosting-plattformen-finden-wiki/17116">post</a> in the Sendegate.',
         'feed-url': 'Podcast feed url',
         'feed-url-placeholder': 'Enter the feed url',
         'success-head': 'Success!',
-        'success-info': 
+        'success-info':
           'Your podcast has been detected at the provided URL. You can now proceed to the next step, where you\'ll be able to review and adjust the podcast details.',
         'warning-head': 'Oops!',
         'warning-info':
@@ -81,6 +81,10 @@ export default {
       },
       'import-episodes': {
         title: 'Import Episodes',
+        headline: 'Import Your Episodes',
+        description:
+          'We\'ve found { count } episodes from your existing podcast. Please take a moment to review them here. When you\'re ready, click \'Start Import\' to begin the process. Your Browser has to stay open during the process.',
+        missingReleaseDate: "no release date found"
       },
       'import-next-steps': {
         title: 'Next Steps',

@@ -24,8 +24,8 @@ dependencies:
     specifier: 1.3.0
     version: 1.3.0
   redux-vuex:
-    specifier: 3.0.2
-    version: 3.0.2(redux@5.0.1)(vue@3.4.19)
+    specifier: 3.1.2
+    version: 3.1.2(redux@5.0.1)(vue@3.4.19)
   reselect:
     specifier: 5.1.0
     version: 5.1.0
@@ -1273,10 +1273,10 @@ packages:
       '@redux-saga/core': 1.3.0
     dev: false
 
-  /redux-vuex@3.0.2(redux@5.0.1)(vue@3.4.19):
-    resolution: {integrity: sha512-V4ZYQ23VXgoxM2MJOcuuIqhWjO5eaGlv157fFE2KD6s0IttX1iLbqL2W+rwXdaLR7dfMawmLa7H+s2TLscyQUg==}
+  /redux-vuex@3.1.2(redux@5.0.1)(vue@3.4.19):
+    resolution: {integrity: sha512-ge4wh2z1v3cYiNE8s7/rSvy3YIe27sFXcHRrWjYXw40q8e/7WdJZXV1gqvEnZTvJmr9T9Fb6f5owaQOnSKtD2w==}
     peerDependencies:
-      redux: 4.x
+      redux: 5.x
       vue: 3.x
     dependencies:
       get-value: 3.0.1
