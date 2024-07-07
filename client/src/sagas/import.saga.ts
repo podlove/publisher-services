@@ -74,6 +74,8 @@ function* fetchEpisodes() {
     return;
   }
 
+  yield put(actions.episodes.clearEpisodes());
+
   yield all(
     episodes.map((element: any) =>
       put(

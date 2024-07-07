@@ -11,15 +11,19 @@ export interface State {
 
 export type addEpisodePayload = Episode;
 export type removeEpisodePayload = string;
+export type clearEpisodesPayload = void;
 
 export const actions = {
   addEpisode: createAction<addEpisodePayload>('EPISODES/ADD_EPISODE'),
-  removeEpisode: createAction<removeEpisodePayload>('EPISODES/REMOVE_EPISODE')
+  removeEpisode: createAction<removeEpisodePayload>('EPISODES/REMOVE_EPISODE'),
+  clearEpisodes: createAction<clearEpisodesPayload>('EPISODES/CLEAR_EPISODES')
 };
 
 export const reducer = handleActions<State, any>(
   {
     [actions.addEpisode.toString()]: (state, { payload }: Action<addEpisodePayload>): State => {
+      // Check if the new episode exists in the list
+      const episodes = state.episodes.filter((item) => item.episode.uuid !== payload.uuid);
       const episode = {
         episode: payload,
         importStarted: false,
@@ -27,13 +31,17 @@ export const reducer = handleActions<State, any>(
       };
       return {
         ...state,
-        episodes: [...state.episodes, episode]
+        episodes: [...episodes, episode]
       };
     },
     [actions.removeEpisode.toString()]: (state, { payload }: Action<removeEpisodePayload>) => ({
       ...state,
       episodes: state.episodes.filter((item) => item.episode.uuid !== payload)
-    })
+    }),
+    [actions.clearEpisodes.toString()]: (state, { payload }: Action<clearEpisodesPayload>) => ({
+      ...state,
+      episodes: []
+    }),
   },
   {
     episodes: []
