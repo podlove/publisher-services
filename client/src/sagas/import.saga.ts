@@ -1,20 +1,22 @@
-import { takeEvery, put, select, all, throttle } from "redux-saga/effects";
+import { takeEvery, put, select, all, throttle } from 'redux-saga/effects';
 import { Action } from 'redux-actions';
-import { get } from 'lodash-es'
+import { get } from 'lodash-es';
 
-import { actions, selectors } from "../store";
-import { validateFeedUrlPayload } from "../store/import.store";
+import { actions, selectors } from '../store';
+import { validateFeedUrlPayload } from '../store/import.store';
 import * as request from '../lib/request';
-import { findCategories } from '../helper/categories'
+import { findCategories } from '../helper/categories';
 import { LanguageLocales } from '../types/locales.types';
+import { Episode } from '../types/episode.types';
 
-function* validateFeedUrl({payload}: Action<validateFeedUrlPayload>) {
+function* validateFeedUrl({ payload }: Action<validateFeedUrlPayload>) {
   yield put(actions.importFeed.setFeedUrl(payload));
   try {
-    const response : any = yield request.get(request.origin('api/v1/fetch_feed'), {params: {feed_url: payload}});
+    yield request.get(request.origin('api/v1/fetch_feed'), {
+      params: { feed_url: payload }
+    });
     yield put(actions.importFeed.setFeedStatus('valid'));
-    }
-  catch (error) {
+  } catch (error) {
     yield put(actions.importFeed.setFeedStatus('invalid'));
   }
 }
@@ -26,24 +28,26 @@ function* fetchPodcastMetaData() {
     return;
   }
 
-  const importFeedUrl = yield select(selectors.importFeed.feedUrl)
-  const response : any = yield request.get(request.origin('api/v1/fetch_feed'), {params: {feed_url: importFeedUrl}});
+  const importFeedUrl = yield select(selectors.importFeed.feedUrl);
+  const response: any = yield request.get(request.origin('api/v1/fetch_feed'), {
+    params: { feed_url: importFeedUrl }
+  });
   const podcast = get(response, ['podcast'], null);
 
   if (!podcast) {
     return;
   }
 
-  yield put( actions.podcast.setPodcastName(get(podcast, ['title'], '')) );
-  yield put( actions.podcast.setPodcastDescription(get(podcast, ['description'], '')) );
-  yield put( actions.podcast.setPodcastAuthor(get(podcast, ['owner', 'name'], '')));
-  yield put( actions.podcast.setPodcastExplicit(get(podcast, ['explicit'], '')));
-  yield put( actions.podcast.setPodcastCoverUrl(get(podcast, ['image'], '')));
+  yield put(actions.podcast.setPodcastName(get(podcast, ['title'], '')));
+  yield put(actions.podcast.setPodcastDescription(get(podcast, ['description'], '')));
+  yield put(actions.podcast.setPodcastAuthor(get(podcast, ['owner', 'name'], '')));
+  yield put(actions.podcast.setPodcastExplicit(get(podcast, ['explicit'], '')));
+  yield put(actions.podcast.setPodcastCoverUrl(get(podcast, ['image'], '')));
 
   const lang = get(podcast, ['language'], '');
   const language = LanguageLocales.find((item) => item.tag === lang);
   if (language) {
-    yield put( actions.podcast.setPodcastLanguage(language))
+    yield put(actions.podcast.setPodcastLanguage(language));
   }
 
   const categories = get(podcast, ['categories'], null);
@@ -52,9 +56,8 @@ function* fetchPodcastMetaData() {
   }
   const category = findCategories(categories);
   if (category) {
-    yield put( actions.podcast.setPodcastCategory(category))
+    yield put(actions.podcast.setPodcastCategory(category));
   }
-
 }
 
 function* fetchEpisodes() {
@@ -77,15 +80,15 @@ function* fetchEpisodes() {
   yield put(actions.episodes.clearEpisodes());
 
   yield all(
-    episodes.map((element: any) =>
+    episodes.map((episode: Episode) =>
       put(
         actions.episodes.addEpisode({
-          title: element.title,
-          uuid: element.guid,
-          pub_date: element.pub_date,
+          title: get(episode, 'title', null),
+          uuid: get(episode, 'guid', null),
+          pub_date: get(episode, 'pub_date', null),
           enclosure: {
-            url: element.enclosure.url,
-            type: element.enclosure.type
+            url: get(episode, ['enclosure', 'url'], null),
+            type: get(episode, ['enclosure', 'type'], null),
           }
         })
       )

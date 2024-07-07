@@ -3,14 +3,18 @@
     {{ t('onboarding.steps.import-episodes.headline') }}
   </h2>
   <p class="my-2 text-sm leading-6 text-gray-600">
-    {{ t('onboarding.steps.import-episodes.description', { count: numOfEpisodes }) }}
+    {{ t('onboarding.steps.import-episodes.description', { count: state.episodes.length }) }}
   </p>
   <div class="flex flex-col md:flex-row">
     <!-- Left column area -->
     <div class="w-full max-w-screen-xl sm:mb-4">
-      <div class="list-height overflow-y-auto">
+      <div class="list-height overflow-y-auto max-h-[70vh]">
         <ul class="h-full divide-y divide-gray-200">
-          <li v-for="item in state.episodes" :key="item.episode.uuid" class="flex items-center justify-between gap-x-6 py-5">
+          <li
+            v-for="item in state.episodes"
+            :key="item.episode.uuid"
+            class="flex items-center justify-between gap-x-6 py-5"
+          >
             <EpisodeListItem :episode="item.episode"></EpisodeListItem>
           </li>
         </ul>
@@ -29,21 +33,16 @@
 import { mapState } from 'redux-vuex';
 import { useI18n } from 'vue-i18n';
 import { selectors } from '../../../../store';
-import { computed } from 'vue';
+import { Episode } from '../../../../types/episode.types';
+
 import EpisodeListItem from '../../components/EpisodeListItem.vue';
 
 const { t } = useI18n();
 
-const state = mapState({
+const state = mapState<{ episodes: { episode: Episode }[] }>({
   episodes: selectors.episodes.list
 });
-
-const numOfEpisodes = computed<Number>(() => state.episodes.length);
-
 </script>
 
 <style>
-.list-height {
-  max-height: 70vh;
-}
 </style>

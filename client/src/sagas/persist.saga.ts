@@ -5,7 +5,10 @@ import { actions } from '../store';
 
 function* persist() {
   const state = yield select(identity);
-  localStorage.save('REDUX_STATE', pick(state, ['authentication', 'podcast', 'onboarding', 'importFeed', 'episodes']));
+  localStorage.save(
+    'REDUX_STATE',
+    pick(state, ['authentication', 'podcast', 'onboarding', 'importFeed', 'episodes'])
+  );
 }
 
 export default function* routerSaga() {
@@ -29,7 +32,7 @@ export default function* routerSaga() {
       actions.importFeed.setFeedUrl.toString(),
 
       actions.episodes.addEpisode.toString(),
-      actions.episodes.removeEpisode.toString(),
+      actions.episodes.removeEpisode.toString()
     ],
     persist
   );

@@ -20,24 +20,23 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { type Episode } from '../../../types/episode.types'
-import { XCircleIcon, CheckCircleIcon } from '@heroicons/vue/20/solid'
+import { useI18n } from 'vue-i18n';
+import { XCircleIcon, CheckCircleIcon } from '@heroicons/vue/20/solid';
+import { type Episode } from '../../../types/episode.types';
+const { t } = useI18n();
 
 const props = defineProps<{ episode: Episode }>();
-const enclosureValid = computed(() => {
-  if (props.episode.enclosure.url && props.episode.enclosure.url.length > 0)
-    return true;
-  return false;
-});
+const enclosureValid = computed(
+  () => props.episode.enclosure.url && props.episode.enclosure.url.length > 0
+);
 const publicationDate = computed(() => {
   if (!props.episode.pub_date) {
-    return "no release date found";
+    return t('steps.import-episodes.missing.missingReleaseDate');
   }
   if (isNaN(Date.parse(props.episode.pub_date))) {
-    return "no release date found";
+    return t('steps.import-episodes.missing.missingReleaseDate');
   }
-  const timestamp = Date.parse(props.episode.pub_date)
+  const timestamp = Date.parse(props.episode.pub_date);
   return new Date(timestamp).toLocaleDateString();
 });
-
 </script>
