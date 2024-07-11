@@ -1,6 +1,8 @@
 import { Action, createAction, handleActions } from 'redux-actions';
-import { last, first } from 'lodash-es';
+import { last, first, get } from 'lodash-es';
 import { type Step } from '../types/step.types';
+import * as feed from './feed.store';
+import * as podcast from './podcast.store';
 
 type SetupType = 'start-new' | 'import' | null
 
@@ -10,6 +12,8 @@ export interface State {
   steps: {
     name: string;
     visible: boolean;
+    nextAction?: Action<any>;
+    previousAction?: Action<any>;
   }[];
 }
 
@@ -25,15 +29,15 @@ export const actions = {
 
 const startNewSteps = [
   { name: 'select', visible: false },
-  { name: 'start-new-podcast', visible: true },
+  { name: 'start-new-podcast', visible: true, nextAction: podcast.actions.transferPodcast() },
   { name: 'start-new-next-steps', visible: true }
 ];
 
 const importSteps = [
   { name: 'select', visible: false },
-  { name: 'import-feed', visible: true },
-  { name: 'import-podcast', visible: true },
-  { name: 'import-episodes', visible: true },
+  { name: 'import-feed', visible: true, nextAction: feed.actions.fetchPodcastMetadata()  },
+  { name: 'import-podcast', visible: true, nextAction: feed.actions.fetchEpisodes() },
+  { name: 'import-episodes', visible: true, nextAction: feed.actions.importEpisodes() },
   { name: 'import-next-steps', visible: true },
 ];
 
@@ -98,6 +102,8 @@ export const reducer = handleActions<State, any>(
   }
 );
 
+const currentStep = (state: State) => state.steps.find(({ name }) => name === state.current)
+
 export const selectors = {
   previous: (state: State): { name: string; visible: boolean } | null => {
     const currentIndex = state.steps.findIndex((step) => step.name === state.current);
@@ -110,7 +116,9 @@ export const selectors = {
   },
   setupType: (state: State) => state.setupType,
   current: (state: State): { name: string; visible: boolean } | null =>
-    state.steps.find(({ name }) => name === state.current) || null,
+    currentStep(state) || null,
+  nextAction: (state) => get(currentStep(state), 'nextAction', actions.next()),
+  previousAction: (state) =>  get(currentStep(state), 'previousAction', actions.previous()),
   upcoming: (state: State): { name: string; visible: boolean } | null => {
     const currentIndex = state.steps.findIndex((step) => step.name === state.current);
 

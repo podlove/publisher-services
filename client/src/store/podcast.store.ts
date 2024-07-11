@@ -44,7 +44,8 @@ export const actions = {
   setPodcastExplicit: createAction<setPodcastExplicitPayload>('PODCAST/SET_EXPLICIT'),
   tooglePodcastExplicit: createAction<tooglePodcastExplicitPayload>('PODCAST/TOGGLE_EXPLICIT'),
   readFeedUrl: createAction<readFeedUrlPayload>('PODCAST/READ_FEED_URL'),
-  setFeedUrl: createAction<setFeedUrlPayload>('PODCAST/SET_FEED_URL')
+  setFeedUrl: createAction<setFeedUrlPayload>('PODCAST/SET_FEED_URL'),
+  transferPodcast: createAction<void>('PODCAST/TRANSFER_PODCAST')
 };
 
 export const reducer = handleActions<State, any>(
@@ -76,14 +77,14 @@ export const reducer = handleActions<State, any>(
     [actions.setPodcastCoverData.toString()]: (
       state,
       { payload }: Action<setPodcastCoverDataPayload>
-    ) => ({ ...state, 
+    ) => ({ ...state,
       image_data: payload,
       image_url: null
     }),
     [actions.setPodcastCoverUrl.toString()]: (
       state,
       { payload }: Action<setPodcastCoverUrlPayload>
-    ) => ({ ...state, 
+    ) => ({ ...state,
       image_url: payload,
       image_data: null
     }),

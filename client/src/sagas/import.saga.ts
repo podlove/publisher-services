@@ -1,37 +1,40 @@
-import { takeEvery, put, select, all, throttle } from 'redux-saga/effects';
+import { takeEvery, put, select, all, debounce, fork } from 'redux-saga/effects';
 import { Action } from 'redux-actions';
 import { get } from 'lodash-es';
 
 import { actions, selectors } from '../store';
-import { validateFeedUrlPayload } from '../store/import.store';
+import { validateFeedUrlPayload } from '../store/feed.store';
 import * as request from '../lib/request';
 import { findCategories } from '../helper/categories';
 import { LanguageLocales } from '../types/locales.types';
-import { Episode } from '../types/episode.types';
+import { Episode, EpisodeDetailsPayload } from '../types/episode.types';
+import { selectEpisodePayload } from '../store/episode.store';
 
 function* validateFeedUrl({ payload }: Action<validateFeedUrlPayload>) {
-  yield put(actions.importFeed.setFeedUrl(payload));
+  const feed = payload.trim();
+  yield put(actions.feed.setFeedUrl(feed));
+
+  if (feed === '') {
+    yield put(actions.feed.setFeedStatus('not-set'));
+    return;
+  }
+
   try {
     yield request.get(request.origin('api/v1/fetch_feed'), {
-      params: { feed_url: payload }
+      params: { feed_url: feed }
     });
-    yield put(actions.importFeed.setFeedStatus('valid'));
+    yield put(actions.feed.setFeedStatus('valid'));
   } catch (error) {
-    yield put(actions.importFeed.setFeedStatus('invalid'));
+    yield put(actions.feed.setFeedStatus('invalid'));
   }
 }
 
 function* fetchPodcastMetaData() {
-  const currentStep = yield select(selectors.onboarding.current);
+  const feedUrl = yield select(selectors.feed.feedUrl);
 
-  if (currentStep.name !== 'import-podcast') {
-    return;
-  }
-
-  const importFeedUrl = yield select(selectors.importFeed.feedUrl);
   const response: any = yield request.get(request.origin('api/v1/fetch_feed'), {
-    params: { 
-      feed_url: importFeedUrl,
+    params: {
+      feed_url: feedUrl,
       force_refresh: true
     }
   });
@@ -54,27 +57,29 @@ function* fetchPodcastMetaData() {
   }
 
   const categories = get(podcast, ['categories'], null);
+
+  yield put(actions.onboarding.next());
+
   if (!categories) {
     return;
   }
+
   const category = findCategories(categories);
+
   if (category) {
     yield put(actions.podcast.setPodcastCategory(category));
   }
 }
 
 function* fetchEpisodes() {
-  const currentStep = yield select(selectors.onboarding.current);
-
-  if (currentStep.name !== 'import-episodes') {
-    return;
-  }
-
-  const importFeedUrl = yield select(selectors.importFeed.feedUrl);
+  const feedUrl = yield select(selectors.feed.feedUrl);
   const response: any = yield request.get(request.origin('api/v1/fetch_feed'), {
-    params: { feed_url: importFeedUrl }
+    params: { feed_url: feedUrl }
   });
+
   const episodes = get(response, ['episodes'], null);
+
+  yield put(actions.onboarding.next());
 
   if (!episodes) {
     return;
@@ -87,20 +92,112 @@ function* fetchEpisodes() {
       put(
         actions.episodes.addEpisode({
           title: get(episode, 'title', null),
-          uuid: get(episode, 'guid', null),
+          guid: get(episode, 'guid', null),
           pub_date: get(episode, 'pub_date', null),
           enclosure: {
             url: get(episode, ['enclosure', 'url'], null),
-            type: get(episode, ['enclosure', 'type'], null),
+            type: get(episode, ['enclosure', 'type'], null)
           }
         })
       )
     )
   );
+
+  const firstEpisodeGuid: string | null = get(episodes, [0, 'guid'], null);
+
+  if (firstEpisodeGuid) {
+    yield put(actions.episodes.selectEpisode(firstEpisodeGuid));
+  }
 }
 
-export default function* importFeedSaga() {
-  yield throttle(500, actions.importFeed.validateFeedUrl.toString(), validateFeedUrl);
-  yield takeEvery(actions.onboarding.next.toString(), fetchPodcastMetaData);
-  yield takeEvery(actions.onboarding.next.toString(), fetchEpisodes);
+function* fetchEpisodeDetails({ payload }: Action<string>) {
+  const feedUrl = yield select(selectors.feed.feedUrl);
+
+  try {
+    const { episode }: EpisodeDetailsPayload = yield request.get(
+      request.origin(`/api/v1/fetch_episode`),
+      {
+        params: {
+          feed_url: feedUrl,
+          episode_guid: payload
+        }
+      }
+    );
+
+    const result = {
+      guid: episode.guid,
+      chapters: get(episode, 'chapters', []),
+      content: get(episode, 'content', ''),
+      contributors: get(episode, 'contributors', []),
+      subtitle: get(episode, 'subtitle', ''),
+      summary: get(episode, 'summary', ''),
+      transcript: {
+        language: get(episode, ['transcript', 'language'], null),
+        rel: get(episode, ['transcript', 'rel'], null),
+        type: get(episode, ['transcript', 'type'], null),
+        url: get(episode, ['transcript', 'url'], null)
+      },
+      media_file: {
+        content_length: get(episode, ['media_file', 'content_length'], null),
+        type: get(episode, ['media_file', 'type'], null),
+        url: get(episode, ['media_file', 'url'], null)
+      }
+    }
+
+    yield put(
+      actions.episodes.addEpisodeDetails(result)
+    );
+
+    return result;
+  } catch (err) {
+    return null
+  }
+}
+
+function* importEpisodes() {
+  const nextEpisode: { guid: string } | null = yield select(selectors.episodes.nextEpisodeToImport);
+
+  if (!nextEpisode) {
+    // we are done with all stored episodes, validate results and move to next step
+    return;
+  }
+
+  yield put(actions.episodes.episodeImportStarted(nextEpisode.guid));
+
+  const episodeDetails = yield fetchEpisodeDetails({ payload: nextEpisode.guid } as Action<string>);
+
+  if (!episodeDetails) {
+    yield put(actions.episodes.episodeImportFailed(nextEpisode.guid));
+  } else {
+  // try {
+  //   yield request.post(request.origin('api/v1/import_episode'), {
+  //     params: {},
+  //     data: {
+  //       guid: episodeDetails.guid,
+  //       title: episodeDetails.title,
+  //       subtitle: episodeDetails.subtitle,
+  //       summary: episodeDetails.summary,
+  //       number: '1', // <-- fehlt
+  //       explicit: 'false', // <-- fehlt
+  //       slug: 'lov001-lorem-ipsum', // <-- fehlt
+  //       duration: '00:00:05.108', // <-- fehlt
+  //       type: 'full',  // <-- fehlt
+  //       enclosure: episodeDetails.media_file.url
+  //     }
+  //   });
+  //   yield put(actions.episodes.episodeImportFinished(nextEpisode..guid));
+  // } catch (error) {
+  //   yield put(actions.episodes.episodeImportFailed(nextEpisode.guid));
+  // }
+  }
+
+  // yield importEpisodes();
+}
+
+export default function* importSaga() {
+  yield debounce(500, actions.feed.validateFeedUrl.toString(), validateFeedUrl);
+  yield takeEvery(actions.feed.fetchPodcastMetadata.toString(), fetchPodcastMetaData);
+  yield takeEvery(actions.feed.fetchEpisodes.toString(), fetchEpisodes);
+  yield takeEvery(actions.feed.importEpisodes.toString(), importEpisodes);
+  yield takeEvery(actions.episodes.selectEpisode.toString(), fetchEpisodeDetails)
 }

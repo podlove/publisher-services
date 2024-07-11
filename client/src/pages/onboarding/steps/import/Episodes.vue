@@ -8,25 +8,22 @@
   <div class="flex flex-col md:flex-row">
     <!-- Left column area -->
     <div class="w-full max-w-screen-xl sm:mb-4">
-      <div class="list-height overflow-y-auto max-h-[70vh]">
+      <div class="overflow-y-auto max-h-[70vh]">
         <ul class="h-full divide-y divide-gray-200">
-          <li
+          <EpisodeListItem
             v-for="item in state.episodes"
-            :key="item.episode.uuid"
-            class="flex items-center justify-between gap-x-6 py-5"
-          >
-            <EpisodeListItem :episode="item.episode"></EpisodeListItem>
-          </li>
+            :data="item.data"
+            :status="item.status"
+            :guid="item.guid"
+            :key="item.guid"
+          ></EpisodeListItem>
         </ul>
       </div>
     </div>
     <!-- Right column area -->
-    <div class="px-4 py-6 sm:px-6 w-full">
-      <h2>Preview Episode</h2>
+    <div class="px-4 sm:px-6 w-full overflow-y-auto max-h-[70vh]">
+      <EpisodePreview />
     </div>
-  </div>
-  <div>
-    <p>Footer</p>
   </div>
 </template>
 <script setup lang="ts">
@@ -36,13 +33,22 @@ import { selectors } from '../../../../store';
 import { Episode } from '../../../../types/episode.types';
 
 import EpisodeListItem from '../../components/EpisodeListItem.vue';
+import EpisodePreview from '../../components/EpisodePreview.vue';
 
 const { t } = useI18n();
 
-const state = mapState<{ episodes: { episode: Episode }[] }>({
+const state = mapState<{
+  episodes: {
+    guid: string;
+    data: Episode;
+    status: {
+      importStarted: boolean;
+      importRunning: boolean;
+      importFinished: boolean;
+      importError: boolean;
+    };
+  }[];
+}>({
   episodes: selectors.episodes.list
 });
 </script>
-
-<style>
-</style>
