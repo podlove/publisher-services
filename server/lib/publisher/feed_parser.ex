@@ -37,6 +37,12 @@ defmodule Publisher.FeedParser do
     id = {:episode, podcast.main_feed_url, episode_guid}
     episode = Metalove.Episode.get_by_episode_id(id)
 
+    number =
+      case Integer.parse(episode.episode) do
+        {num, _} -> num
+        :error -> nil
+      end
+
     {:ok,
      %{
        episode: %{
@@ -45,6 +51,7 @@ defmodule Publisher.FeedParser do
          subtitle: episode.subtitle,
          summary: episode.summary,
          content: episode.content_encoded,
+         number: number,
          media_file: %{
            url: episode.enclosure.url,
            content_length: episode.enclosure.size,
