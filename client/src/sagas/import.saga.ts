@@ -1,4 +1,4 @@
-import { takeEvery, put, select, all, debounce, fork } from 'redux-saga/effects';
+import { takeEvery, put, select, debounce } from 'redux-saga/effects';
 import { Action } from 'redux-actions';
 import { get } from 'lodash-es';
 
@@ -8,7 +8,6 @@ import * as request from '../lib/request';
 import { findCategories } from '../helper/categories';
 import { LanguageLocales } from '../types/locales.types';
 import { Episode, EpisodeDetailsPayload } from '../types/episode.types';
-import { selectEpisodePayload } from '../store/episode.store';
 
 function* validateFeedUrl({ payload }: Action<validateFeedUrlPayload>) {
   const feed = payload.trim();
@@ -85,21 +84,17 @@ function* fetchEpisodes() {
     return;
   }
 
-  yield put(actions.episodes.clearEpisodes());
-
-  yield all(
-    episodes.map((episode: Episode) =>
-      put(
-        actions.episodes.addEpisode({
-          title: get(episode, 'title', null),
-          guid: get(episode, 'guid', null),
-          pub_date: get(episode, 'pub_date', null),
-          enclosure: {
-            url: get(episode, ['enclosure', 'url'], null),
-            type: get(episode, ['enclosure', 'type'], null)
-          }
-        })
-      )
+  yield put(
+    actions.episodes.addEpisodes(
+      episodes.map((episode: Episode) => ({
+        title: get(episode, 'title', null),
+        guid: get(episode, 'guid', null),
+        pub_date: get(episode, 'pub_date', null),
+        enclosure: {
+          url: get(episode, ['enclosure', 'url'], null),
+          type: get(episode, ['enclosure', 'type'], null)
+        }
+      }))
     )
   );
 
@@ -142,15 +137,13 @@ function* fetchEpisodeDetails({ payload }: Action<string>) {
         type: get(episode, ['media_file', 'type'], null),
         url: get(episode, ['media_file', 'url'], null)
       }
-    }
+    };
 
-    yield put(
-      actions.episodes.addEpisodeDetails(result)
-    );
+    yield put(actions.episodes.addEpisodeDetails(result));
 
     return result;
   } catch (err) {
-    return null
+    return null;
   }
 }
 
@@ -169,26 +162,26 @@ function* importEpisodes() {
   if (!episodeDetails) {
     yield put(actions.episodes.episodeImportFailed(nextEpisode.guid));
   } else {
-  // try {
-  //   yield request.post(request.origin('api/v1/import_episode'), {
-  //     params: {},
-  //     data: {
-  //       guid: episodeDetails.guid,
-  //       title: episodeDetails.title,
-  //       subtitle: episodeDetails.subtitle,
-  //       summary: episodeDetails.summary,
-  //       number: '1', // <-- fehlt
-  //       explicit: 'false', // <-- fehlt
-  //       slug: 'lov001-lorem-ipsum', // <-- fehlt
-  //       duration: '00:00:05.108', // <-- fehlt
-  //       type: 'full',  // <-- fehlt
-  //       enclosure: episodeDetails.media_file.url
-  //     }
-  //   });
-  //   yield put(actions.episodes.episodeImportFinished(nextEpisode..guid));
-  // } catch (error) {
-  //   yield put(actions.episodes.episodeImportFailed(nextEpisode.guid));
-  // }
+    // try {
+    //   yield request.post(request.origin('api/v1/import_episode'), {
+    //     params: {},
+    //     data: {
+    //       guid: episodeDetails.guid,
+    //       title: episodeDetails.title,
+    //       subtitle: episodeDetails.subtitle,
+    //       summary: episodeDetails.summary,
+    //       number: '1', // <-- fehlt
+    //       explicit: 'false', // <-- fehlt
+    //       slug: 'lov001-lorem-ipsum', // <-- fehlt
+    //       duration: '00:00:05.108', // <-- fehlt
+    //       type: 'full',  // <-- fehlt
+    //       enclosure: episodeDetails.media_file.url
+    //     }
+    //   });
+    //   yield put(actions.episodes.episodeImportFinished(nextEpisode..guid));
+    // } catch (error) {
+    //   yield put(actions.episodes.episodeImportFailed(nextEpisode.guid));
+    // }
   }
 
   // yield importEpisodes();
@@ -199,5 +192,5 @@ export default function* importSaga() {
   yield takeEvery(actions.feed.fetchPodcastMetadata.toString(), fetchPodcastMetaData);
   yield takeEvery(actions.feed.fetchEpisodes.toString(), fetchEpisodes);
   yield takeEvery(actions.feed.importEpisodes.toString(), importEpisodes);
-  yield takeEvery(actions.episodes.selectEpisode.toString(), fetchEpisodeDetails)
+  yield takeEvery(actions.episodes.selectEpisode.toString(), fetchEpisodeDetails);
 }

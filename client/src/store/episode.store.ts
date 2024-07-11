@@ -16,7 +16,7 @@ export type State = {
   }[];
 };
 
-export type addEpisodePayload = Episode;
+export type addEpisodePayload = Episode[];
 export type addEpisodeDetailsPayload = Partial<Episode>;
 export type removeEpisodePayload = string;
 export type clearEpisodesPayload = void;
@@ -26,9 +26,8 @@ export type episodeImportFinishedPayload = string;
 export type selectEpisodePayload = string;
 
 export const actions = {
-  addEpisode: createAction<addEpisodePayload>('EPISODES/ADD_EPISODE'),
+  addEpisodes: createAction<addEpisodePayload>('EPISODES/ADD_EPISODE'),
   removeEpisode: createAction<removeEpisodePayload>('EPISODES/REMOVE_EPISODE'),
-  clearEpisodes: createAction<clearEpisodesPayload>('EPISODES/CLEAR_EPISODES'),
   addEpisodeDetails: createAction<addEpisodeDetailsPayload>('EPISODES/DETAILS_FETCHED'),
   episodeImportStarted: createAction<episodeImportStartedPayload>(
     'EPISODES/EPISODE_IMPORT_STARTED'
@@ -40,12 +39,11 @@ export const actions = {
 
 export const reducer = handleActions<State, any>(
   {
-    [actions.addEpisode.toString()]: (state, { payload }: Action<addEpisodePayload>): State => {
+    [actions.addEpisodes.toString()]: (state, { payload }: Action<addEpisodePayload>): State => {
       // Check if the new episode exists in the list
-      const episodes = state.episodes.filter((item) => item.guid !== payload.guid);
-      const episode = {
-        guid: payload.guid,
-        data: payload,
+      const episodes = payload.map(episode => ({
+        guid: episode.guid,
+        data: episode,
         status: {
           detailsFetched: false,
           importStarted: false,
@@ -53,13 +51,13 @@ export const reducer = handleActions<State, any>(
           importFinished: false,
           importError: false
         }
-      };
+      }))
 
-      return { ...state, episodes: [...episodes, episode] };
+      return { ...state, episodes };
     },
     [actions.addEpisodeDetails.toString()]: (
       state,
-      { payload }: Action<addEpisodePayload>
+      { payload }: Action<addEpisodeDetailsPayload>
     ): State => {
       const episodes = state.episodes.map((episode) => {
         if (episode.guid !== payload.guid) {

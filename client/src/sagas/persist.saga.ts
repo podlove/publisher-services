@@ -31,8 +31,7 @@ export default function* routerSaga() {
       actions.feed.setFeedStatus.toString(),
       actions.feed.setFeedUrl.toString(),
 
-      actions.episodes.addEpisode.toString(),
-      actions.episodes.removeEpisode.toString()
+      actions.episodes.addEpisodes.toString(),
     ],
     persist
   );
