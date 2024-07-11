@@ -52,6 +52,7 @@ defmodule PublisherTest do
     assert episode.content == "Hello 👋"
 
     assert episode.number == 28
+    assert episode.type == "full"
     assert episode.explicit == true
 
     assert episode.media_file == %{
