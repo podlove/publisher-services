@@ -43,6 +43,13 @@ defmodule Publisher.FeedParser do
         :error -> nil
       end
 
+    explicit =
+      case String.downcase(episode.explicit) do
+        "true" -> true
+        "false" -> false
+        _ -> nil
+      end
+
     {:ok,
      %{
        episode: %{
@@ -52,6 +59,7 @@ defmodule Publisher.FeedParser do
          summary: episode.summary,
          content: episode.content_encoded,
          number: number,
+         explicit: explicit,
          media_file: %{
            url: episode.enclosure.url,
            content_length: episode.enclosure.size,

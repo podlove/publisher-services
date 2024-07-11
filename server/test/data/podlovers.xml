@@ -66,6 +66,7 @@
     <itunes:image src="https://backend.podlovers.org/wp-content/uploads/2020/07/episode-cover.png"/>
 		<itunes:episode>28</itunes:episode>
 		<itunes:episodeType>full</itunes:episodeType>
+		<itunes:explicit>true</itunes:explicit>
 		<itunes:summary><![CDATA[Weiter geht's mit unserem Sprint-Review, dieses Mal wieder nach zwei Wochen Arbeit am Onboarding- und Import-Assistenten. In der letzten Folge haben wir ja schon eine Idee angedeutet, die wir jetzt im Detail besprechen – und zwar eine externe Lösung für unser Projekt, dass uns viele Probleme bei Wordpress erspart. Dazu gibt's auch einen Ausblick auf die nächsten Schritte und die herzliche Einladung an Euch, in unserem Roundtable das Ganze mal live zu sehen und zu kommentieren.]]></itunes:summary>
 		
 		<content:encoded><![CDATA[Hello 👋]]></content:encoded><psc:chapters xmlns:psc="http://podlove.org/simple-chapters" version="1.2">
