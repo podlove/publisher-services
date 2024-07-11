@@ -52,6 +52,7 @@ defmodule PublisherTest do
     assert episode.content == "Hello 👋"
 
     assert episode.number == 28
+    assert episode.explicit == true
 
     assert episode.media_file == %{
              url: "https://backend.podlovers.org/podlove/file/39/s/feed/c/mp3/LOV28.mp3",
