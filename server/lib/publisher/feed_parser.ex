@@ -59,6 +59,7 @@ defmodule Publisher.FeedParser do
          summary: episode.summary,
          content: episode.content_encoded,
          number: number,
+         type: episode.type,
          explicit: explicit,
          media_file: %{
            url: episode.enclosure.url,
