@@ -50,6 +50,8 @@ defmodule Publisher.FeedParser do
         _ -> nil
       end
 
+    # TODO: slug. Parse file name from (resolved) url. I think I wanted to resolve the url anyway.
+
     {:ok,
      %{
        episode: %{
