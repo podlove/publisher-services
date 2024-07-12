@@ -16,8 +16,8 @@ export const actions = {
   setFeedUrl: createAction<setFeedUrlPayload>('IMPORT/SET_FEED_URL'),
   setFeedStatus: createAction<setFeedStatusPayload>('IMPORT/SET_FEED_STATUS'),
   fetchPodcastMetadata: createAction<void>('IMPORT/FETCH_PODCAST_METADATA'),
-  fetchEpisodes: createAction<void>('IMPORT/FETCH_EPISODES'),
   importEpisodes: createAction<void>('IMPORT/IMPORT_EPISODES'),
+  importPodcast: createAction<void>('IMPORT/IMPORT_PODCAST'),
 };
 
 export const reducer = handleActions<State, any>(

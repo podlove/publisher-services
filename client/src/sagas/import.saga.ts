@@ -8,6 +8,7 @@ import * as request from '../lib/request';
 import { findCategories } from '../helper/categories';
 import { LanguageLocales } from '../types/locales.types';
 import { Episode, EpisodeDetailsPayload } from '../types/episode.types';
+import { savePodcastMetadata } from './helpers/podcast';
 
 function* validateFeedUrl({ payload }: Action<validateFeedUrlPayload>) {
   const feed = payload.trim();
@@ -78,8 +79,6 @@ function* fetchEpisodes() {
 
   const episodes = get(response, ['episodes'], null);
 
-  yield put(actions.onboarding.next());
-
   if (!episodes) {
     return;
   }
@@ -103,6 +102,12 @@ function* fetchEpisodes() {
   if (firstEpisodeGuid) {
     yield put(actions.episodes.selectEpisode(firstEpisodeGuid));
   }
+}
+
+function* importPodcast() {
+  yield savePodcastMetadata();
+  yield fetchEpisodes();
+  yield put(actions.onboarding.next());
 }
 
 function* fetchEpisodeDetails({ payload }: Action<string>) {
@@ -190,7 +195,7 @@ function* importEpisodes() {
 export default function* importSaga() {
   yield debounce(500, actions.feed.validateFeedUrl.toString(), validateFeedUrl);
   yield takeEvery(actions.feed.fetchPodcastMetadata.toString(), fetchPodcastMetaData);
-  yield takeEvery(actions.feed.fetchEpisodes.toString(), fetchEpisodes);
+  yield takeEvery(actions.feed.importPodcast.toString(), importPodcast);
   yield takeEvery(actions.feed.importEpisodes.toString(), importEpisodes);
   yield takeEvery(actions.episodes.selectEpisode.toString(), fetchEpisodeDetails);
 }

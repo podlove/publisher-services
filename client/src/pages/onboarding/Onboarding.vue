@@ -1,17 +1,26 @@
 <template>
-  <div class="h-full flex flex-col" :data-test="`step-${state.current.name}`">
-    <Steps :steps="state.steps" v-if="state.current && state.current.visible"></Steps>
-    <div class="pt-4 sm:px-6 xl:pl-6 overflow-hidden" :style="contentStyle">
+  <div ref="viewPort" class="relative h-full flex flex-col" :data-test="`step-${state.current.name}`">
+    <Steps class="fixed top-0 w-full z-50" :steps="state.steps" v-if="stepsVisible"></Steps>
+    <div
+      id="content"
+      class="pt-4 pb-[50px] sm:px-6 xl:pl-6 overflow-y-auto"
+      :class="{ 'pt-[80px]': stepsVisible }"
+
+    >
       <component :is="stepComponents[state.current.name]" />
     </div>
-    <div class="flex justify-between w-full px-4 sm:px-6 xl:pl-6 py-2">
+    <div class="fixed bottom-0 flex justify-between w-full px-4 sm:px-6 xl:pl-6 py-2 bg-white z-50">
       <PodloveButton v-if="state.previous" variant="secondary" @click="prevStep()">{{
         t('onboarding.navigation.prev')
       }}</PodloveButton>
       <div class="w-full"></div>
-      <PodloveButton variant="primary" v-if="state.upcoming" :disabled="!state.upcomingEnabled" @click="nextStep()">{{
-        t('onboarding.navigation.next.' + state.current.name)
-      }}</PodloveButton>
+      <PodloveButton
+        variant="primary"
+        v-if="state.upcoming"
+        :disabled="!state.upcomingEnabled"
+        @click="nextStep()"
+        >{{ t('onboarding.navigation.next.' + state.current.name) }}</PodloveButton
+      >
     </div>
   </div>
 </template>
@@ -45,12 +54,8 @@ const state = mapState({
   upcoming: selectors.onboarding.upcoming,
   upcomingEnabled: selectors.onboarding.upcomingEnabled,
   nextAction: selectors.onboarding.nextAction,
-  previousAction: selectors.onboarding.previousAction,
+  previousAction: selectors.onboarding.previousAction
 });
-
-const contentStyle = computed(() => ({
-  height: state.current && state.current.visible ? `calc(100vh - 75px - 35px)` : `calc(100vh - 35px)`
-}));
 
 const stepComponents = {
   select: SetupType,
@@ -61,6 +66,8 @@ const stepComponents = {
   'import-episodes': ImportEpisodes,
   'import-next-steps': ImportNextSteps
 };
+
+const stepsVisible = computed(() => state.current && state.current.visible);
 
 const nextStep = () => {
   store.dispatch(state.nextAction);

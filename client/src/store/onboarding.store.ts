@@ -36,7 +36,7 @@ const startNewSteps = [
 const importSteps = [
   { name: 'select', visible: false },
   { name: 'import-feed', visible: true, nextAction: feed.actions.fetchPodcastMetadata()  },
-  { name: 'import-podcast', visible: true, nextAction: feed.actions.fetchEpisodes() },
+  { name: 'import-podcast', visible: true, nextAction: feed.actions.importPodcast() },
   { name: 'import-episodes', visible: true, nextAction: feed.actions.importEpisodes() },
   { name: 'import-next-steps', visible: true },
 ];
