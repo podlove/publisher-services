@@ -26,6 +26,7 @@ defmodule Publisher.MixProject do
       {:ecto, "~> 3.11"},
       {:jason, "~> 1.2"},
       {:req, "~> 0.4.14"},
+      {:slugify, "~> 1.3"},
       {:nimble_options, "~> 1.1"},
       {:metalove, git: "https://github.com/podlove/metalove", branch: "master"}
     ]

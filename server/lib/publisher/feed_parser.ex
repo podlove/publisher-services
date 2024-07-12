@@ -72,6 +72,7 @@ defmodule Publisher.FeedParser do
          summary: episode.summary,
          content: episode.content_encoded,
          number: number,
+         slug: slug(episode),
          type: episode.type,
          explicit: explicit(episode),
          media_file: %{
@@ -84,6 +85,22 @@ defmodule Publisher.FeedParser do
          contributors: episode.contributors
        }
      }}
+  end
+
+  defp slug(episode) do
+    url = episode.enclosure.resolved_url || episode.enclosure.url || ""
+    %URI{path: path} = URI.parse(url)
+
+    case path do
+      nil ->
+        Slug.slugify(episode.title)
+
+      path ->
+        path
+        |> Path.basename()
+        |> Path.rootname()
+        |> Slug.slugify()
+    end
   end
 
   defp explicit(%{explicit: explicit}) when is_binary(explicit) do
