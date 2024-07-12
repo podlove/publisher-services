@@ -1,7 +1,24 @@
 defmodule Publisher.FeedParser do
-  def parse_by_url(url, force_refresh: force_refresh) do
-    podcast = Metalove.get_podcast(url, skip_cache: force_refresh)
+  @opts_schema [
+    force_refresh: [
+      type: :boolean,
+      default: false
+    ],
+    skip_episode_scraping: [
+      type: :boolean,
+      default: false
+    ]
+  ]
+
+  def parse_by_url(url, opts \\ []) do
+    opts = NimbleOptions.validate!(opts, @opts_schema)
+
+    podcast = Metalove.get_podcast(url, skip_cache: opts[:force_refresh])
     feed = Metalove.PodcastFeed.get_by_feed_url(podcast.main_feed_url)
+
+    unless opts[:skip_episode_scraping] do
+      Metalove.PodcastFeed.trigger_episode_metadata_scrape(feed)
+    end
 
     episodes =
       feed.episodes
@@ -43,14 +60,8 @@ defmodule Publisher.FeedParser do
         :error -> nil
       end
 
-    explicit =
-      case String.downcase(episode.explicit) do
-        "true" -> true
-        "false" -> false
-        _ -> nil
-      end
-
     # TODO: slug. Parse file name from (resolved) url. I think I wanted to resolve the url anyway.
+    # TODO: make use of scraped media file values as fallback
 
     {:ok,
      %{
@@ -62,9 +73,9 @@ defmodule Publisher.FeedParser do
          content: episode.content_encoded,
          number: number,
          type: episode.type,
-         explicit: explicit,
+         explicit: explicit(episode),
          media_file: %{
-           url: episode.enclosure.url,
+           url: episode.enclosure.resolved_url || episode.enclosure.url,
            content_length: episode.enclosure.size,
            type: episode.enclosure.type
          },
@@ -73,6 +84,18 @@ defmodule Publisher.FeedParser do
          contributors: episode.contributors
        }
      }}
+  end
+
+  defp explicit(%{explicit: explicit}) when is_binary(explicit) do
+    case String.downcase(explicit) do
+      "true" -> true
+      "false" -> false
+      _ -> nil
+    end
+  end
+
+  defp explicit(_episode) do
+    nil
   end
 
   defp transcript(%{transcript_urls: []}), do: nil
