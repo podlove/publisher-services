@@ -60,7 +60,6 @@ defmodule Publisher.FeedParser do
         :error -> nil
       end
 
-    # TODO: slug. Parse file name from (resolved) url. I think I wanted to resolve the url anyway.
     # TODO: make use of scraped media file values as fallback
 
     {:ok,
