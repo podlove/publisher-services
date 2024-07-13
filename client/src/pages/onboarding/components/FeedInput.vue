@@ -33,8 +33,8 @@ const { t } = useI18n();
 const store = injectStore();
 
 const state = mapState({
-  feedStatus: selectors.importFeed.feedStatus,
-  feedUrl: selectors.importFeed.feedUrl
+  feedStatus: selectors.feed.feedStatus,
+  feedUrl: selectors.feed.feedUrl
 });
 
 const backgroundColor = computed(() => {
@@ -49,7 +49,7 @@ const backgroundColor = computed(() => {
 
 const changeFeedUrl = (event: Event) => {
   store.dispatch(
-    actions.importFeed.validateFeedUrl((event.target as HTMLInputElement).value) as unknown as Action
+    actions.feed.validateFeedUrl((event.target as HTMLInputElement).value) as unknown as Action
   );
 };
 </script>

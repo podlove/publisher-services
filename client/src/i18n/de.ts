@@ -7,7 +7,7 @@ export default {
         'start-new-podcast': 'Speichern & Weiter',
         'import-feed': 'Weiter',
         'import-podcast': 'Speichern & Weiter',
-        'import-episodes': 'Import starten',
+        'import-episodes': 'Import starten'
       }
     },
     steps: {
@@ -65,7 +65,7 @@ export default {
         'warning-head': 'Oops!',
         'warning-info':
           'Wir konnten Deinen Podcast unter der angegebenen URL nicht finden. Keine Sorge, das passiert manchmal! Hier sind ein paar Dinge, die Du überprüfen kannst',
-        'warning-hints' : [
+        'warning-hints': [
           'Stelle sicher, dass die eingegebene URL korrekt ist.',
           'Wenn Du nicht sicher bist, wo Du die RSS-Feed-URL finden kannst, schau in die Dokumentation oder im Support-Ressourcen Deines Hosting-Anbieters nach.',
           'Du kannst auch Deinen Hosting-Anbieter direkt kontaktieren, um die korrekte RSS-Feed-URL zu erfragen.'
@@ -81,11 +81,21 @@ export default {
         title: 'Episoden Importieren',
         headline: 'Episoden importieren',
         description:
-          'Wir haben die folgenden { count } Episoden in Deinem bestehenden Podcast gefunden. Bitte nimm Dir einen Moment Zeit, um die Liste zu überprüfen. Wenn alles passt, klicke auf \'Import starten\'. Bitte schließe Dein Broswerfenster nicht, bis der Import abgeschlossen ist.',
-        missingReleaseDate: "Kein Erscheinungsdatum gefunden"
+          "Wir haben die folgenden { count } Episoden in Deinem bestehenden Podcast gefunden. Bitte nimm Dir einen Moment Zeit, um die Liste zu überprüfen. Wenn alles passt, klicke auf 'Import starten'. Bitte schließe Dein Broswerfenster nicht, bis der Import abgeschlossen ist.",
+        missingReleaseDate: 'Kein Erscheinungsdatum gefunden',
+        episodePreview: {
+          title: 'Titel',
+          subtitle: 'Untertitel',
+          publicationDate: 'Veröffentlichungsdatum',
+          mediaFile: 'Medien Datei',
+          summary: 'Zusammenfassung',
+          chapters: 'Kapitel',
+          transcripts: 'Transkripte',
+          content: 'Inhalt',
+        }
       },
       'import-next-steps': {
-        title: 'Nächste Schritte',
+        title: 'Nächste Schritte'
       }
     },
     podcast: {

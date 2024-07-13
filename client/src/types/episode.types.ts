@@ -1,9 +1,48 @@
 export interface Episode {
   title: string | null;
-  uuid: string;
+  guid: string;
   pub_date: string | null;
   enclosure: {
-      url: string | null;
-      type: string | null;
-  }
+    url: string | null;
+    type: string | null;
+  };
+  chapters?: { start: string; title: string }[];
+  content?: string;
+  contributors?: { name: string; uri?: string }[];
+  subtitle?: string;
+  summary?: string;
+  transcript?: {
+    language: string;
+    rel: string;
+    type: string;
+    url: string;
+  };
+  media_file?: {
+    content_length: number;
+    type: string;
+    url: string;
+  };
+}
+
+export interface EpisodeDetailsPayload {
+  episode: {
+    chapters: { start: string; title: string }[];
+    content: string;
+    contributors: { name: string; uri?: string }[];
+    guid: string;
+    media_file: {
+      content_length: number;
+      type: string;
+      url: string;
+    };
+    subtitle: string;
+    summary: string;
+    title: string;
+    transcript: {
+      language: string;
+      rel: string;
+      type: string;
+      url: string;
+    };
+  };
 }

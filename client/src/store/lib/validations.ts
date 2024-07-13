@@ -5,7 +5,7 @@ export const onboardingUpcomingEnabled = (state: State): boolean => {
     return false;
   }
 
-  if (state.onboarding.current === 'import-feed' && state.importFeed.feedStatus !== 'valid') {
+  if (state.onboarding.current === 'import-feed' && state.feed.feedStatus !== 'valid') {
     return false;
   }
 

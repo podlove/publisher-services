@@ -6,7 +6,7 @@ import * as authentication from './authentication.store';
 import * as onboarding from './onboarding.store';
 import * as runtime from './runtime.store';
 import * as podcast from './podcast.store'
-import * as importFeed from './import.store'
+import * as feed from './feed.store'
 import * as episodes from './episode.store'
 import { onboardingUpcomingEnabled } from './lib/validations';
 
@@ -16,7 +16,7 @@ const root = {
   onboarding: (state: State): onboarding.State => get(state, 'onboarding', {}),
   runtime: (state: State): runtime.State => get(state, 'runtime', {}),
   podcast: (state: State): podcast.State => get(state, 'podcast', {}),
-  importFeed: (state: State): importFeed.State => get(state, 'importFeed', {}),
+  feed: (state: State): feed.State => get(state, 'feed', {}),
   episodes: (state: State): episodes.State => get(state, 'episodes', {}),
 };
 
@@ -29,6 +29,8 @@ export default {
   onboarding: {
     steps: createSelector(root.onboarding, onboarding.selectors.steps),
     previous: createSelector(root.onboarding, onboarding.selectors.previous),
+    nextAction: createSelector(root.onboarding, onboarding.selectors.nextAction),
+    previousAction: createSelector(root.onboarding, onboarding.selectors.previousAction),
     current: createSelector(root.onboarding, onboarding.selectors.current),
     upcoming: createSelector(root.onboarding, onboarding.selectors.upcoming),
     upcomingEnabled: onboardingUpcomingEnabled,
@@ -49,11 +51,13 @@ export default {
     explicit: createSelector(root.podcast, podcast.selectors.explicit),
     feed: createSelector(root.podcast, podcast.selectors.feed),
   },
-  importFeed: {
-    feedStatus: createSelector(root.importFeed, importFeed.selectors.feedStatus),
-    feedUrl: createSelector(root.importFeed, importFeed.selectors.feedUrl),
+  feed: {
+    feedStatus: createSelector(root.feed, feed.selectors.feedStatus),
+    feedUrl: createSelector(root.feed, feed.selectors.feedUrl),
   },
   episodes: {
     list: createSelector(root.episodes, episodes.selectors.episodes),
+    nextEpisodeToImport: createSelector(root.episodes, episodes.selectors.nextEpisodeToImport),
+    selectedEpisode: createSelector(root.episodes, episodes.selectors.selectedEpisode)
   }
 };

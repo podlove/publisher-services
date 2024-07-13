@@ -8,7 +8,7 @@
       <p class="my-2 text-base leading-6 text-gray-600">
         {{ t('onboarding.steps.import-feed.description') }}
       </p>
-      <p class="my-2 text-base leading-6 text-gray-600" v-html="$t('onboarding.steps.import-feed.help')"> 
+      <p class="my-2 text-base leading-6 text-gray-600" v-html="$t('onboarding.steps.import-feed.help')">
       </p>
       <FeedInput class="mb-5"></FeedInput>
       <div v-if="state.feedStatus === 'valid'">
@@ -76,7 +76,7 @@ import { selectors } from '../../../../store';
 const { t } = useI18n();
 
 const state = mapState({
-  feedStatus: selectors.importFeed.feedStatus
+  feedStatus: selectors.feed.feedStatus
 });
 
 </script>

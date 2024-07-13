@@ -4,7 +4,7 @@ import { reducer as authentication } from './authentication.store';
 import { reducer as onboarding } from './onboarding.store';
 import { reducer as runtime } from './runtime.store';
 import { reducer as podcast } from './podcast.store';
-import { reducer as importFeed } from './import.store';
+import { reducer as feed } from './feed.store';
 import { reducer as episodes } from './episode.store';
 
 export default combineReducers({
@@ -13,6 +13,6 @@ export default combineReducers({
   onboarding,
   runtime,
   podcast,
-  importFeed,
+  feed,
   episodes,
 });
