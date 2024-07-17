@@ -74,7 +74,7 @@ function* fetchPodcastMetaData() {
 function* fetchEpisodes() {
   const feedUrl = yield select(selectors.feed.feedUrl);
   const response: any = yield request.get(request.origin('api/v1/fetch_feed'), {
-    params: { feed_url: feedUrl }
+    params: { feed_url: feedUrl, force_refresh: true }
   });
 
   const episodes = get(response, ['episodes'], null);
@@ -129,8 +129,13 @@ function* fetchEpisodeDetails({ payload }: Action<string>) {
       chapters: get(episode, 'chapters', []),
       content: get(episode, 'content', ''),
       contributors: get(episode, 'contributors', []),
+      title: get(episode, 'title', ''),
       subtitle: get(episode, 'subtitle', ''),
       summary: get(episode, 'summary', ''),
+      number: get(episode, 'number', null),
+      slug: get(episode, 'slug', null),
+      type: get(episode, 'type', null),
+      explicit: get(episode, 'explicit', null),
       transcript: {
         language: get(episode, ['transcript', 'language'], null),
         rel: get(episode, ['transcript', 'rel'], null),
@@ -167,29 +172,20 @@ function* importEpisodes() {
   if (!episodeDetails) {
     yield put(actions.episodes.episodeImportFailed(nextEpisode.guid));
   } else {
-    // try {
-    //   yield request.post(request.origin('api/v1/import_episode'), {
-    //     params: {},
-    //     data: {
-    //       guid: episodeDetails.guid,
-    //       title: episodeDetails.title,
-    //       subtitle: episodeDetails.subtitle,
-    //       summary: episodeDetails.summary,
-    //       number: '1', // <-- fehlt
-    //       explicit: 'false', // <-- fehlt
-    //       slug: 'lov001-lorem-ipsum', // <-- fehlt
-    //       duration: '00:00:05.108', // <-- fehlt
-    //       type: 'full',  // <-- fehlt
-    //       enclosure: episodeDetails.media_file.url
-    //     }
-    //   });
-    //   yield put(actions.episodes.episodeImportFinished(nextEpisode..guid));
-    // } catch (error) {
-    //   yield put(actions.episodes.episodeImportFailed(nextEpisode.guid));
-    // }
+    try {
+      yield request.post(request.origin('api/v1/import_episode'), {
+        params: {},
+        data: {
+          ...episodeDetails
+        }
+      });{}
+      yield put(actions.episodes.episodeImportFinished(nextEpisode.guid));
+    } catch (error) {
+      yield put(actions.episodes.episodeImportFailed(nextEpisode.guid));
+    }
   }
 
-  // yield importEpisodes();
+  yield importEpisodes();
 }
 
 export default function* importSaga() {

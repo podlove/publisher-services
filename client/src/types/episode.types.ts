@@ -38,6 +38,10 @@ export interface EpisodeDetailsPayload {
     subtitle: string;
     summary: string;
     title: string;
+    number: number;
+    slug: string;
+    type: string;
+    explicit: boolean;
     transcript: {
       language: string;
       rel: string;

@@ -2,6 +2,7 @@ defmodule PublisherWeb.Controllers.Validator.Validator do
   defmodule Behaviour do
     @callback changeset_to_errors(any()) :: any()
     @callback validate_params(any()) :: {:ok, any()} | {:error, any()}
+    @callback validate_array(any()) :: {:ok, any()} | {:error, any()}
   end
 
   defmacro __using__(_opts) do
@@ -18,6 +19,20 @@ defmodule PublisherWeb.Controllers.Validator.Validator do
 
           %Ecto.Changeset{valid?: true} = changeset ->
             {:ok, Ecto.Changeset.apply_changes(changeset)}
+        end
+      end
+
+      def validate_array(params_list) when is_list(params_list) do
+        results = Enum.map(params_list, &validate_params/1)
+
+        {errors, valids} = Enum.split_with(results, fn
+          {:error, _} -> true
+          {:ok, _} -> false
+        end)
+
+        case errors do
+          [] -> {:ok, Enum.map(valids, fn {:ok, result} -> result end)}
+          _ -> {:error, Enum.map(errors, fn {:error, changeset} -> changeset end)}
         end
       end
 

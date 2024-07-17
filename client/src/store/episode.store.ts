@@ -32,8 +32,8 @@ export const actions = {
   episodeImportStarted: createAction<episodeImportStartedPayload>(
     'EPISODES/EPISODE_IMPORT_STARTED'
   ),
-  episodeImportFailed: createAction<episodeImportFailedPayload>('EPISODES/START_EPISODE_IMPORT'),
-  episodeImportFinished: createAction<episodeImportFinishedPayload>('EPISODES/START_EPISODE_IMPORT'),
+  episodeImportFailed: createAction<episodeImportFailedPayload>('EPISODES/EPISODE_IMPORT_FAILED'),
+  episodeImportFinished: createAction<episodeImportFinishedPayload>('EPISODES/EPISODE_IMPORT_FINISHED'),
   selectEpisode: createAction<selectEpisodePayload>('EPISODES/SELECT_EPISODE'),
 };
 
@@ -86,6 +86,78 @@ export const reducer = handleActions<State, any>(
       ...state,
       episodes: state.episodes.filter((item) => item.guid !== payload)
     }),
+    [actions.episodeImportStarted.toString()]: (
+      state,
+      { payload }: Action<episodeImportStartedPayload>
+    ): State => {
+      const episodes = state.episodes.map((episode) => {
+        if (episode.guid !== payload) {
+          return episode;
+        }
+
+        return {
+          ...episode,
+          status: {
+            ...episode.status,
+            importStarted: true,
+            importRunning: true
+          }
+        }
+      });
+
+      return {
+        ...state,
+        episodes
+      }
+    },
+    [actions.episodeImportFailed.toString()]: (
+      state,
+      { payload }: Action<episodeImportFailedPayload>
+    ): State => {
+      const episodes = state.episodes.map((episode) => {
+        if (episode.guid !== payload) {
+          return episode;
+        }
+
+        return {
+          ...episode,
+          status: {
+            ...episode.status,
+            importRunning: false,
+            importError: true
+          }
+        }
+      });
+
+      return {
+        ...state,
+        episodes
+      }
+    },
+    [actions.episodeImportFinished.toString()]: (
+      state,
+      { payload }: Action<episodeImportFinishedPayload>
+    ): State => {
+      const episodes = state.episodes.map((episode) => {
+        if (episode.guid !== payload) {
+          return episode;
+        }
+
+        return {
+          ...episode,
+          status: {
+            ...episode.status,
+            importRunning: false,
+            importFinished: true
+          }
+        }
+      });
+
+      return {
+        ...state,
+        episodes
+      }
+    },
     [actions.selectEpisode.toString()]: (state, { payload }: Action<selectEpisodePayload>) => ({
       ...state,
       selectedEpisode: payload

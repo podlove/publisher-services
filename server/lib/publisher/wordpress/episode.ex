@@ -1,5 +1,6 @@
 defmodule Publisher.WordPress.Episode do
   alias Publisher.WordPress.API
+  require Logger
 
   def save(conn, params) do
     req = API.new(conn.req_headers)
@@ -10,6 +11,8 @@ defmodule Publisher.WordPress.Episode do
          :ok <- upload_media(req, episode_id, post_id, params),
          :ok <- verify_media(req, episode_id) do
       :ok
+    else
+      error -> error
     end
   end
 
@@ -44,6 +47,8 @@ defmodule Publisher.WordPress.Episode do
         _ -> nil
       end
 
+    Logger.log(:info, "Find or create epiosde: #{guid} -> #{existing_episode_id}")
+
     case existing_episode_id do
       nil ->
         {:ok, episode} = Req.post(req, url: "podlove/v2/episodes")
@@ -61,25 +66,30 @@ defmodule Publisher.WordPress.Episode do
   end
 
   defp write_episode_meta(req, episode_id, params) do
+    payload = %{
+      guid: params["guid"],
+      title: params["title"],
+      subtitle: params["subtitle"],
+      summary: params["summary"],
+      number: params["number"],
+      explicit: params["explicit"],
+      slug: params["slug"],
+      duration: params["duration"],
+      type: params["type"] || "full"
+    }
+    |> Enum.filter(fn {_, v} -> not is_nil(v) end) # Filtere alle Felder, die nil sind
+    |> Enum.into(%{})
+
+    Logger.log(:info, "post podlove/v2/episode/#{episode_id}")
+
     Req.post(req,
       url: "podlove/v2/episodes/#{episode_id}",
-      json: %{
-        guid: params["guid"],
-        title: params["title"],
-        subtitle: params["subtitle"],
-        summary: params["summary"],
-        number: params["number"],
-        explicit: params["explicit"],
-        slug: params["slug"],
-        duration: params["duration"],
-        type: params["type"] || "full"
-        # episode_poster
-      }
+      json: payload
     )
   end
 
   defp upload_media(req, _episode_id, post_id, params) do
-    enclosure_url = params["enclosure"]
+    enclosure_url = params["media_file"]["url"]
     ext = extension_from_url(enclosure_url)
     filename = [params["slug"], ext] |> Enum.join(".")
 
@@ -97,6 +107,7 @@ defmodule Publisher.WordPress.Episode do
       )
 
     if upload.body["generated_slug"] != params["slug"] do
+      Logger.log(:info, "generated_slug (#{upload.body["generated_slug"]} and slug (#{params["slug"]}) parameter are different")
       # TODO: use the generated_slug for the episode, in case there are
       # duplicates. Otherwise the url will point to a wrong audio file.
     end
@@ -106,6 +117,8 @@ defmodule Publisher.WordPress.Episode do
 
   defp verify_media(req, episode_id) do
     {:ok, assets} = Req.get(req, url: "podlove/v2/episodes/#{episode_id}/media")
+    Logger.log(:info, "podlove/v2/episodes/#{episode_id}/media")
+    Logger.log(:info, assets)
     asset_ids = Enum.map(assets.body["results"], & &1["asset_id"])
 
     Enum.map(asset_ids, fn asset_id ->
