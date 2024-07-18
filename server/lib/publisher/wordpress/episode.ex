@@ -8,8 +8,9 @@ defmodule Publisher.WordPress.Episode do
     with episode_id <- find_or_create_episode(req, params["guid"]),
          post_id <- fetch_post_id(req, episode_id),
          {:ok, _} <- write_episode_meta(req, episode_id, params),
-         :ok <- upload_chapters(req, episode_id, params),
          :ok <- upload_media(req, episode_id, post_id, params),
+         :ok <- upload_chapters(req, episode_id, params),
+         :ok <- upload_transcript(req, episode_id, params),
          :ok <- verify_media(req, episode_id) do
       :ok
     else
@@ -67,19 +68,21 @@ defmodule Publisher.WordPress.Episode do
   end
 
   defp write_episode_meta(req, episode_id, params) do
-    payload = %{
-      guid: params["guid"],
-      title: params["title"],
-      subtitle: params["subtitle"],
-      summary: params["summary"],
-      number: params["number"],
-      explicit: params["explicit"],
-      slug: params["slug"],
-      duration: params["duration"],
-      type: params["type"] || "full"
-    }
-    |> Enum.filter(fn {_, v} -> not is_nil(v) end) # Filtere alle Felder, die nil sind
-    |> Enum.into(%{})
+    payload =
+      %{
+        guid: params["guid"],
+        title: params["title"],
+        subtitle: params["subtitle"],
+        summary: params["summary"],
+        number: params["number"],
+        explicit: params["explicit"],
+        slug: params["slug"],
+        duration: params["duration"],
+        type: params["type"] || "full"
+      }
+      # Filtere alle Felder, die nil sind
+      |> Enum.filter(fn {_, v} -> not is_nil(v) end)
+      |> Enum.into(%{})
 
     Logger.log(:info, "post podlove/v2/episode/#{episode_id}")
 
@@ -89,18 +92,58 @@ defmodule Publisher.WordPress.Episode do
     )
   end
 
-  defp upload_chapters(req, episode_id, %{"chapters" => chapters}) do
+  defp upload_chapters(req, episode_id, %{"chapters" => chapters} = _params)
+       when is_list(chapters) and length(chapters) > 0 do
+    Logger.log(:info, "Chapters exist and now transfered: #{episode_id}")
+    Logger.log(:info, "chapters elements: #{length(chapters)}")
+
     payload = %{
       chapters: chapters
     }
-
-    Logger.log(:info, "Chapters exist and now transfered: #{episode_id}")
 
     Req.post(req,
       url: "podlove/v2/chapters/#{episode_id}",
       json: payload
     )
 
+    :ok
+  end
+
+  defp upload_chapters(_req, episode_id, _params) do
+    Logger.log(:info, "Chapters not existed: #{episode_id}")
+    :ok
+  end
+
+  defp upload_transcript(req, episode_id, %{
+         "transcript" => %{"url" => url, "type" => type} = transcript
+       })
+       when not is_nil(url) and not is_nil(type) do
+    Logger.log(:info, "Transcript exist and now transfered: #{episode_id}")
+    Logger.log(:info, "transcript content: #{url}")
+
+    case type do
+      "text/vtt" ->
+        {:ok, resp} = Req.get(transcript["url"])
+
+        payload = %{
+          type: "vtt",
+          content: resp.body
+        }
+
+        Req.post(req,
+          url: "podlove/v2/transcripts/#{episode_id}",
+          json: payload
+        )
+
+      _ ->
+        Logger.log(:info, "Transcript type #{type} is not supported")
+    end
+
+    :ok
+  end
+
+  defp upload_transcript(_req, episode_id, _params) do
+    Logger.log(:info, "Transcript not existed: #{episode_id}")
     :ok
   end
 
@@ -123,7 +166,11 @@ defmodule Publisher.WordPress.Episode do
       )
 
     if upload.body["generated_slug"] != params["slug"] do
-      Logger.log(:info, "generated_slug (#{upload.body["generated_slug"]} and slug (#{params["slug"]}) parameter are different")
+      Logger.log(
+        :info,
+        "generated_slug (#{upload.body["generated_slug"]} and slug (#{params["slug"]}) parameter are different"
+      )
+
       # TODO: use the generated_slug for the episode, in case there are
       # duplicates. Otherwise the url will point to a wrong audio file.
     end
@@ -138,7 +185,8 @@ defmodule Publisher.WordPress.Episode do
     Enum.map(asset_ids, fn asset_id ->
       {:ok, _result} =
         Req.post(req, url: "podlove/v2/episodes/#{episode_id}/media/#{asset_id}/verify")
-        Logger.log(:info, "podlove/v2/episodes/#{episode_id}/media/#{asset_id}/verify")
+
+      Logger.log(:info, "podlove/v2/episodes/#{episode_id}/media/#{asset_id}/verify")
 
       # TODO: What should we verify here? Just that result.status == 200? Because
       # there might be more than just one asset, so we don't know which one MUST have
