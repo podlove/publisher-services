@@ -90,6 +90,7 @@ export default {
           subtitle: 'Subtitle',
           publicationDate: 'Publication Date',
           mediaFile: 'Media File',
+          duration: 'Duration',
           summary: 'Summary',
           chapters: 'Chapters',
           transcripts: 'Transcripts',

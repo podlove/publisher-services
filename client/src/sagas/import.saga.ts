@@ -92,7 +92,8 @@ function* fetchEpisodes() {
         enclosure: {
           url: get(episode, ['enclosure', 'url'], null),
           type: get(episode, ['enclosure', 'type'], null)
-        }
+        },
+        cover: get(episode, 'cover', null)
       }))
     )
   );
@@ -136,6 +137,8 @@ function* fetchEpisodeDetails({ payload }: Action<string>) {
       slug: get(episode, 'slug', null),
       type: get(episode, 'type', null),
       explicit: get(episode, 'explicit', null),
+      duration: get(episode, 'duration', null),
+      cover: get(episode, 'cover', null),
       transcript: {
         language: get(episode, ['transcript', 'language'], null),
         rel: get(episode, ['transcript', 'rel'], null),

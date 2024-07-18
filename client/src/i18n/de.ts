@@ -88,6 +88,7 @@ export default {
           subtitle: 'Untertitel',
           publicationDate: 'Veröffentlichungsdatum',
           mediaFile: 'Medien Datei',
+          duration: 'Laufzeit',
           summary: 'Zusammenfassung',
           chapters: 'Kapitel',
           transcripts: 'Transkripte',

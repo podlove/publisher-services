@@ -11,6 +11,8 @@ export interface Episode {
   contributors?: { name: string; uri?: string }[];
   subtitle?: string;
   summary?: string;
+  duration?: string;
+  cover?: string;
   transcript?: {
     language: string;
     rel: string;
@@ -42,6 +44,8 @@ export interface EpisodeDetailsPayload {
     slug: string;
     type: string;
     explicit: boolean;
+    duration: string;
+    cover: string;
     transcript: {
       language: string;
       rel: string;

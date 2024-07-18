@@ -28,7 +28,8 @@ defmodule Publisher.FeedParser do
           title: episode.title,
           guid: episode.guid,
           pub_date: episode.pub_date,
-          enclosure: episode.enclosure
+          enclosure: episode.enclosure,
+          cover: episode.image_url
         }
       end)
 
@@ -79,6 +80,8 @@ defmodule Publisher.FeedParser do
            content_length: episode.enclosure.size,
            type: episode.enclosure.type
          },
+         duration: episode.duration,
+         cover: episode.image_url,
          chapters: episode.chapters,
          transcript: transcript(episode),
          contributors: episode.contributors

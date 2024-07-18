@@ -8,6 +8,7 @@ defmodule Publisher.WordPress.Episode do
     with episode_id <- find_or_create_episode(req, params["guid"]),
          post_id <- fetch_post_id(req, episode_id),
          {:ok, _} <- write_episode_meta(req, episode_id, params),
+         :ok <- upload_chapters(req, episode_id, params),
          :ok <- upload_media(req, episode_id, post_id, params),
          :ok <- verify_media(req, episode_id) do
       :ok
@@ -88,6 +89,21 @@ defmodule Publisher.WordPress.Episode do
     )
   end
 
+  defp upload_chapters(req, episode_id, %{"chapters" => chapters}) do
+    payload = %{
+      chapters: chapters
+    }
+
+    Logger.log(:info, "Chapters exist and now transfered: #{episode_id}")
+
+    Req.post(req,
+      url: "podlove/v2/chapters/#{episode_id}",
+      json: payload
+    )
+
+    :ok
+  end
+
   defp upload_media(req, _episode_id, post_id, params) do
     enclosure_url = params["media_file"]["url"]
     ext = extension_from_url(enclosure_url)
@@ -117,13 +133,12 @@ defmodule Publisher.WordPress.Episode do
 
   defp verify_media(req, episode_id) do
     {:ok, assets} = Req.get(req, url: "podlove/v2/episodes/#{episode_id}/media")
-    Logger.log(:info, "podlove/v2/episodes/#{episode_id}/media")
-    Logger.log(:info, assets)
     asset_ids = Enum.map(assets.body["results"], & &1["asset_id"])
 
     Enum.map(asset_ids, fn asset_id ->
       {:ok, _result} =
         Req.post(req, url: "podlove/v2/episodes/#{episode_id}/media/#{asset_id}/verify")
+        Logger.log(:info, "podlove/v2/episodes/#{episode_id}/media/#{asset_id}/verify")
 
       # TODO: What should we verify here? Just that result.status == 200? Because
       # there might be more than just one asset, so we don't know which one MUST have
