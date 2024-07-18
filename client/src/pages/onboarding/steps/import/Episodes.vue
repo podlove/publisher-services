@@ -25,6 +25,7 @@
       <EpisodePreview />
     </div>
   </div>
+  <EpisodeStatistics></EpisodeStatistics>
 </template>
 <script setup lang="ts">
 import { mapState } from 'redux-vuex';
@@ -34,6 +35,7 @@ import { Episode } from '../../../../types/episode.types';
 
 import EpisodeListItem from '../../components/EpisodeListItem.vue';
 import EpisodePreview from '../../components/EpisodePreview.vue';
+import EpisodeStatistics from '../../components/EpisodeStatistics.vue'
 
 const { t } = useI18n();
 

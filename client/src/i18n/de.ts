@@ -92,6 +92,14 @@ export default {
           chapters: 'Kapitel',
           transcripts: 'Transkripte',
           content: 'Inhalt',
+        },
+        statistics: {
+          waiting: 'Noch zu importieren:',
+          numWaitingEpisode: '{count} Episoden',
+          successfull: 'Erfolgreich importiert:',
+          numSuccessEpisode: '{count} Episoden',
+          faulty: 'Fehlerhaft importiert:',
+          numFaultyEpisode: '{count} Episoden'
         }
       },
       'import-next-steps': {
