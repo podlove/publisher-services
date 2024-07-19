@@ -28,7 +28,7 @@ defmodule Publisher.FeedParser do
           title: episode.title,
           guid: episode.guid,
           pub_date: episode.pub_date,
-          enclosure: episode.enclosure,
+          enclosure: sanitize_enclosure(episode.enclosure),
           cover: episode.image_url
         }
       end)
@@ -124,5 +124,23 @@ defmodule Publisher.FeedParser do
       nil -> hd(urls)
       url -> url
     end
+  end
+
+  # removes binaries
+  # TODO: maybe replace binaries with URLs (proxy URLs that return the binary from memory)
+  defp sanitize_enclosure(%Metalove.Enclosure{metadata: metadata} = enclosure)
+       when not is_nil(metadata) do
+    metadata =
+      metadata
+      |> Map.delete(:cover_art)
+      |> Map.update(:chapters, nil, fn chapters ->
+        Enum.map(chapters, &Map.delete(&1, :image))
+      end)
+
+    %Metalove.Enclosure{enclosure | metadata: metadata}
+  end
+
+  defp sanitize_enclosure(enclosure) do
+    enclosure
   end
 end
