@@ -74,7 +74,7 @@ function* fetchPodcastMetaData() {
 function* fetchEpisodes() {
   const feedUrl = yield select(selectors.feed.feedUrl);
   const response: any = yield request.get(request.origin('api/v1/fetch_feed'), {
-    params: { feed_url: feedUrl, force_refresh: true }
+    params: { feed_url: feedUrl }
   });
 
   const episodes = get(response, ['episodes'], null);
