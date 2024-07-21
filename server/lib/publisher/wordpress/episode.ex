@@ -49,7 +49,7 @@ defmodule Publisher.WordPress.Episode do
         _ -> nil
       end
 
-    Logger.log(:info, "Find or create epiosde: #{guid} -> #{existing_episode_id}")
+    Logger.info("Find or create episode: #{guid} -> #{existing_episode_id}")
 
     case existing_episode_id do
       nil ->
@@ -80,11 +80,10 @@ defmodule Publisher.WordPress.Episode do
         duration: params["duration"],
         type: params["type"] || "full"
       }
-      # Filtere alle Felder, die nil sind
-      |> Enum.filter(fn {_, v} -> not is_nil(v) end)
+      |> reject_empty_values()
       |> Enum.into(%{})
 
-    Logger.log(:info, "post podlove/v2/episode/#{episode_id}")
+    Logger.info("post podlove/v2/episode/#{episode_id}")
 
     Req.post(req,
       url: "podlove/v2/episodes/#{episode_id}",
@@ -92,10 +91,13 @@ defmodule Publisher.WordPress.Episode do
     )
   end
 
+  defp reject_empty_values(map) do
+    Enum.reject(map, fn{_, v} -> is_nil(v) end)
+  end
+
   defp upload_chapters(req, episode_id, %{"chapters" => chapters} = _params)
        when is_list(chapters) and length(chapters) > 0 do
-    Logger.log(:info, "Chapters exist and now transfered: #{episode_id}")
-    Logger.log(:info, "chapters elements: #{length(chapters)}")
+    Logger.info("Episode has #{length(chapters)} chapters: #{episode_id}")
 
     payload = %{
       chapters: chapters
@@ -110,7 +112,7 @@ defmodule Publisher.WordPress.Episode do
   end
 
   defp upload_chapters(_req, episode_id, _params) do
-    Logger.log(:info, "Chapters not existed: #{episode_id}")
+    Logger.info("Episode has no chapters: #{episode_id}")
     :ok
   end
 
@@ -118,8 +120,7 @@ defmodule Publisher.WordPress.Episode do
          "transcript" => %{"url" => url, "type" => type} = transcript
        })
        when not is_nil(url) and not is_nil(type) do
-    Logger.log(:info, "Transcript exist and now transfered: #{episode_id}")
-    Logger.log(:info, "transcript content: #{url}")
+    Logger.info("Episode has a transcript: #{episode_id} (#{url})")
 
     case type do
       "text/vtt" ->
@@ -136,14 +137,14 @@ defmodule Publisher.WordPress.Episode do
         )
 
       _ ->
-        Logger.log(:info, "Transcript type #{type} is not supported")
+        Logger.info("Transcript type #{type} is not supported")
     end
 
     :ok
   end
 
   defp upload_transcript(_req, episode_id, _params) do
-    Logger.log(:info, "Transcript not existed: #{episode_id}")
+    Logger.info("Episode has no transcript: #{episode_id}")
     :ok
   end
 
@@ -166,8 +167,7 @@ defmodule Publisher.WordPress.Episode do
       )
 
     if upload.body["generated_slug"] != params["slug"] do
-      Logger.log(
-        :info,
+      Logger.info(
         "generated_slug (#{upload.body["generated_slug"]} and slug (#{params["slug"]}) parameter are different"
       )
 
@@ -186,7 +186,7 @@ defmodule Publisher.WordPress.Episode do
       {:ok, _result} =
         Req.post(req, url: "podlove/v2/episodes/#{episode_id}/media/#{asset_id}/verify")
 
-      Logger.log(:info, "podlove/v2/episodes/#{episode_id}/media/#{asset_id}/verify")
+      Logger.info("podlove/v2/episodes/#{episode_id}/media/#{asset_id}/verify")
 
       # TODO: What should we verify here? Just that result.status == 200? Because
       # there might be more than just one asset, so we don't know which one MUST have

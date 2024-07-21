@@ -13,5 +13,6 @@ defmodule PublisherWeb.Controllers.Validator.SaveEnclosure do
     %__MODULE__{}
     |> cast(attrs, @allowed_attrs)
     |> validate_required(@allowed_attrs)
+    |> validate_number(:content_length, greater_than_or_equal_to: 0)
   end
 end

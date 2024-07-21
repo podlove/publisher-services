@@ -178,9 +178,7 @@ function* importEpisodes() {
     try {
       yield request.post(request.origin('api/v1/import_episode'), {
         params: {},
-        data: {
-          ...episodeDetails
-        }
+        data: episodeDetails
       });{}
       yield put(actions.episodes.episodeImportFinished(nextEpisode.guid));
     } catch (error) {
