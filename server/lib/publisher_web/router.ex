@@ -31,7 +31,7 @@ defmodule PublisherWeb.Router do
   end
 
   post "/api/v1/import_episode" do
-    API.import_episode(conn, conn.params)
+    API.import_episode(conn, conn.req_headers, conn.params)
   end
 
   match _ do

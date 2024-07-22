@@ -24,7 +24,7 @@ defmodule PublisherWeb.Controllers.API do
 
   def podcast_feed_url(conn, headers) do
     with_validation(conn, headers_to_map(headers), Validator.WordPressSiteHeader, fn conn, data ->
-      case Podcast.feed_url(data[:"wordpress-site"]) do
+      case Podcast.feed_url(data."wordpress-site") do
         {:ok, data} -> json(conn, data)
         {:error, reason} -> send_resp(conn, 400, "Error: #{reason}")
       end
@@ -64,14 +64,18 @@ defmodule PublisherWeb.Controllers.API do
     end)
   end
 
-  def import_episode(conn, params) do
-    headers = conn.req_headers
-
+  def import_episode(conn, headers, body) do
     with_validation(conn, headers_to_map(headers), Validator.WordPressAuthHeaders, fn conn, _ ->
-      case Episode.save(conn, params) do
-        :ok -> json(conn, %{status: "success"})
-        _ -> send_resp(conn, 400, "Error: unable to save episode")
-      end
+      with_validation(conn, body, Validator.SaveEpisode, fn conn, _ ->
+        with_validation(conn, body["media_file"], Validator.SaveEnclosure, fn conn, _ ->
+          with_validation_array(conn, body["chapters"], Validator.SaveChapters, fn conn, _ ->
+              case Episode.save(conn, body) do
+              :ok -> json(conn, %{status: "success"})
+            _ -> send_resp(conn, 400, "Error: unable to save episode")
+            end
+          end)
+        end)
+      end)
     end)
   end
 
@@ -84,6 +88,18 @@ defmodule PublisherWeb.Controllers.API do
         conn
         |> put_status(:bad_request)
         |> json(%{errors: validator_mod.changeset_to_errors(changeset)})
+    end
+  end
+
+  defp with_validation_array(conn, params, validator_mod, success_fn) do
+    case validator_mod.validate_array(params) do
+      {:ok, data} ->
+        success_fn.(conn, data)
+
+      {:error, _} ->
+        conn
+        |> put_status(:bad_request)
+        |> json(%{errors: "missing field"})
     end
   end
 

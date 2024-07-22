@@ -35,6 +35,9 @@
         </p>
       </div>
     </div>
+    <div class="flex min-w-0 gap-x-4">
+      <img v-if="data.cover" class="h-12 w-12 flex-none bg-gray-800" :src="data.cover" alt="" />
+    </div>
   </li>
 </template>
 

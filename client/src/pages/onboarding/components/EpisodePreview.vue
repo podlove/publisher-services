@@ -30,6 +30,13 @@
     </EpisodeDetail>
     <EpisodeDetail
       class="mb-1"
+      :label="t('onboarding.steps.import-episodes.episodePreview.duration')"
+      v-if="state.selectedEpisode?.duration"
+    >
+      {{ state.selectedEpisode?.duration }}
+    </EpisodeDetail>
+    <EpisodeDetail
+      class="mb-1"
       :label="t('onboarding.steps.import-episodes.episodePreview.summary')"
       v-if="state.selectedEpisode?.summary"
     >

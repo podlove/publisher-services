@@ -1,5 +1,6 @@
 defmodule Publisher.WordPress.Episode do
   alias Publisher.WordPress.API
+  require Logger
 
   def save(conn, params) do
     req = API.new(conn.req_headers)
@@ -8,8 +9,12 @@ defmodule Publisher.WordPress.Episode do
          post_id <- fetch_post_id(req, episode_id),
          {:ok, _} <- write_episode_meta(req, episode_id, params),
          :ok <- upload_media(req, episode_id, post_id, params),
+         :ok <- upload_chapters(req, episode_id, params),
+         :ok <- upload_transcript(req, episode_id, params),
          :ok <- verify_media(req, episode_id) do
       :ok
+    else
+      error -> error
     end
   end
 
@@ -44,6 +49,8 @@ defmodule Publisher.WordPress.Episode do
         _ -> nil
       end
 
+    Logger.info("Find or create episode: #{guid} -> #{existing_episode_id}")
+
     case existing_episode_id do
       nil ->
         {:ok, episode} = Req.post(req, url: "podlove/v2/episodes")
@@ -61,9 +68,8 @@ defmodule Publisher.WordPress.Episode do
   end
 
   defp write_episode_meta(req, episode_id, params) do
-    Req.post(req,
-      url: "podlove/v2/episodes/#{episode_id}",
-      json: %{
+    payload =
+      %{
         guid: params["guid"],
         title: params["title"],
         subtitle: params["subtitle"],
@@ -73,13 +79,77 @@ defmodule Publisher.WordPress.Episode do
         slug: params["slug"],
         duration: params["duration"],
         type: params["type"] || "full"
-        # episode_poster
       }
+      |> reject_empty_values()
+      |> Enum.into(%{})
+
+    Logger.info("post podlove/v2/episode/#{episode_id}")
+
+    Req.post(req,
+      url: "podlove/v2/episodes/#{episode_id}",
+      json: payload
     )
   end
 
+  defp reject_empty_values(map) do
+    Enum.reject(map, fn{_, v} -> is_nil(v) end)
+  end
+
+  defp upload_chapters(req, episode_id, %{"chapters" => chapters} = _params)
+       when is_list(chapters) and length(chapters) > 0 do
+    Logger.info("Episode has #{length(chapters)} chapters: #{episode_id}")
+
+    payload = %{
+      chapters: chapters
+    }
+
+    Req.post(req,
+      url: "podlove/v2/chapters/#{episode_id}",
+      json: payload
+    )
+
+    :ok
+  end
+
+  defp upload_chapters(_req, episode_id, _params) do
+    Logger.info("Episode has no chapters: #{episode_id}")
+    :ok
+  end
+
+  defp upload_transcript(req, episode_id, %{
+         "transcript" => %{"url" => url, "type" => type} = transcript
+       })
+       when not is_nil(url) and not is_nil(type) do
+    Logger.info("Episode has a transcript: #{episode_id} (#{url})")
+
+    case type do
+      "text/vtt" ->
+        {:ok, resp} = Req.get(transcript["url"])
+
+        payload = %{
+          type: "vtt",
+          content: resp.body
+        }
+
+        Req.post(req,
+          url: "podlove/v2/transcripts/#{episode_id}",
+          json: payload
+        )
+
+      _ ->
+        Logger.info("Transcript type #{type} is not supported")
+    end
+
+    :ok
+  end
+
+  defp upload_transcript(_req, episode_id, _params) do
+    Logger.info("Episode has no transcript: #{episode_id}")
+    :ok
+  end
+
   defp upload_media(req, _episode_id, post_id, params) do
-    enclosure_url = params["enclosure"]
+    enclosure_url = params["media_file"]["url"]
     ext = extension_from_url(enclosure_url)
     filename = [params["slug"], ext] |> Enum.join(".")
 
@@ -97,6 +167,10 @@ defmodule Publisher.WordPress.Episode do
       )
 
     if upload.body["generated_slug"] != params["slug"] do
+      Logger.info(
+        "generated_slug (#{upload.body["generated_slug"]} and slug (#{params["slug"]}) parameter are different"
+      )
+
       # TODO: use the generated_slug for the episode, in case there are
       # duplicates. Otherwise the url will point to a wrong audio file.
     end
@@ -111,6 +185,8 @@ defmodule Publisher.WordPress.Episode do
     Enum.map(asset_ids, fn asset_id ->
       {:ok, _result} =
         Req.post(req, url: "podlove/v2/episodes/#{episode_id}/media/#{asset_id}/verify")
+
+      Logger.info("podlove/v2/episodes/#{episode_id}/media/#{asset_id}/verify")
 
       # TODO: What should we verify here? Just that result.status == 200? Because
       # there might be more than just one asset, so we don't know which one MUST have
