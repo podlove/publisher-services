@@ -8,6 +8,7 @@ defmodule Publisher.WordPress.Episode do
     with episode_id <- find_or_create_episode(req, params["guid"]),
          post_id <- fetch_post_id(req, episode_id),
          {:ok, _} <- write_episode_meta(req, episode_id, params),
+         :ok <- upload_content(req, post_id, params),
          :ok <- upload_media(req, episode_id, post_id, params),
          :ok <- upload_chapters(req, episode_id, params),
          :ok <- upload_transcript(req, episode_id, params),
@@ -96,6 +97,27 @@ defmodule Publisher.WordPress.Episode do
     Enum.reject(map, fn {_, v} -> is_nil(v) end)
   end
 
+  defp upload_content(req, post_id, %{"content" => content} = _params)
+       when not is_nil(content) do
+    Logger.info("Episode post #{post_id} content is #{content}")
+
+    payload = %{
+      content: content
+    }
+
+    Req.post(req,
+      url: "wp/v2/episodes/#{post_id}",
+      json: payload
+    )
+
+    :ok
+  end
+
+  defp upload_content(_req, _post_id, params) do
+    Logger.info("Episode has no post content #{params}")
+    :ok
+  end
+
   defp upload_chapters(req, episode_id, %{"chapters" => chapters} = _params)
        when is_list(chapters) and length(chapters) > 0 do
     Logger.info("Episode has #{length(chapters)} chapters: #{episode_id}")
@@ -174,7 +196,6 @@ defmodule Publisher.WordPress.Episode do
   end
 
   defp set_attr_contributor(req, id, name) do
-
     payload = %{
       publicname: name,
       visibility: "yes"
