@@ -11,6 +11,7 @@ defmodule Publisher.WordPress.Episode do
          :ok <- upload_media(req, episode_id, post_id, params),
          :ok <- upload_chapters(req, episode_id, params),
          :ok <- upload_transcript(req, episode_id, params),
+         :ok <- upload_contributors(req, episode_id, params),
          :ok <- verify_media(req, episode_id) do
       :ok
     else
@@ -92,7 +93,7 @@ defmodule Publisher.WordPress.Episode do
   end
 
   defp reject_empty_values(map) do
-    Enum.reject(map, fn{_, v} -> is_nil(v) end)
+    Enum.reject(map, fn {_, v} -> is_nil(v) end)
   end
 
   defp upload_chapters(req, episode_id, %{"chapters" => chapters} = _params)
@@ -145,6 +146,99 @@ defmodule Publisher.WordPress.Episode do
 
   defp upload_transcript(_req, episode_id, _params) do
     Logger.info("Episode has no transcript: #{episode_id}")
+    :ok
+  end
+
+  defp upload_contributors(req, episode_id, %{"contributors" => contributors} = _param)
+       when is_list(contributors) and length(contributors) > 0 do
+    Logger.info("Episode has #{length(contributors)} contributors: #{episode_id}")
+
+    with {:ok, contributor_ids} <- find_or_create_contributors(req, contributors),
+         :ok <- add_contributors_to_episode(req, episode_id, contributor_ids) do
+      :ok
+    else
+      error -> error
+    end
+  end
+
+  defp upload_contributors(_req, episode_id, _params) do
+    Logger.info("Episode has no contributors: #{episode_id}")
+    :ok
+  end
+
+  defp is_contributor_exist?(name, existing_contributors) do
+    Enum.find(existing_contributors, fn contributor ->
+      name == contributor["realname"] or name == contributor["nickname"] or
+        name == contributor["publicname"]
+    end)
+  end
+
+  defp set_attr_contributor(req, id, name) do
+
+    payload = %{
+      publicname: name,
+      visibility: "yes"
+    }
+
+    {:ok, _} =
+      Req.put(req,
+        url: "podlove/v2/contributors/#{id}",
+        json: payload
+      )
+  end
+
+  defp create_contributor(req, name) do
+    with {:ok, contributor} <- Req.post(req, url: "podlove/v2/contributors"),
+         id <- contributor.body["id"],
+         {:ok, _} <- set_attr_contributor(req, id, name) do
+      {:ok, id}
+    else
+      :error -> :error
+    end
+  end
+
+  defp find_or_create_contributors(req, contributors) do
+    {:ok, %Req.Response{body: %{"contributors" => exist_contributors}}} =
+      Req.get(
+        req,
+        url: "podlove/v2/contributors",
+        params: %{filter: "all"}
+      )
+
+    ids =
+      Enum.reduce(contributors, [], fn contributor, acc ->
+        name = Map.fetch!(contributor, "name")
+        # uri = Map.get(contributor, "uri", nil)
+        case is_contributor_exist?(name, exist_contributors) do
+          nil ->
+            case create_contributor(req, name) do
+              {:ok, id} -> [id | acc]
+              {:error, reason} -> Logger.info("Couldn't create a contributor: #{reason}")
+            end
+
+          exist_contributor ->
+            id = String.to_integer(exist_contributor["id"])
+            [id | acc]
+        end
+      end)
+
+    {:ok, Enum.reverse(ids)}
+  end
+
+  defp add_contributors_to_episode(req, episode_id, contributor_ids) do
+    contributions =
+      Enum.with_index(contributor_ids, 1)
+      |> Enum.map(fn {id, index} -> %{contributor_id: id, position: index} end)
+
+    payload = %{
+      contributors: contributions
+    }
+
+    Req.patch(req,
+      url: "podlove/v2/episodes/#{episode_id}/contributions",
+      json: payload
+    )
+
     :ok
   end
 
