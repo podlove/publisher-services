@@ -113,8 +113,8 @@ defmodule Publisher.WordPress.Episode do
     :ok
   end
 
-  defp upload_content(_req, _post_id, params) do
-    Logger.info("Episode has no post content #{params}")
+  defp upload_content(_req, _post_id, _params) do
+    Logger.info("Episode has no post content")
     :ok
   end
 
