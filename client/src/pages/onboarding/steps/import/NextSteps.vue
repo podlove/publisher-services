@@ -33,9 +33,9 @@
       class="pb-5 mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3 mb-5"
     >
       <FinishCard
-        :image="learnIconUrl"
-        :headline="t('onboarding.steps.import-next-steps.learn.headline')"
-        :content="t('onboarding.steps.import-next-steps.learn.content')"
+        :image="episodesIconUrl"
+        :headline="t('onboarding.steps.import-next-steps.episodes.headline')"
+        :content="t('onboarding.steps.import-next-steps.episodes.content')"
       />
       <FinishCard
         :image="redirectIconUrl"
@@ -43,9 +43,9 @@
         :content="t('onboarding.steps.import-next-steps.redirect.content')"
       />
       <FinishCard
-        :image="episodesIconUrl"
-        :headline="t('onboarding.steps.import-next-steps.episodes.headline')"
-        :content="t('onboarding.steps.import-next-steps.episodes.content')"
+        :image="learnIconUrl"
+        :headline="t('onboarding.steps.import-next-steps.learn.headline')"
+        :content="t('onboarding.steps.import-next-steps.learn.content')"
       />
     </div>
     <div class="text-center">
