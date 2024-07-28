@@ -1,13 +1,13 @@
 import { takeEvery, put, select, debounce } from 'redux-saga/effects';
-import { Action } from 'redux-actions';
-import { get } from 'lodash-es';
+import { type Action } from 'redux-actions';
+import { get, pickBy } from 'lodash-es';
 
 import { actions, selectors } from '../store';
-import { validateFeedUrlPayload } from '../store/feed.store';
+import { type validateFeedUrlPayload } from '../store/feed.store';
 import * as request from '../lib/request';
 import { findCategories } from '../helper/categories';
 import { LanguageLocales } from '../types/locales.types';
-import { Episode, EpisodeDetailsPayload } from '../types/episode.types';
+import { type Episode, type EpisodeDetailsPayload } from '../types/episode.types';
 import { savePodcastMetadata } from './helpers/podcast';
 
 function* validateFeedUrl({ payload }: Action<validateFeedUrlPayload>) {
@@ -29,8 +29,8 @@ function* validateFeedUrl({ payload }: Action<validateFeedUrlPayload>) {
   }
 }
 
-function* fetchPodcastMetaData() {
-  const feedUrl = yield select(selectors.feed.feedUrl);
+function* fetchPodcastMetaData(): any {
+  const feedUrl: string = yield select(selectors.feed.feedUrl);
 
   const response: any = yield request.get(request.origin('api/v1/fetch_feed'), {
     params: {
@@ -38,6 +38,7 @@ function* fetchPodcastMetaData() {
       force_refresh: true
     }
   });
+
   const podcast = get(response, ['podcast'], null);
 
   if (!podcast) {
@@ -71,8 +72,8 @@ function* fetchPodcastMetaData() {
   }
 }
 
-function* fetchEpisodes() {
-  const feedUrl = yield select(selectors.feed.feedUrl);
+function* fetchEpisodes(): any {
+  const feedUrl: string = yield select(selectors.feed.feedUrl);
   const response: any = yield request.get(request.origin('api/v1/fetch_feed'), {
     params: { feed_url: feedUrl }
   });
@@ -112,7 +113,7 @@ function* importPodcast() {
 }
 
 function* fetchEpisodeDetails({ payload }: Action<string>) {
-  const feedUrl = yield select(selectors.feed.feedUrl);
+  const feedUrl: string = yield select(selectors.feed.feedUrl);
 
   try {
     const { episode }: EpisodeDetailsPayload = yield request.get(
@@ -152,7 +153,7 @@ function* fetchEpisodeDetails({ payload }: Action<string>) {
       }
     };
 
-    yield put(actions.episodes.addEpisodeDetails(result));
+    yield put(actions.episodes.addEpisodeDetails(pickBy(result)));
 
     return result;
   } catch (err) {
@@ -160,10 +161,12 @@ function* fetchEpisodeDetails({ payload }: Action<string>) {
   }
 }
 
-function* importEpisodes() {
+function* importEpisodes(): any {
   const nextEpisode: { guid: string } | null = yield select(selectors.episodes.nextEpisodeToImport);
 
   if (!nextEpisode) {
+    yield put(actions.podcast.readFeedUrl());
+    yield put(actions.onboarding.next());
     // we are done with all stored episodes, validate results and move to next step
     return;
   }

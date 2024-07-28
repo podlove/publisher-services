@@ -7,7 +7,7 @@ export default {
         'start-new-podcast': 'Save & Continue',
         'import-feed': 'Next',
         'import-podcast': 'Save & Continue',
-        'import-episodes': 'Start Import',
+        'import-episodes': 'Start Import'
       }
     },
     steps: {
@@ -37,39 +37,39 @@ export default {
         headline: 'Congratulations! 🎉 Your podcast setup is complete!',
         description: `We're thrilled to have you on board!`,
         feed: `Your podcast's RSS feed is ready to go: `,
-        'feed-hint':
-          'This feed is what makes your podcast accessible to listeners on various platforms. You can directly subscribe to your podcast using this link in any podcatcher.',
+        feedHint:
+          'This feed is what makes your podcast accessible to listeners on various platforms.<br>You can directly subscribe to your podcast using this link in any podcatcher.',
         more: 'Now that your podcast is up and running, here are some next steps to consider:',
-        'learn-head': 'Learn more about Podlove',
-        learn:
-          'Dive deeper into the features and possibilities of Podlove by exploring our documentation and community forums to get ready to publish your first episode and share it with the world!',
-        'promote-head': 'Promote your podcast',
-        promote:
-          'Spread the word about your new podcast by submitting it to popular podcast directories. Check out our guide on how to submit your podcast feed to directories for more information.',
-        'community-head': 'Join the Podlove community',
-        community:
-          'Connect with fellow podcasters and enthusiasts on the Podlove Sendegate, our community forum. Get tips, advice, and support from experienced podcasters, and share your own insights and experiences.',
-        sendegate:
-          'Click below to visit the Sendegate and access our welcome post, where you can introduce yourself and get started on your podcasting journey. Happy podcasting!'
+        learn: {
+          headline: 'Learn more about Podlove',
+          content: 'Dive deeper into the features and possibilities of Podlove by exploring our documentation and community forums to get ready to publish your first episode and share it with the world!',
+        },
+        promote: {
+          headline: 'Promote your podcast',
+          content: 'Spread the word about your new podcast by submitting it to popular podcast directories. Check out our guide on how to submit your podcast feed to directories for more information.'
+        },
+        community: {
+          headline: 'Join the Podlove community',
+          content: 'Connect with fellow podcasters and enthusiasts on the Podlove Sendegate, our community forum. Get tips, advice, and support from experienced podcasters, and share your own insights and experiences.'
+        }
       },
       'import-feed': {
         title: 'Enter RSS-Feed',
         headline: 'Move your Podcast to Podlove',
         description:
-          'Let\'s get started on bringing your existing podcast over to Podlove. Simply enter the RSS feed URL of your current podcast below.',
-        help:
-          'You can usually find the RSS feed URL in the settings or dashboard of your current hosting platform. For more detailed instructions on finding your RSS feed URL with popular hosting platforms, check out this <a class="support-link" href="https://sendegate.de/t/podcast-feed-bei-hosting-plattformen-finden-wiki/17116">post</a> in the Sendegate.',
+          "Let's get started on bringing your existing podcast over to Podlove. Simply enter the RSS feed URL of your current podcast below.",
+        help: 'You can usually find the RSS feed URL in the settings or dashboard of your current hosting platform. For more detailed instructions on finding your RSS feed URL with popular hosting platforms, check out this <a class="support-link" href="https://sendegate.de/t/podcast-feed-bei-hosting-plattformen-finden-wiki/17116">post</a> in the Sendegate.',
         'feed-url': 'Podcast feed url',
         'feed-url-placeholder': 'Enter the feed url',
         'success-head': 'Success!',
         'success-info':
-          'Your podcast has been detected at the provided URL. You can now proceed to the next step, where you\'ll be able to review and adjust the podcast details.',
+          "Your podcast has been detected at the provided URL. You can now proceed to the next step, where you'll be able to review and adjust the podcast details.",
         'warning-head': 'Oops!',
         'warning-info':
-          'We couldn\'t find a podcast at the provided URL. Don\'t worry, it happens sometimes! Here are a few things you can try:',
-        'warning-hints' : [
-          'Double-check the URL you entered to make sure it\'s correct.',
-          'If you\'re not sure where to find the RSS feed URL, check the documentation or support resources provided by your hosting platform.',
+          "We couldn't find a podcast at the provided URL. Don't worry, it happens sometimes! Here are a few things you can try:",
+        'warning-hints': [
+          "Double-check the URL you entered to make sure it's correct.",
+          "If you're not sure where to find the RSS feed URL, check the documentation or support resources provided by your hosting platform.",
           'Reach out to your hosting provider to confirm the correct RSS feed URL.'
         ]
       },
@@ -77,14 +77,14 @@ export default {
         title: 'Check Podcast information',
         headline: 'Check your podcast data',
         description:
-          'We\'ve detected the metadata for your podcast in your feed. Take a moment to review the details below. If everything looks good, you\'re one step closer to sharing your podcast with the world. If you need to make any adjustments, feel free to do so before proceeding to the next step.'
+          "We've detected the metadata for your podcast in your feed. Take a moment to review the details below. If everything looks good, you're one step closer to sharing your podcast with the world. If you need to make any adjustments, feel free to do so before proceeding to the next step."
       },
       'import-episodes': {
         title: 'Import Episodes',
         headline: 'Import Your Episodes',
         description:
-          'We\'ve found { count } episodes from your existing podcast. Please take a moment to review them here. When you\'re ready, click \'Start Import\' to begin the process. Your Browser has to stay open during the process.',
-        missingReleaseDate: "no release date found",
+          "We've found { count } episodes from your existing podcast. Please take a moment to review them here. When you're ready, click 'Start Import' to begin the process. Your Browser has to stay open during the process.",
+        missingReleaseDate: 'no release date found',
         episodePreview: {
           title: 'Title',
           subtitle: 'Subtitle',
@@ -107,6 +107,25 @@ export default {
       },
       'import-next-steps': {
         title: 'Next Steps',
+        headline: 'Congratulations! 🎉 Your podcast import is complete!',
+        description: `We're thrilled to have you on board!`,
+        feed: `Your podcast's RSS feed is ready to go:`,
+        feedHint:
+          `Your podcast's RSS feed is crucial for making your content accessible to listeners across different platforms.<br>Remember to update your podcast's feed URL on various directories to ensure uninterrupted access for your audience.`,
+        more: 'Now that your podcast is imported and ready, here are some next steps to consider:',
+        learn: {
+          headline: 'Learn more about Podlove',
+          content: 'Explore our documentation and community forums to discover more about hosting and publishing your podcast with Podlove.'
+        },
+        redirect: {
+          headline: 'Set up a redirect from your old host',
+          content: `Ensure your listeners follow you to your new feed by setting up a redirect from your old hosting platform. Check your current host's support documentation or contact their support team for assistance with configuring a redirect to your new RSS feed.`
+        },
+        episodes: {
+          headline: 'Check your episodes',
+          content: 'All your imported episodes have been saved as drafs in the "Episodes" entry in the Wordpress sidebar. If you marked some of them during the import process with the "review" checkbox, they now have a "review" tag you can filter for. Click below to get to the episodes list, where you can review and publish them.',
+        },
+        button: 'Go to Episodes List'
       }
     },
 

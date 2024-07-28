@@ -1,16 +1,17 @@
 <template>
-  <button
+  <component
+    :is="type"
     type="button"
     class="inline-flex items-center focus:outline-none focus:ring-2 border border-transparent shadow-sm whitespace-nowrap disabled:opacity-75"
     :disabled="disabled"
     :class="[variantClass, sizeClass]"
   >
     <slot />
-  </button>
+</component>
 </template>
 
 <script lang="ts" setup>
-import { computed, ButtonHTMLAttributes } from 'vue';
+import { computed } from 'vue';
 import { defineProps } from 'vue';
 
 export type ButtonType =
@@ -28,6 +29,7 @@ interface Props {
   variant?: ButtonType;
   size?: ButtonSize;
   disabled?: boolean;
+  type?: 'button' | 'a';
 }
 
 const props = defineProps<Props>();
@@ -35,6 +37,8 @@ const props = defineProps<Props>();
 const variant = computed<ButtonType>(() => props.variant || 'default');
 const size = computed<ButtonSize>(() => props.size || 'medium');
 const disabled = computed<boolean>(() => props.disabled || false);
+
+const type = computed<'button' | 'a'>(() => props.type || 'button');
 
 const variantClass = computed(() => {
   switch (variant.value) {
