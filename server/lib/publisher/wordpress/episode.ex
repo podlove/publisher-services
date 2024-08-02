@@ -1,6 +1,8 @@
 defmodule Publisher.WordPress.Episode do
-  alias Publisher.WordPress.API
   require Logger
+
+  alias Publisher.WordPress.API
+  alias Publisher.WordPress.Media
 
   def save(conn, params) do
     req = API.new(conn.req_headers)
@@ -13,7 +15,8 @@ defmodule Publisher.WordPress.Episode do
          :ok <- upload_chapters(req, episode_id, params),
          :ok <- upload_transcript(req, episode_id, params),
          :ok <- upload_contributors(req, episode_id, params),
-         :ok <- verify_media(req, episode_id) do
+         :ok <- verify_media(req, episode_id),
+         :ok <- upload_cover(req, episode_id, params) do
       :ok
     else
       error -> error
@@ -308,6 +311,31 @@ defmodule Publisher.WordPress.Episode do
       # a size. Unless we figure that out beforehand.
     end)
 
+    :ok
+  end
+
+  defp save_episode_image_url(req, episode_id, source_url) do
+    Logger.info("Episode use #{source_url} as cover: #{episode_id}")
+    body = %{
+      episode_poster: source_url
+    }
+    Req.post(req, url: "podlove/v2/episodes/#{episode_id}", json: body)
+    :ok
+  end
+
+  defp upload_cover(req, episode_id, %{"cover" => cover} = params)
+    when not is_nil(cover) do
+    image_name = "cover-" <> params["slug"]
+    with {:ok, source_url} <- Media.upload_media_from_url(req, cover, image_name),
+         :ok <- save_episode_image_url(req, episode_id, source_url) do
+      :ok
+    else
+      :error -> :error
+    end
+  end
+
+  defp upload_cover(_req, episode_id, _params) do
+    Logger.info("Episode has no epiosde cover: #{episode_id}")
     :ok
   end
 end
