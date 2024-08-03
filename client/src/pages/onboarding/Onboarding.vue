@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue';
+import { type Component, computed } from 'vue';
 import { mapState, injectStore } from 'redux-vuex';
 import { useI18n } from 'vue-i18n';
 
@@ -57,7 +57,7 @@ const state = mapState({
   previousAction: selectors.onboarding.previousAction
 });
 
-const stepComponents = {
+const stepComponents: {[key: string]: Component } = {
   select: SetupType,
   'start-new-podcast': StartNewPodcast,
   'start-new-next-steps': StartNewNextSteps,

@@ -1,6 +1,6 @@
 import { createAction, handleActions, type Action } from 'redux-actions';
-import { category } from '../types/categories.types';
-import { locales } from '../types/locales.types';
+import { type category } from '../types/categories.types';
+import { type locales } from '../types/locales.types';
 
 export interface State {
   name: string | null;
