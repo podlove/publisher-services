@@ -7,7 +7,7 @@ import * as request from '../lib/request';
 import { locales } from '../types/locales.types';
 import { category } from '../types/categories.types';
 import { setPodcastCoverPayload } from '../store/podcast.store';
-import { savePodcastMetadata } from './helpers/podcast';
+import { setOnboardingPodcastSettings, savePodcastMetadata } from './helpers/podcast';
 
 
 function readImage(file: File): Promise<string> {
@@ -35,6 +35,7 @@ function* removeImage() {
 
 
 function* transferPodcast() {
+  yield setOnboardingPodcastSettings();
   yield savePodcastMetadata();
   yield put(actions.onboarding.next());
 }

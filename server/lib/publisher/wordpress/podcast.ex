@@ -21,8 +21,21 @@ defmodule Publisher.WordPress.Podcast do
     end
   end
 
+  def set_settings(headers, _body) do
+    Logger.info("Padcast.set_settings")
+
+    req = API.new(headers)
+
+    with {:ok, response} <- Req.post(req, url: "podlove/v2/onboarding"),
+         {:ok, _} <- extract_status(response) do
+      :ok
+    else
+      error -> error
+    end
+  end
+
   def save_podcast_data(headers, body) do
-    Logger.log(:info, "Podcast.save_podcast_data")
+    Logger.info("Podcast.save_podcast_data")
 
     payload = %{
       title: body.name,
