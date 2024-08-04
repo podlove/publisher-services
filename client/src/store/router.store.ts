@@ -1,5 +1,5 @@
 import { createAction, handleActions, type Action } from 'redux-actions';
-import { RouteLocationNormalized } from 'vue-router';
+import { type RouteLocationNormalized } from 'vue-router';
 
 export type navigatePayload = RouteLocationNormalized;
 

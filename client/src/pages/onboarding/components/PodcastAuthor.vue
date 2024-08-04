@@ -24,7 +24,7 @@
 
 <script lang="ts" setup>
 import { injectStore, mapState } from 'redux-vuex';
-import { Action } from 'redux';
+import { type Action } from 'redux';
 
 import { useI18n } from 'vue-i18n';
 

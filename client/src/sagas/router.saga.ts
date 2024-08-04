@@ -1,13 +1,13 @@
-import { Action } from 'redux-actions';
+import { type Action } from 'redux-actions';
 import { fork, put, takeEvery } from 'redux-saga/effects';
 import { get } from 'lodash-es';
 import { actions } from '../store';
-import { navigatePayload } from '../store/router.store';
+import { type navigatePayload } from '../store/router.store';
 
 function* authenticate(payload: navigatePayload) {
-  const site = get(payload, ['query', 'site_url'], null);
-  const user = get(payload, ['query', 'user_login'], null);
-  const password = get(payload, ['query', 'password'], null);
+  const site = get(payload, ['query', 'site_url'], null) as string | null;
+  const user = get(payload, ['query', 'user_login'], null) as string | null;
+  const password = get(payload, ['query', 'password'], null) as string | null;
 
   if (site && user && password) {
     yield put(actions.authentication.setApplicationPassword({ site, user, password }));
@@ -15,7 +15,7 @@ function* authenticate(payload: navigatePayload) {
 }
 
 function* runtime(payload: navigatePayload) {
-  const lang = get(payload, ['query', 'lang'], null);
+  const lang = get(payload, ['query', 'lang'], null) as string | null;
 
   if (lang) {
     yield put(actions.runtime.language(lang));

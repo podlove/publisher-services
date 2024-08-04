@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 import { get } from 'lodash-es';
-import State from './state';
+import type State from './state';
 import * as router from './router.store';
 import * as authentication from './authentication.store';
 import * as onboarding from './onboarding.store';
@@ -11,13 +11,13 @@ import * as episodes from './episode.store'
 import { onboardingUpcomingEnabled } from './lib/validations';
 
 const root = {
-  router: (state: State): router.State => get(state, 'router', {}),
-  authentication: (state: State): authentication.State => get(state, 'authentication', {}),
-  onboarding: (state: State): onboarding.State => get(state, 'onboarding', {}),
-  runtime: (state: State): runtime.State => get(state, 'runtime', {}),
-  podcast: (state: State): podcast.State => get(state, 'podcast', {}),
-  feed: (state: State): feed.State => get(state, 'feed', {}),
-  episodes: (state: State): episodes.State => get(state, 'episodes', {}),
+  router: (state: State): router.State => get(state, 'router', {}) as router.State,
+  authentication: (state: State): authentication.State => get(state, 'authentication', {}) as authentication.State,
+  onboarding: (state: State): onboarding.State => get(state, 'onboarding', {}) as onboarding.State,
+  runtime: (state: State): runtime.State => get(state, 'runtime', {}) as runtime.State,
+  podcast: (state: State): podcast.State => get(state, 'podcast', {}) as podcast.State,
+  feed: (state: State): feed.State => get(state, 'feed', {}) as feed.State,
+  episodes: (state: State): episodes.State => get(state, 'episodes', {}) as episodes.State,
 };
 
 export default {
