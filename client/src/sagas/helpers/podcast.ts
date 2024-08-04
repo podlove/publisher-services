@@ -1,8 +1,8 @@
 import { select } from 'redux-saga/effects';
 import * as request from '../../lib/request';
 import { selectors } from '../../store';
-import { locales } from '../../types/locales.types';
-import { category } from '../../types/categories.types';
+import { type locales } from '../../types/locales.types';
+import { type category } from '../../types/categories.types';
 import { extractImageType } from '../../lib/image';
 
 function transferPodcastCoverFromData(imageData: string, imageName: string) {

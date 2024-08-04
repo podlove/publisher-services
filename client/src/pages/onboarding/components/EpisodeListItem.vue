@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import { Action } from 'redux';
+import { type Action } from 'redux';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { mapState, injectStore } from 'redux-vuex';

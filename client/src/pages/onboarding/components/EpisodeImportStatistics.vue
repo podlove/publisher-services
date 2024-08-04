@@ -22,7 +22,7 @@ import { computed } from 'vue';
 import { mapState } from 'redux-vuex';
 import { useI18n } from 'vue-i18n';
 import { selectors } from '../../../store';
-import { Episode } from '../../../types/episode.types';
+import { type Episode } from '../../../types/episode.types';
 
 const { t } = useI18n();
 

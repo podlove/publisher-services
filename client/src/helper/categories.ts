@@ -1,4 +1,4 @@
-import { category, PodcastCategories } from "../types/categories.types";
+import { type category, PodcastCategories } from "../types/categories.types";
 
 export const findCategories = (categoriesArray : string[]) : category | null => {
     if (categoriesArray.length > 0) {

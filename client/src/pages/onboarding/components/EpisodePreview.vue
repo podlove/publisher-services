@@ -74,7 +74,7 @@
 import { mapState } from 'redux-vuex';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { Episode } from '../../../types/episode.types';
+import { type Episode } from '../../../types/episode.types';
 import { selectors } from '../../../store';
 import EpisodeDetail from './EpisodeDetail.vue';
 
