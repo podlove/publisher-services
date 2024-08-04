@@ -7,7 +7,7 @@ export default {
         'start-new-podcast': 'Save & Continue',
         'import-feed': 'Next',
         'import-podcast': 'Save & Continue',
-        'import-episodes': 'Start Import'
+        'import-episodes': 'Next'
       }
     },
     steps: {
@@ -96,13 +96,15 @@ export default {
           transcripts: 'Transcripts',
           content: 'Content'
         },
-        statistics: {
-          waiting: 'Waiting for import:',
-          numWaitingEpisode: '{count} Episodes',
-          successfull: 'Successfully imported:',
-          numSuccessEpisode: '{count} Episodes',
-          faulty: 'Faulty imported:',
-          numFaultyEpisode: '{count} Episodes'
+        progress: {
+          numWaitingEpisode: '{count} Episode(s) waiting for import',
+          numSuccessEpisode: '{count} Episode(s) successfully imported',
+          numFaultyEpisode: '{count} Episode(s) failed to import',
+          progressStatus: '{processed}/{waiting} Episode(s)',
+          startImport: 'Start Import',
+          stopImport: 'Stop Import',
+          restartImport: 'Restart Import',
+          episodeInImport: 'Currently importing: {title}'
         }
       },
       'import-next-steps': {

@@ -58,6 +58,8 @@ export default {
   episodes: {
     list: createSelector(root.episodes, episodes.selectors.episodes),
     nextEpisodeToImport: createSelector(root.episodes, episodes.selectors.nextEpisodeToImport),
-    selectedEpisode: createSelector(root.episodes, episodes.selectors.selectedEpisode)
+    selectedEpisode: createSelector(root.episodes, episodes.selectors.selectedEpisode),
+    importRunning: createSelector(root.episodes, episodes.selectors.importRunning),
+    episodeInImport: createSelector(root.episodes, episodes.selectors.episodeInImport),
   }
 };

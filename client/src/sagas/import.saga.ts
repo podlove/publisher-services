@@ -163,11 +163,14 @@ function* fetchEpisodeDetails({ payload }: Action<string>) {
 
 function* importEpisodes(): any {
   const nextEpisode: { guid: string } | null = yield select(selectors.episodes.nextEpisodeToImport);
+  const importRunning: boolean = yield select(selectors.episodes.importRunning);
+
+  if (!importRunning) {
+    return;
+  }
 
   if (!nextEpisode) {
-    yield put(actions.podcast.readFeedUrl());
-    yield put(actions.onboarding.next());
-    // we are done with all stored episodes, validate results and move to next step
+    yield actions.episodes.finishImport();
     return;
   }
 
@@ -192,10 +195,17 @@ function* importEpisodes(): any {
   yield importEpisodes();
 }
 
+function* showNextSteps() {
+  yield put(actions.podcast.readFeedUrl());
+  yield put(actions.onboarding.next());
+}
+
 export default function* importSaga() {
   yield debounce(500, actions.feed.validateFeedUrl.toString(), validateFeedUrl);
   yield takeEvery(actions.feed.fetchPodcastMetadata.toString(), fetchPodcastMetaData);
   yield takeEvery(actions.feed.importPodcast.toString(), importPodcast);
-  yield takeEvery(actions.feed.importEpisodes.toString(), importEpisodes);
+  yield takeEvery(actions.episodes.startImport.toString(), importEpisodes);
+  yield takeEvery(actions.episodes.restartImport.toString(), importEpisodes);
   yield takeEvery(actions.episodes.selectEpisode.toString(), fetchEpisodeDetails);
+  yield takeEvery(actions.feed.importEpisodes.toString(), showNextSteps);
 }
