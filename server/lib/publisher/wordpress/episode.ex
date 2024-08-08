@@ -102,7 +102,7 @@ defmodule Publisher.WordPress.Episode do
 
   defp upload_content(req, post_id, %{"content" => content} = _params)
        when not is_nil(content) do
-    Logger.info("Episode post #{post_id} content is #{content}")
+    Logger.info("Episode post #{post_id} content is #{String.length(content)}")
 
     payload = %{
       content: content
@@ -191,7 +191,7 @@ defmodule Publisher.WordPress.Episode do
     :ok
   end
 
-  defp is_contributor_exist?(name, existing_contributors) do
+  defp contributor_exist?(name, existing_contributors) do
     Enum.find(existing_contributors, fn contributor ->
       name == contributor["realname"] or name == contributor["nickname"] or
         name == contributor["publicname"]
@@ -217,7 +217,7 @@ defmodule Publisher.WordPress.Episode do
          {:ok, _} <- set_attr_contributor(req, id, name) do
       {:ok, id}
     else
-      :error -> :error
+      error -> error
     end
   end
 
@@ -233,11 +233,14 @@ defmodule Publisher.WordPress.Episode do
       Enum.reduce(contributors, [], fn contributor, acc ->
         name = Map.fetch!(contributor, "name")
         # uri = Map.get(contributor, "uri", nil)
-        case is_contributor_exist?(name, exist_contributors) do
+        case contributor_exist?(name, exist_contributors) do
           nil ->
             case create_contributor(req, name) do
-              {:ok, id} -> [id | acc]
-              {:error, reason} -> Logger.info("Couldn't create a contributor: #{reason}")
+              {:ok, id} ->
+                [id | acc]
+              {:error, reason} ->
+                Logger.info("Couldn't create a contributor: #{reason}")
+                acc
             end
 
           exist_contributor ->
