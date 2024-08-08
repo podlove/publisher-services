@@ -36,20 +36,21 @@ export default {
         headline: 'Herzlichen Glückwunsch! 🎉 Die Einrichtung Deines Podcasts ist abgeschlossen!',
         description: 'Wir freuen uns, dich an Bord zu haben!',
         feed: `Der RSS-Feed Deines Podcasts ist bereit:`,
-        'feed-hint':
+        feedHint:
           'Dieser Feed macht Deinen Podcast für Hörer auf verschiedenen Plattformen zugänglich. Du kannst Deinen Podcast direkt über diesen Link in jedem Podcatcher abonnieren.',
         more: 'Jetzt, da Dein Podcast läuft, hier sind einige nächste Vorschläge, was Du als nächstes machen könntest:',
-        'learn-head': 'Erfahre mehr über Podlove',
-        learn:
-          'Tauche tiefer in die Funktionen und Möglichkeiten von Podlove ein, indem Du die Dokumentation oder Community-Foren erkundest, damit Du Deine erste Episode veröffentlichen kannst!',
-        'promote-head': 'Bewirb Deinen Podcast',
-        promote:
-          'Mach Deinen Podcast bekannt, indem Du ihn in die gängigen Podcast-Verzeichnisse einreichst. Schau Dir unseren Leitfaden an, wie Du Deinen Podcast-Feed in Verzeichnisse einreichen kannst.',
-        'community-head': 'Werde Teil der Podlove-Community',
-        community:
-          'Vernetze dich mit anderen Podcasterinnen im „Sendegate“, der deutschsprachigen Podcast-Community. Hol Dir Tipps, Ratschläge und Unterstützung von erfahrenen Podcasterinnen oder teile selbst Deine eigenen Erkenntnisse und Erfahrungen.',
-        sendegate:
-          'Klicke unten, um zum Sendegate zu gelangen und unseren Willkommensbeitrag zu lesen. Dort kannst Du Dich vorstellen und Dich vernetzen. Viel Spaß beim Podcasten!'
+        learn: {
+          headline: 'Erfahre mehr über Podlove',
+          content:  'Tauche tiefer in die Funktionen und Möglichkeiten von Podlove ein, indem Du die Dokumentation oder Community-Foren erkundest, damit Du Deine erste Episode veröffentlichen kannst!'
+        },
+        promote: {
+          headline: 'Bewirb Deinen Podcast',
+          content: 'Mach Deinen Podcast bekannt, indem Du ihn in die gängigen Podcast-Verzeichnisse einreichst. Schau Dir unseren Leitfaden an, wie Du Deinen Podcast-Feed in Verzeichnisse einreichen kannst.',
+        },
+        community: {
+          headline: 'Werde Teil der Podlove-Community',
+          content: 'Vernetze dich mit anderen Podcasterinnen im „Sendegate“, der deutschsprachigen Podcast-Community. Hol Dir Tipps, Ratschläge und Unterstützung von erfahrenen Podcasterinnen oder teile selbst Deine eigenen Erkenntnisse und Erfahrungen.',
+        }
       },
       'import-feed': {
         title: 'RSS-Feed Eingabe',
@@ -104,7 +105,26 @@ export default {
         }
       },
       'import-next-steps': {
-        title: 'Nächste Schritte'
+        title: 'Nächste Schritte',
+        headline: 'Herzlichen Glückwunsch! 🎉 Der Import Deines Podcasts ist abgeschlossen!',
+        description: `Wir freuen uns, Dich an Bord zu haben!`,
+        feed: `Dein Podcast-RSS-Feed ist einsatzbereit:`,
+        feedHint:
+          `Der Feed macht Deinen Podcast für Hörer auf verschiedenen Plattformen zugänglich.<br>Vergiss nicht, die Feed-URL Deines Podcasts in den verschiedenen Verzeichnissen zu aktualisieren, um einen nahtlosen Übergang für Dein Publikum sicherzustellen.`,
+        more: 'Jetzt, da dein Podcast importiert und bereit ist, sind hier einige nächste Vorschläge, was Du als nächstes machen könntest:',
+        learn: {
+          headline: 'Erfahre mehr über Podlove',
+          content: 'Tauche tiefer in die Funktionen und Möglichkeiten von Podlove ein, indem Du die Dokumentation liest oder unsere Community kennenlernst.'
+        },
+        redirect: {
+          headline: 'Richte eine Weiterleitung von deinem alten Hoster ein:',
+          content: `Stelle sicher, dass deine Zuhörer automatisch Deinem neuen Feed folgen, indem du eine Weiterleitung von deiner alten Hosting-Plattform einrichtest. Lies die Support-Dokumentation Deines aktuellen Hosters oder kontaktiere das Support-Team dort, um Hilfe bei der Konfiguration einer Weiterleitung zu deinem neuen RSS-Feed zu erhalten.`
+        },
+        episodes: {
+          headline: 'Überprüfe Deinen Episoden:',
+          content: 'Alle importierten Episoden findest Du unter dem Eintrag "Episoden" in der Seitenleiste hier in Wordpress. Falls Du einige davon während des Imports mit "Überprüfen" gekennzeichnet hast, haben Sie den Tag "Überprüfen" erhalten, nach dem Du filtern kannst. Klicke auf den Button, um zur Episoden-Liste zu gelangen. Dort kannst Du Deine Folgen überprüfen und veröffentlichen.',
+        },
+        button: 'Episoden Liste'
       }
     },
     podcast: {

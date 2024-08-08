@@ -1,5 +1,5 @@
 import { takeEvery } from 'redux-saga/effects';
-import { Action } from 'redux-actions';
+import { type Action } from 'redux-actions';
 import { actions } from '../store';
 import { i18n } from '../i18n';
 

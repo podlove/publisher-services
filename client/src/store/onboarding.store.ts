@@ -1,6 +1,6 @@
-import { Action, createAction, handleActions } from 'redux-actions';
+import { type Action, createAction, handleActions } from 'redux-actions';
 import { last, first, get } from 'lodash-es';
-import { type Step } from '../types/step.types';
+import { type Step, type StepStatus } from '../types/step.types';
 import * as feed from './feed.store';
 import * as podcast from './podcast.store';
 
@@ -15,6 +15,12 @@ export interface State {
     nextAction?: Action<any>;
     previousAction?: Action<any>;
   }[];
+}
+
+const initialState: State =   {
+  setupType: null,
+  current: 'select',
+  steps: [{ name: 'select', visible: false }]
 }
 
 export type nextActionPayload = void;
@@ -70,7 +76,7 @@ export const reducer = handleActions<State, any>(
       if (selectedIndex + 1 === state.steps.length - 1) {
         return {
           ...state,
-          current: last(state.steps).name
+          current: last(state.steps)?.name || initialState.current
         };
       }
 
@@ -85,7 +91,7 @@ export const reducer = handleActions<State, any>(
       if (selectedIndex - 1 < 0) {
         return {
           ...state,
-          current: first(state.steps).name
+          current: first(state.steps)?.name || initialState.current
         };
       }
 
@@ -95,11 +101,7 @@ export const reducer = handleActions<State, any>(
       };
     }
   },
-  {
-    setupType: null,
-    current: 'select',
-    steps: [{ name: 'select', visible: false }]
-  }
+  initialState
 );
 
 const currentStep = (state: State) => state.steps.find(({ name }) => name === state.current)
@@ -117,8 +119,8 @@ export const selectors = {
   setupType: (state: State) => state.setupType,
   current: (state: State): { name: string; visible: boolean } | null =>
     currentStep(state) || null,
-  nextAction: (state) => get(currentStep(state), 'nextAction', actions.next()),
-  previousAction: (state) =>  get(currentStep(state), 'previousAction', actions.previous()),
+  nextAction: (state: State) => get(currentStep(state), 'nextAction', actions.next()),
+  previousAction: (state: State) =>  get(currentStep(state), 'previousAction', actions.previous()),
   upcoming: (state: State): { name: string; visible: boolean } | null => {
     const currentIndex = state.steps.findIndex((step) => step.name === state.current);
 
@@ -150,7 +152,7 @@ export const selectors = {
 
       return {
         name,
-        status,
+        status: status as StepStatus,
         visible
       };
     });

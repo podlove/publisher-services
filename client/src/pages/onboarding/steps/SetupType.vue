@@ -25,12 +25,12 @@
 <script setup lang="ts">
 import { mapState, injectStore } from 'redux-vuex';
 import { useI18n } from 'vue-i18n';
+import { type Action } from 'redux';
 import SelectTile from '../../../components/select-tile/SelectTile.vue';
 import freshIconUrl from '../../../assets/select-fresh.svg';
 import importIconUrl from '../../../assets/select-import.svg';
 
 import { selectors, actions } from '../../../store';
-import { Action } from 'redux';
 
 const store = injectStore();
 

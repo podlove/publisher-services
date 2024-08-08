@@ -8,15 +8,15 @@ defmodule PublisherWeb.Controllers.Validator.SaveEpisode do
     field(:summary, :string)
     field(:slug, :string)
     field(:content, :string)
-
+    field(:cover, :string)
   end
 
-  @allowed_attrs [:guid, :title, :subtitle, :summary, :slug, :content, :media_file]
+  @allowed_attrs [:guid, :title, :subtitle, :summary, :slug, :content, :cover]
   @required_attrs [:guid, :title, :slug]
 
   def changeset(attrs) do
     %__MODULE__{}
-    |> cast(attrs, @allowed_attrs -- [:media_file])
+    |> cast(attrs, @allowed_attrs)
     |> validate_required(@required_attrs)
   end
 end

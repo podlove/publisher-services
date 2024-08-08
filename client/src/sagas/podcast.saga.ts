@@ -1,17 +1,15 @@
-import { call, put, select, takeEvery } from 'redux-saga/effects';
-import { Action } from 'redux-actions';
-import { convertImageToBase64, extractImageType } from '../lib/image';
+import { call, put, takeEvery } from 'redux-saga/effects';
+import { type Action } from 'redux-actions';
+import { convertImageToBase64 } from '../lib/image';
 
-import { actions, selectors } from '../store';
+import { actions } from '../store';
 import * as request from '../lib/request';
-import { locales } from '../types/locales.types';
-import { category } from '../types/categories.types';
-import { setPodcastCoverPayload } from '../store/podcast.store';
+import { type setPodcastCoverPayload } from '../store/podcast.store';
 import { setOnboardingPodcastSettings, savePodcastMetadata } from './helpers/podcast';
 
 
 function readImage(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     convertImageToBase64(file, function (base64Image: string) {
       resolve(base64Image);
     });
@@ -20,7 +18,8 @@ function readImage(file: File): Promise<string> {
 
 function* getImageData({ payload }: Action<setPodcastCoverPayload>) {
   if (!payload) return;
-  const imageData = yield call(readImage, payload);
+  const imageData: string = yield call(readImage, payload);
+
   if (imageData) {
     yield put(actions.podcast.setPodcastCoverData(imageData));
     yield put(actions.podcast.setPodcastCoverName((payload as File).name));
@@ -37,6 +36,7 @@ function* removeImage() {
 function* transferPodcast() {
   yield setOnboardingPodcastSettings();
   yield savePodcastMetadata();
+  yield put(actions.podcast.readFeedUrl());
   yield put(actions.onboarding.next());
 }
 

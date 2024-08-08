@@ -1,7 +1,7 @@
 <template>
   <ol
     role="list"
-    class="divide-y divide-gray-300 rounded-md border border-gray-300 md:flex md:divide-y-0  bg-white"
+    class="divide-y divide-gray-300 border border-gray-300 md:flex md:divide-y-0  bg-white"
   >
     <li v-for="(step, stepIdx) in steps" :key="stepIdx" class="relative md:flex md:flex-1">
       <p v-if="step.status === 'complete'" class="group flex w-full items-center">

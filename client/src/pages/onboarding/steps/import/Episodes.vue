@@ -31,7 +31,7 @@
 import { mapState } from 'redux-vuex';
 import { useI18n } from 'vue-i18n';
 import { selectors } from '../../../../store';
-import { Episode } from '../../../../types/episode.types';
+import { type Episode } from '../../../../types/episode.types';
 
 import EpisodeListItem from '../../components/EpisodeListItem.vue';
 import EpisodePreview from '../../components/EpisodePreview.vue';
