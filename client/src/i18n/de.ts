@@ -95,13 +95,15 @@ export default {
           transcripts: 'Transkripte',
           content: 'Inhalt',
         },
-        statistics: {
-          waiting: 'Noch zu importieren:',
-          numWaitingEpisode: '{count} Episoden',
-          successfull: 'Erfolgreich importiert:',
-          numSuccessEpisode: '{count} Episoden',
-          faulty: 'Fehlerhaft importiert:',
-          numFaultyEpisode: '{count} Episoden'
+        progress: {
+          numWaitingEpisode: '{count} Episode(n) warten auf den Import',
+          numSuccessEpisode: '{count} Episode(n) erfolgreich importiert',
+          numFaultyEpisode: '{count} Episode(n) fehlerhaft importiert',
+          progressStatus: '{processed}/{waiting} Episode(n)',
+          startImport: 'Import starten',
+          stopImport: 'Import stoppen',
+          restartImport: 'Import neustarten',
+           episodeInImport: 'Gerade im import: {title}'
         }
       },
       'import-next-steps': {

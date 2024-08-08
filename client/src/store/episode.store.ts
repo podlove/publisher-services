@@ -3,6 +3,7 @@ import { type Episode } from '../types/episode.types';
 
 export type State = {
   selectedEpisode: string | null;
+  importRunning: boolean;
   episodes: {
     guid: string;
     data: Episode;
@@ -35,6 +36,10 @@ export const actions = {
   episodeImportFailed: createAction<episodeImportFailedPayload>('EPISODES/EPISODE_IMPORT_FAILED'),
   episodeImportFinished: createAction<episodeImportFinishedPayload>('EPISODES/EPISODE_IMPORT_FINISHED'),
   selectEpisode: createAction<selectEpisodePayload>('EPISODES/SELECT_EPISODE'),
+  startImport: createAction<void>('EPISODES/START_IMPORT'),
+  stopImport: createAction<void>('EPISODES/STOP_IMPORT'),
+  restartImport: createAction<void>('EPISODES/RESTART_IMPORT'),
+  finishImport: createAction<void>('EPISODES/FINISH_IMPORT'),
 };
 
 export const reducer = handleActions<State, any>(
@@ -161,17 +166,47 @@ export const reducer = handleActions<State, any>(
     [actions.selectEpisode.toString()]: (state, { payload }: Action<selectEpisodePayload>) => ({
       ...state,
       selectedEpisode: payload
-    })
+    }),
+    [actions.startImport.toString()]: (state) => ({
+      ...state,
+      importRunning: true
+    }),
+    [actions.stopImport.toString()]: (state) => ({
+      ...state,
+      importRunning: false
+    }),
+    [actions.finishImport.toString()]: (state) => ({
+      ...state,
+      importRunning: false
+    }),
+    [actions.restartImport.toString()]: (state) => ({
+      ...state,
+      importRunning: true,
+      episodes: state.episodes.map((episode) => ({
+        ...episode,
+        status: {
+          ...episode.status,
+          importStarted: false,
+          importRunning: false,
+          importFinished: false,
+          importError: false
+        }
+      }))
+    }),
   },
   {
     selectedEpisode: null,
-    episodes: []
+    episodes: [],
+    importRunning: false
   }
 );
 
 export const selectors = {
   episodes: (state: State) => state.episodes,
+  importRunning: (state: State) => state.importRunning,
   nextEpisodeToImport: (state: State) =>
     state.episodes.find((item) => !item.status.importFinished && !item.status.importError),
+  episodeInImport: (state: State) =>
+    state.episodes.find((item) => !item.status.importFinished && item.status.importRunning),
   selectedEpisode: (state: State) => state.episodes.find(episode => episode.guid === state.selectedEpisode)?.data
 };
