@@ -31,6 +31,15 @@ defmodule PublisherWeb.Controllers.API do
     end)
   end
 
+  def set_podcast_settings(conn, headers, body) do
+    with_validation(conn, headers_to_map(headers), Validator.WordPressAuthHeaders, fn conn, _ ->
+      case Podcast.set_settings(headers, body) do
+        :ok -> json(conn, %{})
+        {:error, reason} -> send_resp(conn, 400, "Error: #{reason}")
+      end
+    end)
+  end
+
   def save_podcast(conn, headers, body) do
     with_validation(conn, headers_to_map(headers), Validator.WordPressAuthHeaders, fn conn, _ ->
       with_validation(conn, body, Validator.SavePodcast, fn conn, body_data ->

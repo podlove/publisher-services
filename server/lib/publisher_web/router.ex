@@ -18,6 +18,10 @@ defmodule PublisherWeb.Router do
     API.podcast_feed_url(conn, conn.req_headers)
   end
 
+  post "api/v1/set_podcast_settings" do
+    API.set_podcast_settings(conn, conn.req_headers, conn.params)
+  end
+
   post "/api/v1/save_podcast" do
     API.save_podcast(conn, conn.req_headers, conn.params)
   end

@@ -5,7 +5,7 @@ import { convertImageToBase64 } from '../lib/image';
 import { actions } from '../store';
 import * as request from '../lib/request';
 import { type setPodcastCoverPayload } from '../store/podcast.store';
-import { savePodcastMetadata } from './helpers/podcast';
+import { setOnboardingPodcastSettings, savePodcastMetadata } from './helpers/podcast';
 
 
 function readImage(file: File): Promise<string> {
@@ -34,6 +34,7 @@ function* removeImage() {
 
 
 function* transferPodcast() {
+  yield setOnboardingPodcastSettings();
   yield savePodcastMetadata();
   yield put(actions.podcast.readFeedUrl());
   yield put(actions.onboarding.next());

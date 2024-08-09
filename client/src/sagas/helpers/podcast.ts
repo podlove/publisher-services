@@ -5,6 +5,10 @@ import { type locales } from '../../types/locales.types';
 import { type category } from '../../types/categories.types';
 import { extractImageType } from '../../lib/image';
 
+export function* setOnboardingPodcastSettings() {
+  yield request.post(request.origin('/api/v1/set_podcast_settings'), { params: {}, data: {} });
+}
+
 function transferPodcastCoverFromData(imageData: string, imageName: string) {
   const parts: string[] = imageData.split(',');
   const imageType: string | null = extractImageType(parts[0]);

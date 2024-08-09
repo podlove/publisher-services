@@ -8,7 +8,7 @@ import * as request from '../lib/request';
 import { findCategories } from '../helper/categories';
 import { LanguageLocales } from '../types/locales.types';
 import { type Episode, type EpisodeDetailsPayload } from '../types/episode.types';
-import { savePodcastMetadata } from './helpers/podcast';
+import { setOnboardingPodcastSettings, savePodcastMetadata } from './helpers/podcast';
 
 function* validateFeedUrl({ payload }: Action<validateFeedUrlPayload>) {
   const feed = payload.trim();
@@ -107,6 +107,7 @@ function* fetchEpisodes(): any {
 }
 
 function* importPodcast() {
+  yield setOnboardingPodcastSettings();
   yield savePodcastMetadata();
   yield fetchEpisodes();
   yield put(actions.onboarding.next());
