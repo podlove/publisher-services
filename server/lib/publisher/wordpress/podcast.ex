@@ -26,7 +26,7 @@ defmodule Publisher.WordPress.Podcast do
 
     req = API.new(headers)
 
-    with {:ok, response} <- Req.post(req, url: "podlove/v2/onboarding"),
+    with {:ok, response} <- Req.post(req, url: "podlove/v2/onboarding/setup"),
          {:ok, _} <- extract_status(response) do
       :ok
     else
