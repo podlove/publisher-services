@@ -5,7 +5,7 @@ processes:
    command: mix run --no-halt
    working_dir: server
    environment:
-    - "PORT=9000"
+    - "PORT=4005"
     - "MIX_ENV=prod"
    ready_log_line: "Running PublisherWeb.Endpoint with Bandit"
    availability:
