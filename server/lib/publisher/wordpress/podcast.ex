@@ -21,17 +21,29 @@ defmodule Publisher.WordPress.Podcast do
     end
   end
 
-  def set_settings(headers, _body) do
+  def set_settings(headers, body) do
     Logger.info("Padcast.set_settings")
+
+    payload =
+      %{
+        transcript: Map.get(body, "transcript", nil),
+        contributor: Map.get(body, "contributor", nil)
+      }
+      |> reject_empty_values()
+      |> Enum.into(%{})
 
     req = API.new(headers)
 
-    with {:ok, response} <- Req.post(req, url: "podlove/v2/onboarding/setup"),
+    with {:ok, response} <- Req.post(req, url: "podlove/v2/onboarding/setup", json: payload),
          {:ok, _} <- extract_status(response) do
       :ok
     else
       error -> error
     end
+  end
+
+  defp reject_empty_values(map) do
+    Enum.reject(map, fn {_, v} -> is_nil(v) end)
   end
 
   def save_podcast_data(headers, body) do
@@ -139,4 +151,5 @@ defmodule Publisher.WordPress.Podcast do
       result -> result |> Map.values() |> hd()
     end
   end
+
 end

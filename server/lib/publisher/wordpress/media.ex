@@ -1,13 +1,19 @@
 defmodule Publisher.WordPress.Media do
   require Logger
 
-  def upload_media_from_url(req, url, slug) do
+  def upload_media_from_url(req, post_id \\ nil, url, slug) do
     ext = extension_from_url(url)
     filename = [slug, ext] |> Enum.join(".")
 
     {:ok, resp} = Req.get(url)
 
-    with {:ok, response} <- upload_media(req, filename, content_type(resp), resp.body),
+    response = if post_id do
+      upload_media(req, post_id, filename, content_type(resp), resp.body)
+    else
+      upload_media(req, filename, content_type(resp), resp.body)
+    end
+
+    with {:ok, response} <- response,
          {:ok, _} <- extract_status(response),
          {:ok, source_url} <- extract_source_url(response) do
       {:ok, source_url}
@@ -63,6 +69,18 @@ defmodule Publisher.WordPress.Media do
       _ ->
         {:error, "Image upload failed"}
     end
+  end
+
+  defp upload_media(req, post_id, content_name, content_type, content) do
+    Req.post(req,
+      url: "wp/v2/media",
+      params: [post: post_id],
+      headers: [
+        {"Content-Type", content_type},
+        {"Content-Disposition", "attachment; filename=\"" <> content_name <> "\""}
+      ],
+      body: content
+    )
   end
 
   defp upload_media(req, content_name, content_type, content) do
