@@ -7,7 +7,7 @@
     :class="[variantClass, sizeClass]"
   >
     <slot />
-</component>
+  </component>
 </template>
 
 <script lang="ts" setup>
