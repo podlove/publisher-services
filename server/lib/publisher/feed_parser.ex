@@ -29,7 +29,9 @@ defmodule Publisher.FeedParser do
           guid: episode.guid,
           pub_date: episode.pub_date,
           enclosure: sanitize_enclosure(episode.enclosure),
-          cover: episode.image_url
+          cover: episode.image_url,
+          transcript: transcript(episode),
+          contributors: episode.contributors
         }
       end)
 

@@ -16,7 +16,7 @@ defmodule Publisher.WordPress.Episode do
          :ok <- upload_transcript(req, episode_id, params),
          :ok <- upload_contributors(req, episode_id, params),
          :ok <- verify_media(req, episode_id),
-         :ok <- upload_cover(req, episode_id, params) do
+         :ok <- upload_cover(req, episode_id, post_id, params) do
       :ok
     else
       error -> error
@@ -326,10 +326,10 @@ defmodule Publisher.WordPress.Episode do
     :ok
   end
 
-  defp upload_cover(req, episode_id, %{"cover" => cover} = params)
+  defp upload_cover(req, episode_id, post_id, %{"cover" => cover} = params)
     when not is_nil(cover) do
     image_name = "cover-" <> params["slug"]
-    with {:ok, source_url} <- Media.upload_media_from_url(req, cover, image_name),
+    with {:ok, source_url} <- Media.upload_media_from_url(req, post_id, cover, image_name),
          :ok <- save_episode_image_url(req, episode_id, source_url) do
       :ok
     else
@@ -337,7 +337,7 @@ defmodule Publisher.WordPress.Episode do
     end
   end
 
-  defp upload_cover(_req, episode_id, _params) do
+  defp upload_cover(_req, episode_id, _post_id, _params) do
     Logger.info("Episode has no epiosde cover: #{episode_id}")
     :ok
   end

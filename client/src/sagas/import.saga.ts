@@ -8,7 +8,8 @@ import * as request from '../lib/request';
 import { findCategories } from '../helper/categories';
 import { LanguageLocales } from '../types/locales.types';
 import { type Episode, type EpisodeDetailsPayload } from '../types/episode.types';
-import { setOnboardingPodcastSettings, savePodcastMetadata } from './helpers/podcast';
+import { savePodcastMetadata } from './helpers/podcast';
+import { setOnboardingPodcastSettings } from './helpers/settings';
 
 function* validateFeedUrl({ payload }: Action<validateFeedUrlPayload>) {
   const feed = payload.trim();
@@ -94,7 +95,14 @@ function* fetchEpisodes(): any {
           url: get(episode, ['enclosure', 'url'], null),
           type: get(episode, ['enclosure', 'type'], null)
         },
-        cover: get(episode, 'cover', null)
+        cover: get(episode, 'cover', null),
+        contributors: get(episode, 'contributors', []),
+        transcript: {
+          language: get(episode, ['transcript', 'language'], null),
+          rel: get(episode, ['transcript', 'rel'], null),
+          type: get(episode, ['transcript', 'type'], null),
+          url: get(episode, ['transcript', 'url'], null)
+        }
       }))
     )
   );
@@ -107,9 +115,9 @@ function* fetchEpisodes(): any {
 }
 
 function* importPodcast() {
-  yield setOnboardingPodcastSettings();
   yield savePodcastMetadata();
   yield fetchEpisodes();
+  yield setOnboardingPodcastSettings();
   yield put(actions.onboarding.next());
 }
 

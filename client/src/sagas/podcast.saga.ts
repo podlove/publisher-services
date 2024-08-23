@@ -5,8 +5,8 @@ import { convertImageToBase64 } from '../lib/image';
 import { actions } from '../store';
 import * as request from '../lib/request';
 import { type setPodcastCoverPayload } from '../store/podcast.store';
-import { setOnboardingPodcastSettings, savePodcastMetadata } from './helpers/podcast';
-
+import { savePodcastMetadata } from './helpers/podcast';
+import { setOnboardingPodcastSettings } from './helpers/settings';
 
 function readImage(file: File): Promise<string> {
   return new Promise((resolve) => {
