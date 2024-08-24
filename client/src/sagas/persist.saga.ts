@@ -1,14 +1,11 @@
 import { select, takeEvery } from 'redux-saga/effects';
-import { identity, pick } from 'lodash-es';
-import * as localStorage from '../lib/local-storage';
-import { actions } from '../store';
+import { identity } from 'lodash-es';
+import { actions, type State } from '../store';
+import { persistState } from '../lib/persist';
 
 function* persist() {
-  const state = yield select(identity);
-  localStorage.save(
-    'REDUX_STATE',
-    pick(state, ['authentication', 'podcast', 'onboarding', 'feed', 'episodes'])
-  );
+  const state: State = yield select(identity);
+  persistState(state)
 }
 
 export default function* routerSaga() {
