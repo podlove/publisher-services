@@ -1,4 +1,6 @@
 defmodule PublisherWeb.Controllers.API do
+  require Logger
+
   import Plug.Conn
   import PublisherWeb.Controllers.Controller, only: [json: 2]
 
@@ -26,7 +28,9 @@ defmodule PublisherWeb.Controllers.API do
     with_validation(conn, headers_to_map(headers), Validator.WordPressSiteHeader, fn conn, data ->
       case Podcast.feed_url(data."wordpress-site") do
         {:ok, data} -> json(conn, data)
-        {:error, reason} -> send_resp(conn, 400, "Error: #{reason}")
+        {:error, reason} ->
+          Logger.error("podcast_feed_url doesnot work reason: #{inspect(reason)}")
+          send_resp(conn, 400, "Error: Podcast.feed_url")
       end
     end)
   end
@@ -35,7 +39,9 @@ defmodule PublisherWeb.Controllers.API do
     with_validation(conn, headers_to_map(headers), Validator.WordPressAuthHeaders, fn conn, _ ->
       case Podcast.set_settings(headers, body) do
         :ok -> json(conn, %{})
-        {:error, reason} -> send_resp(conn, 400, "Error: #{reason}")
+        {:error, reason} ->
+          Logger.error("podcast_set_settings reason: #{inspect(reason)}")
+          send_resp(conn, 400, "Error: Podcast.set_settings")
       end
     end)
   end
@@ -45,7 +51,9 @@ defmodule PublisherWeb.Controllers.API do
       with_validation(conn, body, Validator.SavePodcast, fn conn, body_data ->
         case Podcast.save_podcast_data(headers, body_data) do
           {:ok, data} -> json(conn, data)
-          {:error, reason} -> send_resp(conn, 400, "Error: #{reason}")
+          {:error, reason} ->
+            Logger.error("podcast_save_data reason: #{inspect(reason)}")
+            send_resp(conn, 400, "Error: Podcast.save_podcast_data")
         end
       end)
     end)
@@ -56,7 +64,9 @@ defmodule PublisherWeb.Controllers.API do
       with_validation(conn, body, Validator.SavePodcastImage, fn conn, body_data ->
         case Podcast.save_podcast_image(headers, body_data) do
           {:ok, info} -> json(conn, info)
-          {:error, reason} -> send_resp(conn, 400, "Error: #{reason}")
+          {:error, reason} ->
+            Logger.error("podcast_save_image reason: #{inspect(reason)}")
+            send_resp(conn, 400, "Error: Podcast.save_podcast_image")
         end
       end)
     end)
@@ -67,7 +77,9 @@ defmodule PublisherWeb.Controllers.API do
       with_validation(conn, body, Validator.CopyPodcastImage, fn conn, body_data ->
         case Podcast.copy_podcast_image(headers, body_data) do
           {:ok, info} -> json(conn, info)
-          {:error, reason} -> send_resp(conn, 400, "Error: #{reason}")
+          {:error, reason} ->
+            Logger.error("podcast_copy_image reason: #{inspect(reason)}")
+            send_resp(conn, 400, "Error: Podcast.copy_podcast_image")
         end
       end)
     end)
@@ -80,7 +92,7 @@ defmodule PublisherWeb.Controllers.API do
           with_validation_array(conn, body["chapters"], Validator.SaveChapters, fn conn, _ ->
               case Episode.save(conn, body) do
               :ok -> json(conn, %{status: "success"})
-            _ -> send_resp(conn, 400, "Error: unable to save episode")
+              _ -> send_resp(conn, 400, "Error: unable to save episode")
             end
           end)
         end)

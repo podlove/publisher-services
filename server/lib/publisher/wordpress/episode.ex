@@ -239,7 +239,7 @@ defmodule Publisher.WordPress.Episode do
               {:ok, id} ->
                 [id | acc]
               {:error, reason} ->
-                Logger.info("Couldn't create a contributor: #{reason}")
+                Logger.info("Couldn't create a contributor: #{inspect(reason)}")
                 acc
             end
 
