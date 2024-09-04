@@ -167,6 +167,22 @@ export default {
       playButton: 'Season 2, Ep 1',
       description:
         '[Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.]'
+    },
+    error: {
+      podcast: {
+        metadata: {
+          title: 'Request failed',
+          details: 'Error while fetching podcast metadata'
+        },
+        episodes: {
+          title: 'Request failed',
+          details: 'Error while fetching podcast episodes'
+        },
+        feedUrl: {
+          title: 'Request failed',
+          details: 'Error while fetching feed url'
+        }
+      }
     }
   },
   select: {

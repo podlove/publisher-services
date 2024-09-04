@@ -1,9 +1,10 @@
 <template>
   <div ref="viewPort" class="relative h-full flex flex-col" :data-test="`step-${state.current.name}`">
     <Steps class="fixed top-0 w-full z-50" :steps="state.steps" v-if="stepsVisible"></Steps>
+    <NotificationsFeature :class="{ 'mt-[80px]': stepsVisible }" />
     <div
       id="content"
-      class="pt-4 pb-[50px] sm:px-6 xl:pl-6 overflow-y-auto"
+      class="pt-4 pb-[50px] sm:px-6 xl:pl-6 overflow-y-auto relative"
       :class="{ 'pt-[80px]': stepsVisible }"
 
     >
@@ -33,6 +34,7 @@ import { useI18n } from 'vue-i18n';
 import { selectors } from '../../store';
 import Steps from './components/Steps.vue';
 import PodloveButton from '../../components/button/Button.vue';
+import NotificationsFeature from '../../features/notifications/Notifications.vue';
 
 import SetupType from './steps/SetupType.vue';
 

@@ -15,14 +15,16 @@ const headers = (): HeadersInit => {
     ...(site ? {'Wordpress-Site': site}: {})
   };
 };
-const checkResponse = (response: Response): Response => {
+const checkResponse = async (response: Response): Promise<Response> => {
   if (!response.ok) {
-    throw new Error('API call failed!')
+    const error = await response.text();
+    throw new Error(error);
   }
+
   return response;
 }
 
-const parseResponse = <T>(response: Response): Promise<T> => { return response.json(); }
+const parseResponse = <T>(response: Response): Promise<T> =>  response.json();
 
 export const origin = (path: string): string => {
   const url = new URL(document.baseURI).origin;

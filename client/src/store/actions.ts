@@ -5,6 +5,7 @@ import { actions as runtime } from './runtime.store';
 import { actions as podcast } from './podcast.store';
 import { actions as feed } from './feed.store';
 import { actions as episodes } from './episode.store';
+import { actions as notifications } from './notifications.store';
 
 export default {
   router,
@@ -14,4 +15,5 @@ export default {
   podcast,
   feed,
   episodes,
+  notifications
 };
