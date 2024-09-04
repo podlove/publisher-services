@@ -8,6 +8,7 @@
       :class="{ 'pt-[80px]': stepsVisible }"
 
     >
+      <about />
       <component :is="stepComponents[state.current.name]" />
     </div>
     <div class="fixed bottom-0 flex justify-between w-full px-4 sm:px-6 xl:pl-6 py-2 bg-white z-50">
@@ -33,6 +34,7 @@ import { useI18n } from 'vue-i18n';
 
 import { selectors } from '../../store';
 import Steps from './components/Steps.vue';
+import About from './components/About.vue';
 import PodloveButton from '../../components/button/Button.vue';
 import NotificationsFeature from '../../features/notifications/Notifications.vue';
 
