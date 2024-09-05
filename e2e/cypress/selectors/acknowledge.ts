@@ -1,0 +1,1 @@
+export const acknowledgeButton = () => cy.get('#acknowledge-button')
