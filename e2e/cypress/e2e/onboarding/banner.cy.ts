@@ -27,7 +27,7 @@ describe('Onboarding Banner', () => {
     onboardingBanner().should('exist');
   });
 
-  it('should show the aknowledge screen on "Get Started" click', () => {
+  it('should show the acknowledge screen on "Get Started" click', () => {
     cy.visit('/wp-admin/plugins.php');
     activatePublisherButton().should('be.visible');
     activatePublisherButton().click();
