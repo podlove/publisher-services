@@ -76,7 +76,7 @@ defmodule Publisher.WordPress.Podcast do
     # Logger.log(:info, "user: #{user}, endpoint: #{site}/wp-json/wp/v2/media")
     Logger.log(:info, "body { name: #{image_name}, type: #{image_type} }")
 
-    req = API.new(headers)
+    req = API.new(headers, http1: true)
 
     with {:ok, source_url} <- Media.upload_image(req, base64_image, image_name, image_type),
          {:ok, info} <- save_podcast_image_url(req, source_url) do
@@ -93,7 +93,7 @@ defmodule Publisher.WordPress.Podcast do
     # Logger.log(:info, "user: #{user}, endpoint: #{site}/wp-json/wp/v2/media")
     Logger.log(:info, "body { name: #{image_name}, url: #{image_url} }")
 
-    req = API.new(headers)
+    req = API.new(headers, http1: true)
 
     with {:ok, source_url} <- Media.upload_media_from_url(req, image_url, image_name),
          {:ok, info} <- save_podcast_image_url(req, source_url) do

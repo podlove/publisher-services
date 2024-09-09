@@ -5,7 +5,7 @@ defmodule Publisher.WordPress.Episode do
   alias Publisher.WordPress.Media
 
   def save(conn, params) do
-    req = API.new(conn.req_headers)
+    req = API.new(conn.req_headers, http1: true)
 
     with episode_id <- find_or_create_episode(req, params["guid"]),
          post_id <- fetch_post_id(req, episode_id),
