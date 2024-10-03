@@ -31,7 +31,7 @@
         "mix local.hex --force",
         "mix local.rebar --force",
         "mix deps.get --only prod",
-        "MIX_ENV=prod mix release"
+        "MIX_ENV=prod mix release --overwrite"
       ],
       "build:client": ["cd client", "pnpm build"],
       "build": ["devbox run build:server", "devbox run build:client"],
