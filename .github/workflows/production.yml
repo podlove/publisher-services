@@ -17,6 +17,8 @@ jobs:
           mkdir -p app
           cd app
           [ ! -d ".git" ] && git clone git@github.com:podlove/publisher-services.git .
+          # force success
+          exit 0
 
     - name: Deploy to production environment
       uses: appleboy/ssh-action@v1.0.3
