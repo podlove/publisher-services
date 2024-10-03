@@ -2,7 +2,7 @@ version: "0.5"
 
 processes:
   server:
-   command: server/_build/prod/rel/publisher/bin/publisher start
+   command: _build/prod/rel/publisher/bin/publisher start
    working_dir: server
    environment:
     - "PORT=4005"
