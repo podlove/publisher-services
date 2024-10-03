@@ -1,4 +1,4 @@
-publisher-services.podlove.dev {
+publisher-services.podlove.dev, services.podlove.org {
 	handle /api/* {
 		reverse_proxy localhost:4005
 	}

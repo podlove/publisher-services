@@ -17,13 +17,24 @@
         "mix local.rebar --force",
         "mix deps.get"
       ],
-      "bootstrap": ["devbox run bootstrap:client", "devbox run bootstrap:server", "devbox run e2e:bootstrap"],
+      "bootstrap": [
+        "devbox run bootstrap:client",
+        "devbox run bootstrap:server",
+        "devbox run e2e:bootstrap"
+      ],
       "test": ["devbox run test:server"],
       "test:server": ["cd server", "mix test"],
       "server": ["cd server", "mix run --no-halt"],
       "client": ["cd client", "pnpm run dev"],
+      "build:server": [
+        "cd server",
+        "mix local.hex --force",
+        "mix local.rebar --force",
+        "mix deps.get --only prod",
+        "MIX_ENV=prod mix release"
+      ],
       "build:client": ["cd client", "pnpm build"],
-      "build": ["devbox run build:client"],
+      "build": ["devbox run build:server", "devbox run build:client"],
       "e2e:bootstrap": ["cd e2e", "pnpm install"],
       "e2e": ["cd e2e", "pnpm run dev"],
       "e2e:environment": ["docker compose --file e2e/docker-compose.yml up"]
