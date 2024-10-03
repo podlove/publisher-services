@@ -5,8 +5,11 @@ import { convertImageToBase64 } from '../lib/image';
 import { actions } from '../store';
 import * as request from '../lib/request';
 import { type setPodcastCoverPayload } from '../store/podcast.store';
-import { savePodcastMetadata } from './helpers/podcast';
 import { setOnboardingPodcastSettings } from './helpers/settings';
+import { savePodcastMetadata } from './helpers/podcast';
+import { i18n } from '../i18n';
+
+const { t } = i18n.global;
 
 function readImage(file: File): Promise<string> {
   return new Promise((resolve) => {
@@ -32,7 +35,6 @@ function* removeImage() {
   yield put(actions.podcast.setPodcastCoverUrl(null));
 }
 
-
 function* transferPodcast() {
   yield setOnboardingPodcastSettings();
   yield savePodcastMetadata();
@@ -41,10 +43,25 @@ function* transferPodcast() {
 }
 
 function* readFeedUrl() {
-  const feed : string = yield request.get(request.origin('api/v1/podcast_feed_url'), { params:{} } );
-  if (feed) {
-    yield put(actions.podcast.setFeedUrl(feed))
+  let feed: string | null;
+
+  try {
+    feed = yield request.get(request.origin('api/v1/podcast_feed_url'), { params: {} });
+  } catch (err) {
+    feed = null;
+    yield put(
+      actions.notifications.error({
+        title: t('onboarding.error.podcast.feedUrl.title'),
+        details: t('onboarding.error.podcast.feedUrl.details')
+      })
+    );
   }
+
+  if (!feed) {
+    return;
+  }
+
+  yield put(actions.podcast.setFeedUrl(feed));
 }
 
 export default function* podcastSaga() {

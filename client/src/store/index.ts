@@ -1,17 +1,18 @@
 import { createStore as createReduxStore, applyMiddleware, compose, type Store } from 'redux';
 import createSagaMiddleware from 'redux-saga';
-import * as localStorage from '../lib/local-storage';
 
 import routerSaga from '../sagas/router.saga';
 import persistSaga from '../sagas/persist.saga';
 import runtimeSaga from '../sagas/runtime.saga';
 import podcastSaga from '../sagas/podcast.saga';
 import importSaga from '../sagas/import.saga';
+import { getPersistedState } from '../lib/persist';
 
 import selectors from './selectors';
 import actions from './actions';
 import reducers from './reducers';
 import type State from './state';
+
 
 const createStore = () => {
   let composeEnhancers = compose;
@@ -21,7 +22,7 @@ const createStore = () => {
 
   if (globalThis.window) {
     composeEnhancers = (globalThis.window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-    preloadedState = localStorage.get<Partial<State>>('REDUX_STATE') || undefined;
+    preloadedState = getPersistedState();
   }
 
   const store = createReduxStore(

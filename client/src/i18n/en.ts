@@ -59,7 +59,7 @@ export default {
         description:
           "Let's get started on bringing your existing podcast over to Podlove. Simply enter the RSS feed URL of your current podcast below.",
         help: 'You can usually find the RSS feed URL in the settings or dashboard of your current hosting platform. For more detailed instructions on finding your RSS feed URL with popular hosting platforms, check out this <a class="support-link" href="https://sendegate.de/t/podcast-feed-bei-hosting-plattformen-finden-wiki/17116">post</a> in the Sendegate.',
-        'feed-url': 'Podcast feed url',
+        'feed-url': 'Podcast feed URL',
         'feed-url-placeholder': 'Enter the feed url',
         'success-head': 'Success!',
         'success-info':
@@ -167,6 +167,22 @@ export default {
       playButton: 'Season 2, Ep 1',
       description:
         '[Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.]'
+    },
+    error: {
+      podcast: {
+        metadata: {
+          title: 'Request failed',
+          details: 'Error while fetching podcast metadata'
+        },
+        episodes: {
+          title: 'Request failed',
+          details: 'Error while fetching podcast episodes'
+        },
+        feedUrl: {
+          title: 'Request failed',
+          details: 'Error while fetching feed url'
+        }
+      }
     }
   },
   select: {

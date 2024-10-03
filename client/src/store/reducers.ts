@@ -6,6 +6,7 @@ import { reducer as runtime } from './runtime.store';
 import { reducer as podcast } from './podcast.store';
 import { reducer as feed } from './feed.store';
 import { reducer as episodes } from './episode.store';
+import { reducer as notifications } from './notifications.store';
 
 export default combineReducers({
   router,
@@ -15,4 +16,5 @@ export default combineReducers({
   podcast,
   feed,
   episodes,
+  notifications
 });

@@ -8,8 +8,11 @@ import * as request from '../lib/request';
 import { findCategories } from '../helper/categories';
 import { LanguageLocales } from '../types/locales.types';
 import { type Episode, type EpisodeDetailsPayload } from '../types/episode.types';
-import { savePodcastMetadata } from './helpers/podcast';
 import { setOnboardingPodcastSettings } from './helpers/settings';
+import { savePodcastMetadata } from './helpers/podcast';
+import { i18n } from '../i18n';
+
+const { t } = i18n.global;
 
 function* validateFeedUrl({ payload }: Action<validateFeedUrlPayload>) {
   const feed = payload.trim();
@@ -32,15 +35,26 @@ function* validateFeedUrl({ payload }: Action<validateFeedUrlPayload>) {
 
 function* fetchPodcastMetaData(): any {
   const feedUrl: string = yield select(selectors.feed.feedUrl);
+  let podcast: any;
 
-  const response: any = yield request.get(request.origin('api/v1/fetch_feed'), {
-    params: {
-      feed_url: feedUrl,
-      force_refresh: true
-    }
-  });
+  try {
+    const response: any = yield request.get(request.origin('api/v1/fetch_feed'), {
+      params: {
+        feed_url: feedUrl,
+        force_refresh: true
+      }
+    });
 
-  const podcast = get(response, ['podcast'], null);
+    podcast = get(response, ['podcast'], null);
+  } catch (err) {
+    podcast = null;
+    yield put(
+      actions.notifications.error({
+        title: t('onboarding.error.podcast.metadata.title'),
+        details: t('onboarding.error.podcast.metadata.details')
+      })
+    );
+  }
 
   if (!podcast) {
     return;
@@ -75,19 +89,32 @@ function* fetchPodcastMetaData(): any {
 
 function* fetchEpisodes(): any {
   const feedUrl: string = yield select(selectors.feed.feedUrl);
-  const response: any = yield request.get(request.origin('api/v1/fetch_feed'), {
-    params: { feed_url: feedUrl }
-  });
 
-  const episodes = get(response, ['episodes'], null);
+  let episodes: null | any[] = null;
 
-  if (!episodes) {
+  try {
+    const response: any = yield request.get(request.origin('api/v1/fetch_feed'), {
+      params: { feed_url: feedUrl }
+    });
+
+    episodes = get(response, ['episodes'], null);
+  } catch (err) {
+    episodes = null;
+    yield put(
+      actions.notifications.error({
+        title: t('onboarding.error.podcast.episodes.title'),
+        details: t('onboarding.error.podcast.episodes.details')
+      })
+    );
+  }
+
+  if (episodes === null) {
     return;
   }
 
   yield put(
     actions.episodes.addEpisodes(
-      episodes.map((episode: Episode) => ({
+      (episodes as any).map((episode: Episode) => ({
         title: get(episode, 'title', null),
         guid: get(episode, 'guid', null),
         pub_date: get(episode, 'pub_date', null),
@@ -194,7 +221,9 @@ function* importEpisodes(): any {
       yield request.post(request.origin('api/v1/import_episode'), {
         params: {},
         data: episodeDetails
-      });{}
+      });
+      {
+      }
       yield put(actions.episodes.episodeImportFinished(nextEpisode.guid));
     } catch (error) {
       yield put(actions.episodes.episodeImportFailed(nextEpisode.guid));
