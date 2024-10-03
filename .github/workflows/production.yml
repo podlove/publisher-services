@@ -1,8 +1,7 @@
-name: Staging
+name: Production
 on:
-  push:
-    branches:
-      - main
+  release:
+    types: [created]
 
 jobs:
   deploy:
@@ -11,23 +10,23 @@ jobs:
     - name: Prepare Remote
       uses: appleboy/ssh-action@v1.0.3
       with:
-        host: publisher-services.podlove.dev
+        host: services.podlove.org
         username: root
-        key: ${{ secrets.STAGING_SSH_KEY }}
-        script:  |
+        key: ${{ secrets.PRODUCTION_SSH_KEY }}
+        script: |
           mkdir -p app
           cd app
-          [ ! -d ".git" ] && && git clone -–depth=1 git@github.com:podlove/publisher-next.git .
+          [ ! -d ".git" ] && git clone git@github.com:podlove/publisher-services.git .
 
-    - name: Deploy to staging environment
+    - name: Deploy to production environment
       uses: appleboy/ssh-action@v1.0.3
       env:
         SHA: ${{ github.sha }}
         VITE_BUILD: ${{ github.sha }}
       with:
-        host: publisher-services.podlove.dev
+        host: services.podlove.org
         username: root
-        key: ${{ secrets.STAGING_SSH_KEY }}
+        key: ${{ secrets.PRODUCTION_SSH_KEY }}
         envs: SHA,VITE_BUILD
         script:  |
           cd app
