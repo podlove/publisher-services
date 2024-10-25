@@ -58,7 +58,7 @@ export default {
         headline: 'Move your Podcast to Podlove',
         description:
           "Let's get started on bringing your existing podcast over to Podlove. Simply enter the RSS feed URL of your current podcast below.",
-        help: 'You can usually find the RSS feed URL in the settings or dashboard of your current hosting platform. For more detailed instructions on finding your RSS feed URL with popular hosting platforms, check out this <a class="support-link" href="https://sendegate.de/t/podcast-feed-bei-hosting-plattformen-finden-wiki/17116">post</a> in the Sendegate.',
+        help: 'You can usually find the RSS feed URL in the settings or dashboard of your current hosting platform. For more detailed instructions on finding your RSS feed URL with popular hosting platforms, check out this <a class="support-link" href="https://sendegate.de/t/podcast-feed-bei-hosting-plattformen-finden-wiki/17116" target="_top">post</a> in the Sendegate.',
         'feed-url': 'Podcast feed URL',
         'feed-url-placeholder': 'Enter the feed url',
         'success-head': 'Success!',

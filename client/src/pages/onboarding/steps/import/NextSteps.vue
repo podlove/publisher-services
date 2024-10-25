@@ -49,7 +49,7 @@
       />
     </div>
     <div class="text-center">
-      <PodloveButton :href="episodesListLink" type="a" variant="primary">{{
+      <PodloveButton :href="episodesListLink" type="a" target="_top" variant="primary">{{
         $t('onboarding.steps.import-next-steps.button')
       }}</PodloveButton>
     </div>
