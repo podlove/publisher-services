@@ -5,6 +5,7 @@
     class="inline-flex items-center focus:outline-none focus:ring-2 border border-transparent shadow-sm whitespace-nowrap disabled:opacity-75"
     :disabled="disabled"
     :class="[variantClass, sizeClass]"
+    :target="target"
   >
     <slot />
   </component>
@@ -30,6 +31,7 @@ interface Props {
   size?: ButtonSize;
   disabled?: boolean;
   type?: 'button' | 'a';
+  target?: string;
 }
 
 const props = defineProps<Props>();
@@ -66,6 +68,14 @@ const sizeClass = computed(() => {
     case 'large':
       return `px-6 py-3 text-base font-medium rounded-md`;
   }
+});
+
+const target = computed(() => {
+  if (type.value != 'a') {
+    return null;
+  }
+
+  return props.target || null;
 });
 </script>
 
