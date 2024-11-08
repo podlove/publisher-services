@@ -17,7 +17,7 @@ jobs:
         script:  |
           mkdir -p app
           cd app
-          [ ! -d ".git" ] && git clone -–depth=1 git@github.com:podlove/publisher-next.git .
+          ( [ ! -d ".git" ] && git clone -–depth=1 git@github.com:podlove/publisher-next.git . ) || true
 
     - name: Deploy to staging environment
       uses: appleboy/ssh-action@v1.0.3
