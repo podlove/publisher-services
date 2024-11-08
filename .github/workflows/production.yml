@@ -25,6 +25,7 @@ jobs:
       env:
         SHA: ${{ github.sha }}
         VITE_BUILD: ${{ github.sha }}
+        HONEYBADGER_API_KEY: ${{ secrets.HONEYBADGER_KEY }}
       with:
         host: services.podlove.org
         username: root

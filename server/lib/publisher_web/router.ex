@@ -1,5 +1,6 @@
 defmodule PublisherWeb.Router do
   use Plug.Router
+  use Honeybadger.Plug
 
   alias PublisherWeb.Controllers.API
 
