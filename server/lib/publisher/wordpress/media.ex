@@ -5,7 +5,8 @@ defmodule Publisher.WordPress.Media do
     ext = extension_from_url(url)
     filename = [slug, ext] |> Enum.join(".")
 
-    {:ok, resp} = Req.get(url)
+    encoded_url = URI.encode(url)
+    {:ok, resp} = Req.get(encoded_url)
 
     response = if post_id do
       upload_media(req, post_id, filename, content_type(resp), resp.body)
