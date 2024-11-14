@@ -8,11 +8,12 @@ defmodule Publisher.WordPress.Media do
     {:ok, encoded_url} = URLEncoder.maybe_encode(url)
     {:ok, resp} = Req.get(encoded_url)
 
-    response = if post_id do
-      upload_media(req, post_id, filename, content_type(resp), resp.body)
-    else
-      upload_media(req, filename, content_type(resp), resp.body)
-    end
+    response =
+      if post_id do
+        upload_media(req, post_id, filename, content_type(resp), resp.body)
+      else
+        upload_media(req, filename, content_type(resp), resp.body)
+      end
 
     with {:ok, response} <- response,
          {:ok, _} <- extract_status(response),
@@ -33,7 +34,6 @@ defmodule Publisher.WordPress.Media do
     else
       error -> error
     end
-
   end
 
   defp content_type(resp) do
