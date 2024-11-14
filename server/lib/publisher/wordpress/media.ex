@@ -5,7 +5,7 @@ defmodule Publisher.WordPress.Media do
     ext = extension_from_url(url)
     filename = [slug, ext] |> Enum.join(".")
 
-    encoded_url = URI.encode(url)
+    {:ok, encoded_url} = URLEncoder.maybe_encode(url)
     {:ok, resp} = Req.get(encoded_url)
 
     response = if post_id do
