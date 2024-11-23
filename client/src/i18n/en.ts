@@ -84,6 +84,7 @@ export default {
         headline: 'Import Your Episodes',
         description:
           "We've found { count } episodes from your existing podcast. Please take a moment to review them here. When you're ready, click 'Start Import' to begin the process. Your Browser has to stay open during the process.",
+        'tag-review': 'Set review tag',
         missingReleaseDate: 'no release date found',
         episodePreview: {
           title: 'Title',

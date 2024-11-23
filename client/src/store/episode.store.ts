@@ -25,6 +25,7 @@ export type episodeImportStartedPayload = string;
 export type episodeImportFailedPayload = string;
 export type episodeImportFinishedPayload = string;
 export type selectEpisodePayload = string;
+export type setEpisodeReviewPayload = string;
 
 export const actions = {
   addEpisodes: createAction<addEpisodePayload>('EPISODES/ADD_EPISODE'),
@@ -36,6 +37,7 @@ export const actions = {
   episodeImportFailed: createAction<episodeImportFailedPayload>('EPISODES/EPISODE_IMPORT_FAILED'),
   episodeImportFinished: createAction<episodeImportFinishedPayload>('EPISODES/EPISODE_IMPORT_FINISHED'),
   selectEpisode: createAction<selectEpisodePayload>('EPISODES/SELECT_EPISODE'),
+  setEpisodeReview: createAction<setEpisodeReviewPayload>('EPISODES/SET_REVIEW_TAG'),
   startImport: createAction<void>('EPISODES/START_IMPORT'),
   stopImport: createAction<void>('EPISODES/STOP_IMPORT'),
   restartImport: createAction<void>('EPISODES/RESTART_IMPORT'),

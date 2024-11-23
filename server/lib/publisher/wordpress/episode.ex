@@ -38,9 +38,7 @@ defmodule Publisher.WordPress.Episode do
     |> String.trim_leading(".")
   end
 
-  # Finds episode by guid. Creates episode with that episode if none exists.
-  # Returns episode id.
-  defp find_or_create_episode(req, guid) do
+  def find_episode(req, guid) do
     {:ok, episode} =
       Req.get(
         req,
@@ -48,15 +46,18 @@ defmodule Publisher.WordPress.Episode do
         params: %{guid: guid, status: "all"}
       )
 
-    existing_episode_id =
-      case episode.body["results"] do
-        [%{"id" => existing_id}] -> existing_id
-        _ -> nil
-      end
+    case episode.body["results"] do
+      [%{"id" => existing_id}] -> existing_id
+      _ -> nil
+    end
 
-    Logger.info("Find or create episode: #{guid} -> #{existing_episode_id}")
+  end
 
-    case existing_episode_id do
+  # Finds episode by guid. Creates episode with that episode if none exists.
+  # Returns episode id.
+  defp find_or_create_episode(req, guid) do
+
+    case find_episode(req, guid) do
       nil ->
         {:ok, episode} = Req.post(req, url: "podlove/v2/episodes")
         episode.body["id"]

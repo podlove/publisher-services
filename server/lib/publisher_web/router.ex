@@ -39,6 +39,10 @@ defmodule PublisherWeb.Router do
     API.import_episode(conn, conn.req_headers, conn.params)
   end
 
+  post "api/v1/tag_episode" do
+    API.tag_episode(conn, conn.req_headers, conn.params)
+  end
+
   match _ do
     send_resp(conn, 404, "oops")
   end

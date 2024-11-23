@@ -7,9 +7,11 @@ defmodule PublisherWeb.Controllers.API do
   alias Publisher.FeedParser
   alias Publisher.WordPress.Episode
   alias Publisher.WordPress.Podcast
+  alias Publisher.WordPress.Tag
   alias PublisherWeb.Controllers.Validator
 
   def fetch_feed(conn, params) do
+    Logger.info("fetch_feed")
     with_validation(conn, params, Validator.FetchFeed, fn conn, data ->
       {:ok, result} = FeedParser.parse_by_url(data.feed_url, force_refresh: data.force_refresh)
 
@@ -97,6 +99,15 @@ defmodule PublisherWeb.Controllers.API do
           end)
         end)
       end)
+    end)
+  end
+
+  def tag_episode(conn, headers, body) do
+    with_validation(conn, headers_to_map(headers), Validator.WordPressAuthHeaders, fn conn, _ ->
+      case Tag.add_tag_episode(conn, body) do
+        :ok -> json(conn, %{status: "success"})
+        _ -> send_resp(conn, 400, "Error: unable to add a tag to episode")
+      end
     end)
   end
 

@@ -23,6 +23,10 @@
           aria-hidden="true"
         />
       </div>
+      <div class="content-center">
+        <img v-if="data.cover" class="h-12 w-12 flex-none bg-gray-800" :src="data.cover" alt="" />
+        <PhotoIcon v-else class="h-12 w-12 flex-none text-gray-300"></PhotoIcon>
+      </div>
       <div class="min-w-0 flex-auto">
         <p class="text-xs leading-5 text-gray-500">
           {{ publicationDate }}
@@ -36,7 +40,9 @@
       </div>
     </div>
     <div class="flex min-w-0 gap-x-4">
-      <img v-if="data.cover" class="h-12 w-12 flex-none bg-gray-800" :src="data.cover" alt="" />
+      <PodloveButton variant="secondary" size="small" @click="markReview()">{{
+       t('onboarding.steps.import-episodes.tag-review')
+      }}</PodloveButton>
     </div>
   </li>
 </template>
@@ -47,7 +53,9 @@ import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { mapState, injectStore } from 'redux-vuex';
 import { CheckCircleIcon, QuestionMarkCircleIcon, XCircleIcon } from '@heroicons/vue/20/solid';
+import { PhotoIcon } from '@heroicons/vue/24/outline';
 import LoadingSpinner from '../../../components/loading/Loading.vue';
+import PodloveButton from '../../../components/button/Button.vue';
 import { selectors, actions } from '../../../store';
 import { type Episode } from '../../../types/episode.types';
 const { t } = useI18n();
@@ -73,11 +81,11 @@ const state = mapState<{
 
 const publicationDate = computed(() => {
   if (!props.data.pub_date) {
-    return t('steps.import-episodes.missing.missingReleaseDate');
+    return t('onboarding.steps.import-episodes.missingReleaseDate');
   }
 
   if (isNaN(Date.parse(props.data.pub_date))) {
-    return t('steps.import-episodes.missing.missingReleaseDate');
+    return t('onboarding.steps.import-episodes.missingReleaseDate');
   }
   const timestamp = Date.parse(props.data.pub_date);
   return new Date(timestamp).toLocaleDateString();
@@ -85,5 +93,9 @@ const publicationDate = computed(() => {
 
 const selectEpisode = () => {
   store.dispatch(actions.episodes.selectEpisode(props.guid) as unknown as Action)
+}
+
+const markReview = () => {
+  store.dispatch(actions.episodes.setEpisodeReview(props.guid) as unknown as Action)
 }
 </script>
