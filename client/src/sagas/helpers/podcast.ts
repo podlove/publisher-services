@@ -12,7 +12,7 @@ function transferPodcastCoverFromData(imageData: string, imageName: string) {
 
   const image = {
     base64Data: parts[1],
-    name: name + 'cover',
+    name: name + '-cover',
     type: imageType
   };
 
