@@ -3,15 +3,16 @@ import * as request from '../../lib/request';
 import { selectors } from '../../store';
 import { type locales } from '../../types/locales.types';
 import { type category } from '../../types/categories.types';
-import { extractImageType } from '../../lib/image';
+import { extractImageType, removeUnicodeAndSpecialCharacters} from '../../lib/image';
 
 function transferPodcastCoverFromData(imageData: string, imageName: string) {
   const parts: string[] = imageData.split(',');
   const imageType: string | null = extractImageType(parts[0]);
+  const name = removeUnicodeAndSpecialCharacters(imageName);
 
   const image = {
     base64Data: parts[1],
-    name: imageName,
+    name: name + '-cover',
     type: imageType
   };
 
@@ -19,7 +20,8 @@ function transferPodcastCoverFromData(imageData: string, imageName: string) {
 }
 
 function transferPodcastCoverFromURL(imageUrl: string, podcastName: string) {
-  const name = podcastName.replace(/ /g, '-');
+  const name = removeUnicodeAndSpecialCharacters(podcastName);
+
   const image = {
     name: name + '-cover',
     url: imageUrl

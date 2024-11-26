@@ -23,3 +23,11 @@ export const getImageResolution = (
   };
   img.src = URL.createObjectURL(file);
 };
+
+export const removeUnicodeAndSpecialCharacters = (text: string): string => {
+  return text
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/ /g, '-')
+    .replace(/[^a-zA-Z0-9\s-]/g, "");
+}
