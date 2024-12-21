@@ -58,7 +58,7 @@
 
 <script setup lang="ts">
 import { type Action } from 'redux';
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { mapState, injectStore } from 'redux-vuex';
 import { selectors, actions } from '../../../../store';
@@ -71,6 +71,7 @@ import redirectIconUrl from '../../../../assets/next-redirect.svg';
 import episodesIconUrl from '../../../../assets/next-check-episodes.svg';
 
 const { t } = useI18n();
+const { dispatch } = injectStore();
 
 const state = mapState<{ feedUrl: string; site: string }>({
   feedUrl: selectors.podcast.feed,
@@ -81,6 +82,8 @@ const episodesListLink = computed(() => `${state.site}/wp-admin/edit.php?post_ty
 
 const selectText = (event: MouseEvent) => (event?.target as HTMLInputElement).select();
 
-const { dispatch } = injectStore();
-dispatch(actions.podcast.readFeedUrl() as Action);
+onMounted(() => {
+  dispatch(actions.podcast.readFeedUrl() as Action);
+});
+
 </script>
