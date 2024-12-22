@@ -27,7 +27,8 @@ export default {
   authentication: {
     user: createSelector(root.authentication, authentication.selectors.user),
     password: createSelector(root.authentication, authentication.selectors.password),
-    site: createSelector(root.authentication, authentication.selectors.site)
+    site: createSelector(root.authentication, authentication.selectors.site),
+    restEndpoint: createSelector(root.authentication, authentication.selectors.restEndpoint),
   },
   onboarding: {
     steps: createSelector(root.onboarding, onboarding.selectors.steps),

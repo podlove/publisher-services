@@ -12,6 +12,7 @@ defmodule Publisher.WordPress.API do
     user = get_header_value(headers, "wordpress-user")
     password = get_header_value(headers, "wordpress-password")
     site = get_header_value(headers, "wordpress-site")
+    rest_endpoint = get_header_value(headers, "wordpress-rest")
 
     default_connect_options = [transport_opts: [verify: :verify_none]]
     http1 = Keyword.get(opts, :http1, false)
@@ -24,7 +25,7 @@ defmodule Publisher.WordPress.API do
       end
 
     Req.new(
-      base_url: site <> "/wp-json/",
+      base_url: rest_endpoint <> "/",
       headers: [{"Content-Type", "application/json"}],
       auth: {:basic, user <> ":" <> password},
       connect_options: connect_options

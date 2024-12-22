@@ -6,11 +6,14 @@ import { type navigatePayload } from '../store/router.store';
 
 function* authenticate(payload: navigatePayload) {
   const site = get(payload, ['query', 'site_url'], null) as string | null;
+  const rest_endpoint = get(payload, ['query', 'rest_url'], null) as string | null;
   const user = get(payload, ['query', 'user_login'], null) as string | null;
   const password = get(payload, ['query', 'password'], null) as string | null;
 
   if (site && user && password) {
-    yield put(actions.authentication.setApplicationPassword({ site, user, password }));
+    yield put(
+      actions.authentication.setApplicationPassword({ site, user, password, rest_endpoint })
+    );
   }
 }
 

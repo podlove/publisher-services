@@ -6,13 +6,15 @@ const headers = (): HeadersInit => {
   const user = selectors.authentication.user(state) as string;
   const password = selectors.authentication.password(state) as string;
   const site = selectors.authentication.site(state) as string;
+  const rest_endpoint = selectors.authentication.restEndpoint(state) as string;
 
   return {
     'Content-Type': 'application/json',
     Accept: 'application/json',
-    ...(user ? {'Wordpress-User': user}: {}),
-    ...(password ? {'Wordpress-Password': password}: {}),
-    ...(site ? {'Wordpress-Site': site}: {})
+    ...(user ? { 'Wordpress-User': user } : {}),
+    ...(password ? { 'Wordpress-Password': password } : {}),
+    ...(site ? { 'Wordpress-Site': site } : {}),
+    ...(rest_endpoint ? { 'Wordpress-Rest': rest_endpoint } : {})
   };
 };
 const checkResponse = async (response: Response): Promise<Response> => {
@@ -22,9 +24,9 @@ const checkResponse = async (response: Response): Promise<Response> => {
   }
 
   return response;
-}
+};
 
-const parseResponse = <T>(response: Response): Promise<T> =>  response.json();
+const parseResponse = <T>(response: Response): Promise<T> => response.json();
 
 export const origin = (path: string): string => {
   const url = new URL(document.baseURI).origin;
@@ -52,8 +54,8 @@ export const get = <T>(
     method: 'GET',
     headers: headers()
   })
-  .then(checkResponse)
-  .then(parseResponse) as Promise<T>;
+    .then(checkResponse)
+    .then(parseResponse) as Promise<T>;
 };
 
 export const post = <T>(
