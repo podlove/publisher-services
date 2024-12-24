@@ -26,7 +26,10 @@ defmodule Publisher.WordPress.API do
 
     Req.new(
       base_url: rest_endpoint <> "/",
-      headers: [{"Content-Type", "application/json"}],
+      headers: [
+        {"Content-Type", "application/json"},
+        {"accept", "application/json"}
+      ],
       auth: {:basic, user <> ":" <> password},
       connect_options: connect_options
     )
