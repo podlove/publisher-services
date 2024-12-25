@@ -86,7 +86,8 @@ defmodule Publisher.FeedParser do
          cover: episode.image_url,
          chapters: episode.chapters,
          transcript: transcript(episode),
-         contributors: episode.contributors
+         contributors: episode.contributors,
+         pub_date: episode.pub_date
        }
      }}
   end

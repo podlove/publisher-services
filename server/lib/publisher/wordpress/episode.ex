@@ -100,12 +100,31 @@ defmodule Publisher.WordPress.Episode do
     Enum.reject(map, fn {_, v} -> is_nil(v) end)
   end
 
-  defp upload_content(req, post_id, %{"content" => content} = _params)
-       when not is_nil(content) do
+  defp upload_content(req, post_id, %{"content" => content, "pub_date" => pub_date} = _params)
+       when not is_nil(content) and not is_nil(pub_date) do
     Logger.info("Episode post #{post_id} content is #{String.length(content)}")
+    Logger.info("Episode post #{post_id} release date is #{pub_date}")
 
     payload = %{
-      content: content
+      content: content,
+      date: pub_date
+    }
+
+    Req.post(req,
+      url: "wp/v2/episodes/#{post_id}",
+      json: payload
+    )
+
+    :ok
+  end
+
+  defp upload_content(req, post_id, %{"content" => content, "pub_date" => pub_date} = _params)
+       when is_nil(content) and not is_nil(pub_date) do
+    Logger.info("Episode post has no post content")
+    Logger.info("Episode post #{post_id} release date is #{pub_date}")
+
+    payload = %{
+      date: pub_date
     }
 
     Req.post(req,
