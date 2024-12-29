@@ -287,6 +287,10 @@ defmodule Publisher.WordPress.Episode do
         body: resp.body
       )
 
+    # TODO: if upload.status == 500, there may be a helpful error message in upload.body["data"]["error"]
+    # TODO: possible fix is multipart upload
+
+    # TODO: handle that upload.body["generated_slug"] does not exist, for example when the body is not actually data...
     if upload.body["generated_slug"] != params["slug"] do
       Logger.info(
         "generated_slug (#{upload.body["generated_slug"]} and slug (#{params["slug"]}) parameter are different"
