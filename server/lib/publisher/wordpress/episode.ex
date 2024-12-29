@@ -100,6 +100,32 @@ defmodule Publisher.WordPress.Episode do
     Enum.reject(map, fn {_, v} -> is_nil(v) end)
   end
 
+  defp wordpress_date(date) do
+    date
+    |> parse_date()
+    |> DateTime.to_iso8601()
+  end
+
+  defp parse_date(date) do
+    formats = [
+      "{RFC822}",
+      "{RFC822z}",
+      "{RFC1123}",
+      "{RFC1123z}",
+      "{RFC3339}",
+      "{RFC3339z}",
+      "{ISO:Extended}",
+      "{ISO:Extended:Z}"
+    ]
+
+    Enum.find_value(formats, fn format ->
+      case Timex.parse(date, format) do
+        {:ok, date} -> date
+        {:error, _} -> false
+      end
+    end)
+  end
+
   defp upload_content(req, post_id, %{"content" => content, "pub_date" => pub_date} = _params)
        when not is_nil(content) and not is_nil(pub_date) do
     Logger.info("Episode post #{post_id} content is #{String.length(content)}")
@@ -107,7 +133,7 @@ defmodule Publisher.WordPress.Episode do
 
     payload = %{
       content: content,
-      date: pub_date
+      date: wordpress_date(pub_date)
     }
 
     Req.post(req,
@@ -124,7 +150,7 @@ defmodule Publisher.WordPress.Episode do
     Logger.info("Episode post #{post_id} release date is #{pub_date}")
 
     payload = %{
-      date: pub_date
+      date: wordpress_date(pub_date)
     }
 
     Req.post(req,
