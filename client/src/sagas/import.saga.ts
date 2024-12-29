@@ -176,6 +176,7 @@ function* fetchEpisodeDetails({ payload }: Action<string>) {
       explicit: get(episode, 'explicit', null),
       duration: get(episode, 'duration', null),
       cover: get(episode, 'cover', null),
+      pub_date: get(episode, 'pub_date', null),
       transcript: {
         language: get(episode, ['transcript', 'language'], null),
         rel: get(episode, ['transcript', 'rel'], null),

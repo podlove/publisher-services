@@ -20,7 +20,7 @@ defmodule PublisherWeb.Controllers.Validator.SaveChapters do
       if normalplaytime_valid?(value) do
         []
       else
-        [{field, "is not conform with NormalPlayTime"}]
+        [{field, " is not conform with NormalPlayTime"}]
       end
     end)
   end

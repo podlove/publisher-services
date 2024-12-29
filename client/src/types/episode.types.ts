@@ -46,6 +46,7 @@ export interface EpisodeDetailsPayload {
     explicit: boolean;
     duration: string;
     cover: string;
+    pub_date: string;
     transcript: {
       language: string;
       rel: string;

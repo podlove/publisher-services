@@ -29,7 +29,8 @@ defmodule Publisher.MixProject do
       {:slugify, "~> 1.3"},
       {:nimble_options, "~> 1.1"},
       {:metalove, git: "https://github.com/podlove/metalove", branch: "master"},
-      {:honeybadger, "~> 0.22"}
+      {:honeybadger, "~> 0.22"},
+      {:timex, "~> 3.7"}
     ]
   end
 end
