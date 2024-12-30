@@ -145,6 +145,7 @@ defmodule Publisher.WordPress.Episode do
 
     payload = %{
       content: content,
+      status: "private",
       date: wordpress_date(pub_date)
     }
 
