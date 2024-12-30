@@ -38,6 +38,38 @@ defmodule Publisher.WordPress.Episode do
     |> String.trim_leading(".")
   end
 
+  @doc """
+  Parses the given date string and returns a DateTime struct or nil.
+
+  ## Examples
+
+      iex> parse_date("2023-10-05T14:48:00Z")
+      ~U[2023-10-05 14:48:00Z]
+
+      iex> parse_date("not a date")
+      nil
+
+  """
+  def parse_date(date) do
+    formats = [
+      "{RFC822}",
+      "{RFC822z}",
+      "{RFC1123}",
+      "{RFC1123z}",
+      "{RFC3339}",
+      "{RFC3339z}",
+      "{ISO:Extended}",
+      "{ISO:Extended:Z}"
+    ]
+
+    Enum.find_value(formats, fn format ->
+      case Timex.parse(date, format) do
+        {:ok, date} -> date
+        {:error, _} -> false
+      end
+    end)
+  end
+
   # Finds episode by guid. Creates episode with that episode if none exists.
   # Returns episode id.
   defp find_or_create_episode(req, guid) do
@@ -104,26 +136,6 @@ defmodule Publisher.WordPress.Episode do
     date
     |> parse_date()
     |> DateTime.to_iso8601()
-  end
-
-  defp parse_date(date) do
-    formats = [
-      "{RFC822}",
-      "{RFC822z}",
-      "{RFC1123}",
-      "{RFC1123z}",
-      "{RFC3339}",
-      "{RFC3339z}",
-      "{ISO:Extended}",
-      "{ISO:Extended:Z}"
-    ]
-
-    Enum.find_value(formats, fn format ->
-      case Timex.parse(date, format) do
-        {:ok, date} -> date
-        {:error, _} -> false
-      end
-    end)
   end
 
   defp upload_content(req, post_id, %{"content" => content, "pub_date" => pub_date} = _params)
@@ -283,6 +295,7 @@ defmodule Publisher.WordPress.Episode do
             case create_contributor(req, name) do
               {:ok, id} ->
                 [id | acc]
+
               {:error, reason} ->
                 Logger.info("Couldn't create a contributor: #{inspect(reason)}")
                 acc
@@ -368,16 +381,19 @@ defmodule Publisher.WordPress.Episode do
 
   defp save_episode_image_url(req, episode_id, source_url) do
     Logger.info("Episode use #{source_url} as cover: #{episode_id}")
+
     body = %{
       episode_poster: source_url
     }
+
     Req.post(req, url: "podlove/v2/episodes/#{episode_id}", json: body)
     :ok
   end
 
   defp upload_cover(req, episode_id, post_id, %{"cover" => cover} = params)
-    when not is_nil(cover) do
+       when not is_nil(cover) do
     image_name = "cover-" <> params["slug"]
+
     with {:ok, source_url} <- Media.upload_media_from_url(req, post_id, cover, image_name),
          :ok <- save_episode_image_url(req, episode_id, source_url) do
       :ok

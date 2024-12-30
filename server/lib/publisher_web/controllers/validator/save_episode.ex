@@ -1,6 +1,8 @@
 defmodule PublisherWeb.Controllers.Validator.SaveEpisode do
   use PublisherWeb.Controllers.Validator.Validator
 
+  import Publisher.WordPress.Episode, only: [parse_date: 1]
+
   embedded_schema do
     field(:guid, :string)
     field(:title, :string)
@@ -22,33 +24,17 @@ defmodule PublisherWeb.Controllers.Validator.SaveEpisode do
     |> validate_date(:pub_date)
   end
 
-  defp validate_date(changeset, field) do
-    validate_change(changeset, field, fn _, value ->
-      if publication_date_valid?(value) do
+  defp validate_date(changeset, :pub_date) do
+    validate_change(changeset, :pub_date, fn _, pub_date ->
+      if publication_date_valid?(pub_date) do
         []
       else
-        [{field, " is not a conformed date"}]
+        [pub_date: "is not a valid date"]
       end
     end)
   end
 
-  defp publication_date_valid?(field) do
-    formats = [
-      "{RFC822}",
-      "{RFC822z}",
-      "{RFC1123}",
-      "{RFC1123z}",
-      "{RFC3339}",
-      "{RFC3339z}",
-      "{ISO:Extended}",
-      "{ISO:Extended:Z}"
-    ]
-
-    Enum.find_value(formats, fn format ->
-      case Timex.parse(field, format) do
-        {:ok, field} -> field
-        {:error, _} -> false
-      end
-    end)
+  defp publication_date_valid?(value) do
+    parse_date(value) !== nil
   end
 end
