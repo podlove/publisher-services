@@ -11,10 +11,10 @@ defmodule Publisher.WordPress.Episode do
          post_id <- fetch_post_id(req, episode_id),
          {:ok, _} <- write_episode_meta(req, episode_id, params),
          :ok <- upload_content(req, post_id, params),
-         :ok <- upload_media(req, episode_id, post_id, params),
          :ok <- upload_chapters(req, episode_id, params),
          :ok <- upload_transcript(req, episode_id, params),
          :ok <- upload_contributors(req, episode_id, params),
+         :ok <- upload_media(req, episode_id, post_id, params),
          :ok <- verify_media(req, episode_id),
          :ok <- upload_cover(req, episode_id, post_id, params) do
       :ok
@@ -334,6 +334,7 @@ defmodule Publisher.WordPress.Episode do
 
     {:ok, resp} = Req.get(enclosure_url)
 
+    # TODO: increase timeout or handle error, maybe retry
     {:ok, upload} =
       Req.post(req,
         url: "wp/v2/media",
