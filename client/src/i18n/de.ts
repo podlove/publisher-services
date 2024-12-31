@@ -7,7 +7,7 @@ export default {
         'start-new-podcast': 'Speichern & Weiter',
         'import-feed': 'Weiter',
         'import-podcast': 'Speichern & Weiter',
-        'import-episodes': 'Import starten'
+        'import-episodes': 'Weiter'
       }
     },
     steps: {
