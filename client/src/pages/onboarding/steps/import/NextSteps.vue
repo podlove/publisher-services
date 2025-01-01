@@ -57,10 +57,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { type Action } from 'redux';
+import { computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { mapState } from 'redux-vuex';
-import { selectors } from '../../../../store';
+import { mapState, injectStore } from 'redux-vuex';
+import { selectors, actions } from '../../../../store';
 
 import FinishCard from '../../components/FinishCard.vue';
 import PodloveButton from '../../../../components/button/Button.vue';
@@ -70,6 +71,7 @@ import redirectIconUrl from '../../../../assets/next-redirect.svg';
 import episodesIconUrl from '../../../../assets/next-check-episodes.svg';
 
 const { t } = useI18n();
+const { dispatch } = injectStore();
 
 const state = mapState<{ feedUrl: string; site: string }>({
   feedUrl: selectors.podcast.feed,
@@ -79,4 +81,9 @@ const state = mapState<{ feedUrl: string; site: string }>({
 const episodesListLink = computed(() => `${state.site}/wp-admin/edit.php?post_type=podcast`);
 
 const selectText = (event: MouseEvent) => (event?.target as HTMLInputElement).select();
+
+onMounted(() => {
+  dispatch(actions.podcast.readFeedUrl() as Action);
+});
+
 </script>
