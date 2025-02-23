@@ -58,9 +58,15 @@ defmodule Publisher.FeedParser do
     episode = Metalove.Episode.get_by_episode_id(id)
 
     number =
-      case Integer.parse(episode.episode) do
-        {num, _} -> num
-        :error -> nil
+      case episode.episode do
+        nil ->
+          nil
+
+        value ->
+          case Integer.parse(value) do
+            {num, _} -> num
+            :error -> nil
+          end
       end
 
     # TODO: make use of scraped media file values as fallback
