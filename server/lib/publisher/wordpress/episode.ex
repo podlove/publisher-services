@@ -207,21 +207,8 @@ defmodule Publisher.WordPress.Episode do
     Logger.info("Episode has a transcript: #{episode_id} (#{url})")
 
     case type do
-      "text/vtt" ->
-        {:ok, resp} = Req.get(transcript["url"])
-
-        payload = %{
-          type: "vtt",
-          content: resp.body
-        }
-
-        Req.post(req,
-          url: "podlove/v2/transcripts/#{episode_id}",
-          json: payload
-        )
-
-      _ ->
-        Logger.info("Transcript type #{type} is not supported")
+      "text/vtt" -> process_vtt_transcript(req, episode_id, transcript)
+      _ -> Logger.info("Transcript type #{type} is not supported")
     end
 
     :ok
@@ -231,6 +218,45 @@ defmodule Publisher.WordPress.Episode do
     Logger.info("Episode has no transcript: #{episode_id}")
     :ok
   end
+
+  defp process_vtt_transcript(req, episode_id, transcript) do
+    try do
+      transcript
+      |> fetch_transcript()
+      |> upload_transcript_content(req, episode_id)
+    rescue
+      e ->
+        Logger.error("Error processing transcript for episode #{episode_id}: #{inspect(e)}")
+    end
+  end
+
+  defp fetch_transcript(%{"url" => url}) do
+    case Req.get(url) do
+      {:ok, resp} -> {:ok, resp.body}
+      {:error, reason} = error ->
+        Logger.error("Failed to fetch transcript from #{url}: #{inspect(reason)}")
+        error
+    end
+  end
+
+  defp upload_transcript_content({:ok, content}, req, episode_id) do
+    payload = %{
+      type: "vtt",
+      content: content
+    }
+
+    case Req.post(req,
+           url: "podlove/v2/transcripts/#{episode_id}",
+           json: payload
+         ) do
+      {:ok, _} ->
+        Logger.info("Successfully uploaded transcript for episode #{episode_id}")
+      {:error, reason} ->
+        Logger.error("Failed to upload transcript for episode #{episode_id}: #{inspect(reason)}")
+    end
+  end
+
+  defp upload_transcript_content({:error, _}, _req, _episode_id), do: :ok
 
   defp upload_contributors(req, episode_id, %{"contributors" => contributors} = _param)
        when is_list(contributors) and length(contributors) > 0 do
