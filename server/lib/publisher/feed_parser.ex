@@ -100,6 +100,10 @@ defmodule Publisher.FeedParser do
 
   defp slug(episode) do
     url = episode.enclosure.resolved_url || episode.enclosure.url || ""
+
+    # remove op3.dev prefix
+    url = Regex.replace(~r/op3\.dev\/e[^\/]*\//, url, "")
+
     %URI{path: path} = URI.parse(url)
 
     case path do
