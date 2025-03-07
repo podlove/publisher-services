@@ -30,7 +30,7 @@ defmodule PublisherWeb.Controllers.API do
         {:ok, data} -> json(conn, data)
         {:error, reason} ->
           Logger.error("podcast_feed_url doesnot work reason: #{inspect(reason)}")
-          send_resp(conn, 400, "Error: Podcast.feed_url")
+          bad_request_resp(conn, "Error: Podcast.feed_url")
       end
     end)
   end
@@ -41,7 +41,7 @@ defmodule PublisherWeb.Controllers.API do
         :ok -> json(conn, %{})
         {:error, reason} ->
           Logger.error("podcast_set_settings reason: #{inspect(reason)}")
-          send_resp(conn, 400, "Error: Podcast.set_settings")
+          bad_request_resp(conn, "Error: Podcast.set_settings")
       end
     end)
   end
@@ -53,7 +53,7 @@ defmodule PublisherWeb.Controllers.API do
           {:ok, data} -> json(conn, data)
           {:error, reason} ->
             Logger.error("podcast_save_data reason: #{inspect(reason)}")
-            send_resp(conn, 400, "Error: Podcast.save_podcast_data")
+            bad_request_resp(conn, "Error: Podcast.save_podcast_data")
         end
       end)
     end)
@@ -66,7 +66,7 @@ defmodule PublisherWeb.Controllers.API do
           {:ok, info} -> json(conn, info)
           {:error, reason} ->
             Logger.error("podcast_save_image reason: #{inspect(reason)}")
-            send_resp(conn, 400, "Error: Podcast.save_podcast_image")
+            bad_request_resp(conn, "Error: Podcast.save_podcast_image")
         end
       end)
     end)
@@ -79,7 +79,7 @@ defmodule PublisherWeb.Controllers.API do
           {:ok, info} -> json(conn, info)
           {:error, reason} ->
             Logger.error("podcast_copy_image reason: #{inspect(reason)}")
-            send_resp(conn, 400, "Error: Podcast.copy_podcast_image")
+            bad_request_resp(conn, "Error: Podcast.copy_podcast_image")
         end
       end)
     end)
@@ -92,7 +92,7 @@ defmodule PublisherWeb.Controllers.API do
           with_validation_array(conn, body["chapters"], Validator.SaveChapters, fn conn, _ ->
               case Episode.save(conn, body) do
               :ok -> json(conn, %{status: "success"})
-              _ -> send_resp(conn, 400, "Error: unable to save episode")
+              _ -> bad_request_resp(conn, "Error: unable to save episode")
             end
           end)
         end)
@@ -122,6 +122,13 @@ defmodule PublisherWeb.Controllers.API do
         |> put_status(:bad_request)
         |> json(%{errors: "missing field"})
     end
+  end
+
+  # Returns a JSON response with 400 Bad Request status and the given error message
+  defp bad_request_resp(conn, error_message) do
+    conn
+    |> put_status(:bad_request)
+    |> json(%{error: error_message})
   end
 
   # Enum.reserse ensures that the first entry wins, in case of duplicates.
