@@ -22,7 +22,7 @@ defmodule Publisher.WordPress.Podcast do
   end
 
   def set_settings(headers, body) do
-    Logger.info("Padcast.set_settings")
+    Logger.info("Podcast.set_settings")
 
     payload =
       %{

@@ -17,16 +17,31 @@ const headers = (): HeadersInit => {
     ...(rest_endpoint ? { 'Wordpress-Rest': rest_endpoint } : {})
   };
 };
-const checkResponse = async (response: Response): Promise<Response> => {
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(error);
+
+function checkStatus(response: Response): Response {
+  if (response.ok) {
+    // response.ok is true if status code is 2xx
+    return response;
   }
 
-  return response;
-};
+  // Create an error with the status text and status code
+  const error = new Error(`HTTP Error ${response.status}: ${response.statusText}`);
+  // You can attach the response to the error for more details if needed
+  (error as any).response = response;
+  throw error;
+}
 
-const parseResponse = <T>(response: Response): Promise<T> => response.json();
+async function parseResponse<T>(response: Response): Promise<T> {
+  // First check if the response is OK (status 200-299)
+  checkStatus(response);
+
+  // Then parse the JSON
+  try {
+    return await response.json();
+  } catch (error) {
+    throw new Error(`Failed to parse response as JSON: ${error}`);
+  }
+}
 
 export const origin = (path: string): string => {
   const url = new URL(document.baseURI).origin;
@@ -54,8 +69,8 @@ export const get = <T>(
     method: 'GET',
     headers: headers()
   })
-    .then(checkResponse)
-    .then(parseResponse) as Promise<T>;
+    .then(checkStatus)
+    .then((response) => response.json()) as Promise<T>;
 };
 
 export const post = <T>(
@@ -76,5 +91,7 @@ export const post = <T>(
     method: 'POST',
     headers: headers(),
     body: JSON.stringify(data)
-  }).then(parseResponse<T>);
+  })
+    .then(checkStatus)
+    .then((response) => response.json());
 };

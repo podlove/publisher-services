@@ -142,10 +142,25 @@ function* fetchEpisodes(): any {
 }
 
 function* importPodcast() {
-  yield savePodcastMetadata();
-  yield fetchEpisodes();
-  yield setOnboardingPodcastSettings();
-  yield put(actions.onboarding.next());
+  try {
+    yield savePodcastMetadata();
+    yield fetchEpisodes();
+    yield setOnboardingPodcastSettings();
+    yield put(actions.onboarding.next());
+  } catch (error) {
+    // TODO: use translation
+    // TODO: apply to other step sagas
+    yield put(
+      actions.notifications.error({
+        title: 'Error saving podcast',
+        details: error as string
+      })
+    );
+    // actions.notifications.error({
+    //   title: t('onboarding.error.import.title'),
+    //   details: t('onboarding.error.import.details')
+    // })
+  }
 }
 
 function* fetchEpisodeDetails({ payload }: Action<string>) {

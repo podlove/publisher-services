@@ -36,10 +36,19 @@ function* removeImage() {
 }
 
 function* transferPodcast() {
-  yield setOnboardingPodcastSettings();
-  yield savePodcastMetadata();
-  yield put(actions.podcast.readFeedUrl());
-  yield put(actions.onboarding.next());
+  try {
+    yield setOnboardingPodcastSettings();
+    yield savePodcastMetadata();
+    yield put(actions.podcast.readFeedUrl());
+    yield put(actions.onboarding.next());
+  } catch (error) {
+    yield put(
+      actions.notifications.error({
+        title: 'Error saving podcast',
+        details: error as string
+      })
+    );
+  }
 }
 
 function* readFeedUrl() {
