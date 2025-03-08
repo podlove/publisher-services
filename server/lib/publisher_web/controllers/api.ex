@@ -27,7 +27,9 @@ defmodule PublisherWeb.Controllers.API do
   def podcast_feed_url(conn, headers) do
     with_validation(conn, headers_to_map(headers), Validator.WordPressSiteHeader, fn conn, data ->
       case Podcast.feed_url(data."wordpress-site") do
-        {:ok, data} -> json(conn, data)
+        {:ok, data} ->
+          json(conn, data)
+
         {:error, reason} ->
           Logger.error("podcast_feed_url doesnot work reason: #{inspect(reason)}")
           bad_request_resp(conn, "Error: Podcast.feed_url")
@@ -38,7 +40,9 @@ defmodule PublisherWeb.Controllers.API do
   def set_podcast_settings(conn, headers, body) do
     with_validation(conn, headers_to_map(headers), Validator.WordPressAuthHeaders, fn conn, _ ->
       case Podcast.set_settings(headers, body) do
-        :ok -> json(conn, %{})
+        :ok ->
+          json(conn, %{})
+
         {:error, reason} ->
           Logger.error("podcast_set_settings reason: #{inspect(reason)}")
           bad_request_resp(conn, "Error: Podcast.set_settings")
@@ -50,7 +54,9 @@ defmodule PublisherWeb.Controllers.API do
     with_validation(conn, headers_to_map(headers), Validator.WordPressAuthHeaders, fn conn, _ ->
       with_validation(conn, body, Validator.SavePodcast, fn conn, body_data ->
         case Podcast.save_podcast_data(headers, body_data) do
-          {:ok, data} -> json(conn, data)
+          {:ok, data} ->
+            json(conn, data)
+
           {:error, reason} ->
             Logger.error("podcast_save_data reason: #{inspect(reason)}")
             bad_request_resp(conn, "Error: Podcast.save_podcast_data")
@@ -63,7 +69,9 @@ defmodule PublisherWeb.Controllers.API do
     with_validation(conn, headers_to_map(headers), Validator.WordPressAuthHeaders, fn conn, _ ->
       with_validation(conn, body, Validator.SavePodcastImage, fn conn, body_data ->
         case Podcast.save_podcast_image(headers, body_data) do
-          {:ok, info} -> json(conn, info)
+          {:ok, info} ->
+            json(conn, info)
+
           {:error, reason} ->
             Logger.error("podcast_save_image reason: #{inspect(reason)}")
             bad_request_resp(conn, "Error: Podcast.save_podcast_image")
@@ -76,7 +84,9 @@ defmodule PublisherWeb.Controllers.API do
     with_validation(conn, headers_to_map(headers), Validator.WordPressAuthHeaders, fn conn, _ ->
       with_validation(conn, body, Validator.CopyPodcastImage, fn conn, body_data ->
         case Podcast.copy_podcast_image(headers, body_data) do
-          {:ok, info} -> json(conn, info)
+          {:ok, info} ->
+            json(conn, info)
+
           {:error, reason} ->
             Logger.error("podcast_copy_image reason: #{inspect(reason)}")
             bad_request_resp(conn, "Error: Podcast.copy_podcast_image")
@@ -90,7 +100,7 @@ defmodule PublisherWeb.Controllers.API do
       with_validation(conn, body, Validator.SaveEpisode, fn conn, _ ->
         with_validation(conn, body["media_file"], Validator.SaveEnclosure, fn conn, _ ->
           with_validation_array(conn, body["chapters"], Validator.SaveChapters, fn conn, _ ->
-              case Episode.save(conn, body) do
+            case Episode.save(conn, body) do
               :ok -> json(conn, %{status: "success"})
               _ -> bad_request_resp(conn, "Error: unable to save episode")
             end
@@ -106,9 +116,12 @@ defmodule PublisherWeb.Controllers.API do
         success_fn.(conn, data)
 
       {:error, changeset} ->
+        errors = validator_mod.changeset_to_errors(changeset)
+        Logger.warning("Validation Error: #{inspect(errors)}")
+
         conn
         |> put_status(:bad_request)
-        |> json(%{errors: validator_mod.changeset_to_errors(changeset)})
+        |> json(%{errors: errors})
     end
   end
 
