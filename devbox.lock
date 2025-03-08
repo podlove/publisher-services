@@ -50,8 +50,13 @@
         }
       }
     },
+    "darwin.apple_sdk.frameworks.CoreServices": {
+      "resolved": "github:NixOS/nixpkgs/de0fe301211c267807afd11b12613f5511ff7433?narHash=sha256-aizILFrPgq%2FW53Jw8i0a1h1GZAAKtlYOrG%2FA5r46gVM%3D#darwin.apple_sdk.frameworks.CoreServices",
+      "source": "nixpkg"
+    },
     "elixir@latest": {
       "last_modified": "2024-02-24T23:06:34Z",
+      "plugin_version": "0.0.1",
       "resolved": "github:NixOS/nixpkgs/9a9dae8f6319600fa9aebde37f340975cab4b8c0#elixir",
       "source": "devbox-search",
       "version": "1.15.7",
@@ -89,6 +94,9 @@
           "store_path": "/nix/store/xang45qlfdvpcfmc4l84dz981blnk1dl-erlang-25.3.2.9"
         }
       }
+    },
+    "github:NixOS/nixpkgs/nixpkgs-unstable": {
+      "resolved": "github:NixOS/nixpkgs/de0fe301211c267807afd11b12613f5511ff7433?lastModified=1741310760&narHash=sha256-aizILFrPgq%2FW53Jw8i0a1h1GZAAKtlYOrG%2FA5r46gVM%3D"
     },
     "nodejs@latest": {
       "last_modified": "2024-02-24T23:06:34Z",
