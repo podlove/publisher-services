@@ -25,8 +25,8 @@ defmodule PublisherWeb.Controllers.API do
   end
 
   def podcast_feed_url(conn, headers) do
-    with_validation(conn, headers_to_map(headers), Validator.WordPressSiteHeader, fn conn, data ->
-      case Podcast.feed_url(data."wordpress-site") do
+    with_validation(conn, headers_to_map(headers), Validator.WordPressAuthHeaders, fn conn, _ ->
+      case Podcast.feed_url(headers) do
         {:ok, data} ->
           json(conn, data)
 

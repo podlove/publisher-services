@@ -4,10 +4,10 @@ defmodule Publisher.WordPress.Podcast do
   alias Publisher.WordPress.API
   alias Publisher.WordPress.Media
 
-  def feed_url(site) do
-    case Req.get(site <> "/wp-json/podlove/v2/podcast",
-           connect_options: [transport_opts: [verify: :verify_none]]
-         ) do
+  def feed_url(headers) do
+    req = API.new(headers)
+
+    case Req.get(req, url: "podlove/v2/podcast") do
       {:ok, response} ->
         with {:ok, _} <- extract_status(response),
              {:ok, feed_url} <- extract_feed_url(response) do
@@ -103,7 +103,6 @@ defmodule Publisher.WordPress.Podcast do
     end
   end
 
-
   def save_podcast_image_url(req, url) do
     podlove_body = %{cover_image: url}
 
@@ -151,5 +150,4 @@ defmodule Publisher.WordPress.Podcast do
       result -> result |> Map.values() |> hd()
     end
   end
-
 end
