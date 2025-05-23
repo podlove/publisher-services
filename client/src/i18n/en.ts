@@ -27,7 +27,7 @@ export default {
         }
       },
       'start-new-podcast': {
-        title: 'Podcast informations',
+        title: 'Podcast information',
         headline: 'Start your podcast',
         description:
           "Let's setup up your new podcast. Please fill in the following details to get Let's make your podcast stand out! Share some key details about your podcast to help listeners find and enjoy your content. Don't worry, you can always update these details later. The preview on the side shows how your information will appear to your audience.started."
