@@ -1,0 +1,45 @@
+name: Production
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy to production environment
+      uses: appleboy/ssh-action@v1.0.3
+      env:
+        SHA: ${{ github.sha }}
+        VITE_BUILD: ${{ github.sha }}
+        HONEYBADGER_API_KEY: ${{ secrets.HONEYBADGER_KEY }}
+      with:
+        host: 157.180.48.235
+        username: deploy_gh_publisher_services
+        key: ${{ secrets.PRODUCTION_HETZNER_SSH_KEY }}
+        envs: SHA,VITE_BUILD,HONEYBADGER_API_KEY
+        script:  |
+          cd /var/www/publisher-services
+          git fetch
+          git reset --hard $SHA
+
+          # Bootstrap client
+          cd client
+          pnpm install
+          cd ..
+
+          # Build server
+          cd server
+          export MIX_HOME=$PWD/.nix-mix
+          export HEX_HOME=$PWD/.nix-hex
+          mix local.hex --force
+          mix local.rebar --force
+          mix deps.get --only prod
+          MIX_ENV=prod mix release --overwrite
+          cd ..
+
+          # Build client
+          cd client
+          pnpm build
+          cd ..
