@@ -43,3 +43,5 @@ jobs:
           cd client
           pnpm build
           cd ..
+
+          systemctl restart publisher.service --no-ask-password
