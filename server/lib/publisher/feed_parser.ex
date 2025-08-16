@@ -139,6 +139,10 @@ defmodule Publisher.FeedParser do
     end
   end
 
+  defp sanitize_enclosure(%Metalove.Enclosure{metadata: []} = enclosure) do
+    enclosure
+  end
+
   # removes binaries
   # TODO: maybe replace binaries with URLs (proxy URLs that return the binary from memory)
   defp sanitize_enclosure(%Metalove.Enclosure{metadata: metadata} = enclosure)
