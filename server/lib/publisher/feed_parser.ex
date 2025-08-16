@@ -1,4 +1,6 @@
 defmodule Publisher.FeedParser do
+  require Logger
+
   @opts_schema [
     force_refresh: [
       type: :boolean,
@@ -11,6 +13,8 @@ defmodule Publisher.FeedParser do
   ]
 
   def parse_by_url(url, opts \\ []) do
+    Logger.info("Parsing feed: #{url}")
+
     opts = NimbleOptions.validate!(opts, @opts_schema)
 
     podcast = Metalove.get_podcast(url, skip_cache: opts[:force_refresh])
