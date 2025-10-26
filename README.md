@@ -1,6 +1,6 @@
 # Publisher Next
 
-A data privacy first prototype to break our chains to WordPress.
+A data privacy first prototype to break our chains to WordPress. 
 
 ## Setup
 
